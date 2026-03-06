@@ -52,12 +52,12 @@ const modules = ref([])
 const models = ref([])
 
 async function loadApps() {
-  const {data} = await HTTPAuth.get(url({type:'u', url:'/api/django_saas/modulos/', params:{}}))
+  const {data} = await HTTPAuth.get(url({type:'u', url:'/api/django_resaas/modulos/', params:{}}))
   modules.value = data.apps
 }
 
 async function loadModelsRelation(){
-  const {data} = await HTTPAuth.get(url({type:'u', url:'/api/django_saas/modulos/'+ module.value, params:{}}))
+  const {data} = await HTTPAuth.get(url({type:'u', url:'/api/django_resaas/modulos/'+ module.value, params:{}}))
   models.value = data.models
 }
 onMounted(async () => {

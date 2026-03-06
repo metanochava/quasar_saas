@@ -56,7 +56,7 @@ export const AuthStore = defineStore('auth', {
 
   actions: {
     async getTipoEntidades(){
-      await HTTPClient.get(url({type: "u", url: "api/django_saas/tipoentidades", params: {}}) )
+      await HTTPClient.get(url({type: "u", url: "api/django_resaas/tipoentidades", params: {}}) )
       .then(res => {
         this.TipoEntidades = res.data
       }).catch(err => {
@@ -88,7 +88,7 @@ export const LanguageStore = defineStore("lang", {
         const res = await HTTPClient.get(
           url({
             type: "u",
-            url: `api/django_saas/idiomas/${idioma?.id}/traducaos`,
+            url: `api/django_resaas/idiomas/${idioma?.id}/traducaos`,
             params: {}
           })
         )
@@ -118,7 +118,7 @@ export const LanguageStore = defineStore("lang", {
     },
     
     async get() {
-      await HTTPClient.get(url({type: "u", url: "api/django_saas/idiomas", params: {}}) )
+      await HTTPClient.get(url({type: "u", url: "api/django_resaas/idiomas", params: {}}) )
       .then(res => {
         this.list = res.data
         this.current = this.list[0]
@@ -177,7 +177,7 @@ export const UserStore = defineStore("user", {
 
   actions: {
     async getMenus () {
-      await HTTPAuth.get(url({ type: 'u', url: 'api/django_saas/users/' + this.data.id + '/menus/', params: {} }))
+      await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/users/' + this.data.id + '/menus/', params: {} }))
         .then(res => {
           this.AllMenus = res.data
           this.Menus = this.AllMenus
@@ -186,7 +186,7 @@ export const UserStore = defineStore("user", {
         })
     },
     async setEntidadeModelos () {
-      await HTTPAuth.get(url({ type: 'u', url: 'api/django_saas/entidades/' + this.Entidade?.id + '/modelos', params: {} }))
+      await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + this.Entidade?.id + '/modelos', params: {} }))
         .then(res => {
            this.EntidadeModelos = res.data
         }).catch(err => {
@@ -301,7 +301,7 @@ export const UserStore = defineStore("user", {
 
     async getEntidades () {
       if (!this.data?.id) return
-      const rsp = await HTTPAuth.get( url({ type: 'u', url: `api/django_saas/users/${this.data.id}/userEntidades/`,params: {}}))
+      const rsp = await HTTPAuth.get( url({ type: 'u', url: `api/django_resaas/users/${this.data.id}/userEntidades/`,params: {}}))
       setStorage('c', 'userEntidades', JSON.stringify(rsp.data), 365)
       this.Entidades = rsp.data
       return rsp
@@ -314,7 +314,7 @@ export const UserStore = defineStore("user", {
         const res = await HTTPAuth.get(
           url({
             type: 'u',
-            url: `api/django_saas/users/${this.data.id}/userEntidades/`,
+            url: `api/django_resaas/users/${this.data.id}/userEntidades/`,
             params: {}
           })
         )
@@ -362,7 +362,7 @@ export const UserStore = defineStore("user", {
     },
 
     async getSucursals_ (q) {
-      await HTTPAuth.get(url({ type: 'u', url: 'api/django_saas/users/' + this.data?.id + '/userSucursals/', params: { } }))
+      await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/users/' + this.data?.id + '/userSucursals/', params: { } }))
         .then(async res => {
           setStorage('c', 'userSucursals', JSON.stringify(res.data), 365)
           
@@ -423,7 +423,7 @@ export const UserStore = defineStore("user", {
       this.spiner = true
       if (getStorage('c', 'userEntidade') !== null) {
       
-        const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_saas/users/' + this.data?.id + '/userSucursals/', params: { } }))
+        const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/users/' + this.data?.id + '/userSucursals/', params: { } }))
           .then(res => {
             this.Sucursal = {}
             setStorage('c', 'userSucursal', JSON.stringify({}), 365)
@@ -446,7 +446,7 @@ export const UserStore = defineStore("user", {
     async getGrupos () {
 
       const res = await HTTPAuth.get(
-        url({ type: 'u', url: `api/django_saas/users/${this.data?.id}/userGrupos/`, params: {} })
+        url({ type: 'u', url: `api/django_resaas/users/${this.data?.id}/userGrupos/`, params: {} })
       )
 
       setStorage('c', 'userGrupos', JSON.stringify(res.data), 365)
@@ -461,7 +461,7 @@ export const UserStore = defineStore("user", {
     async getGrupos_ (q) {
 
       const res = await HTTPAuth.get(
-        url({ type: 'u', url: `api/django_saas/users/${this.data?.id}/userGrupos/`, params: {} })
+        url({ type: 'u', url: `api/django_resaas/users/${this.data?.id}/userGrupos/`, params: {} })
       )
       setStorage('c', 'userGrupos', JSON.stringify(res.data), 365)
       this.Grupos = res.data
@@ -508,7 +508,7 @@ export const UserStore = defineStore("user", {
     async setEntidadeModulos () {
       if (getStorage('c', 'userEntidade') !== null) {
 
-        const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_saas/entidades/' + this.Entidade?.id + '/modulos/', params: { } }))
+        const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + this.Entidade?.id + '/modulos/', params: { } }))
           .then(res => {
             setStorage('c', 'entidadeModulos', JSON.stringify(res.data), 365)
             this.EntidadeModulos = res.data
@@ -522,7 +522,7 @@ export const UserStore = defineStore("user", {
       if (getStorage('c', 'userSucursal') !== null) {
 
         const res = await HTTPAuth.get(
-          url({ type: 'u', url: `api/django_saas/users/${this.data?.id}/userPermicoes/`, params: {} })
+          url({ type: 'u', url: `api/django_resaas/users/${this.data?.id}/userPermicoes/`, params: {} })
         )
 
         const perms = (res.data || [])

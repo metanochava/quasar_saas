@@ -29,10 +29,10 @@ async function fetchRelationOptions(relation, search = '') {
 
 /**
  * buildFormFromSchema(module, model) -> fields config
- * espera GET /api/django_saas/modulos/<module>/<model>/schema/
+ * espera GET /api/django_resaas/modulos/<module>/<model>/schema/
  */
 export async function buildFormFromSchema({'module':module, 'model': model}) {
-  const { data } = await HTTPAuth.get(url({type:'u', url:`/api/django_saas/modulos/${module}/${model}/schema/`, params:{}}))
+  const { data } = await HTTPAuth.get(url({type:'u', url:`/api/django_resaas/modulos/${module}/${model}/schema/`, params:{}}))
   const out = []
 
   for (const f of (data.fields || [])) {
@@ -128,7 +128,7 @@ export async function buildFormFromSchema({'module':module, 'model': model}) {
 }
 
 export async function actionsFromSchema(module, model) {
-  const { data } = await HTTPAuth.get(url({type:'u', url:`/api/django_saas/modulos/${module}/${model}/schema/`, params:{}}))
+  const { data } = await HTTPAuth.get(url({type:'u', url:`/api/django_resaas/modulos/${module}/${model}/schema/`, params:{}}))
   return data.actions 
 }
 
@@ -255,7 +255,7 @@ async function defaultFetchRelationOptions(relationStr, search = '') {
   // Sugestão de endpoint padrão:
   // GET /saas/relations/?model=app.Model&search=...
   // Se tu não tens, troca aqui por GET /saas/<model-endpoint>/
-  const { data } = await HTTPAuth.get(url({type:'u', url: '/api/django_saas/relations/',  params: { model: relationStr, search: search || '' }}))
+  const { data } = await HTTPAuth.get(url({type:'u', url: '/api/django_resaas/relations/',  params: { model: relationStr, search: search || '' }}))
 
   // esperado: [{id, label}] ou [{id, nome}] etc
   const rows = data?.results || data?.data || data || []
@@ -276,7 +276,7 @@ export async function buildFormFromSchemaPRO({
 
   if (!module || !model) throw new Error('module/model required')
 
-  const { data } = await HTTPAuth.get(url({type:'u', url:`/api/django_saas/modulos/${module}/${model}/schema/`, params:{}}))
+  const { data } = await HTTPAuth.get(url({type:'u', url:`/api/django_resaas/modulos/${module}/${model}/schema/`, params:{}}))
 
   // ✅ resolve schemaPath
   const fields =

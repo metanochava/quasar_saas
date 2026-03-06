@@ -1,9 +1,9 @@
 {
-  "name": "@metano/quasar_rest_auth",
+  "name": "@metano/quasar_resaas",
   "publishConfig": {
     "access": "public"
   },
-  "version": "1.0.476",
+  "version": "1.0.477",
   "description": "Rest em quasar para autenticacao",
   "keywords": [
     "rest",
@@ -11,13 +11,13 @@
     "api",
     "quasar"
   ],
-  "homepage": "https://github.com/metanochava/quasar#readme",
+  "homepage": "https://github.com/metanochava/quasar_resaas#readme",
   "bugs": {
-    "url": "https://github.com/metanochava/quasar/issues"
+    "url": "https://github.com/metanochava/quasar_resaas/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/metanochava/quasar_rest_auth.git"
+    "url": "https://github.com/metanochava/quasar_resaas.git"
   },
   "license": "MIT",
   "author": "Dias Metano Salvador Chavana",

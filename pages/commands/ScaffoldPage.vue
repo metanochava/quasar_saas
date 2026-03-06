@@ -817,7 +817,7 @@ export default {
         fields: this.normalizeFields(this.form.fields),
         actions: this.form.actions,
       }
-      const { data } = await HTTPAuth.post('/api/django_saas/scaffolds/preview/', payload)
+      const { data } = await HTTPAuth.post('/api/django_resaas/scaffolds/preview/', payload)
 
       this.preview = data.data || data || {
         model:'',
@@ -831,7 +831,7 @@ export default {
       const payload = {
         modulo: this.form.modulo,
       }
-      const { data } = await HTTPAuth.post('/api/django_saas/scaffolds/migrate/', payload)
+      const { data } = await HTTPAuth.post('/api/django_resaas/scaffolds/migrate/', payload)
       this.out = data.out 
     },
 
@@ -842,7 +842,7 @@ export default {
         modelo: this.form.modelo,
         actions: this.form.actions,
       }
-      const { data } = await HTTPAuth.post('/api/django_saas/scaffolds/permissions/', payload)
+      const { data } = await HTTPAuth.post('/api/django_resaas/scaffolds/permissions/', payload)
       this.out = data.out 
     },
 
@@ -862,22 +862,22 @@ export default {
         ...this.form,
         fields: this.normalizeFields(this.form.fields)
       }
-      const {data} = await HTTPAuth.post('/api/django_saas/scaffolds/', payload)
+      const {data} = await HTTPAuth.post('/api/django_resaas/scaffolds/', payload)
       this.out = data.out
     },
 
     async loadApps() {
-      const {data} = await HTTPAuth.get('/api/django_saas/modulos/')
+      const {data} = await HTTPAuth.get('/api/django_resaas/modulos/')
       this.modules = data.apps
     },
 
     async loadModelsRelation(f){
-      const {data} = await HTTPAuth.get('/api/django_saas/modulos/'+ f.relModule)
+      const {data} = await HTTPAuth.get('/api/django_resaas/modulos/'+ f.relModule)
       f.models = data.models
     },
 
     async loadModelsSchema(f){
-      const {data} = await HTTPAuth.get('/api/django_saas/modulos/'+ f)
+      const {data} = await HTTPAuth.get('/api/django_resaas/modulos/'+ f)
       this.models = data.models
       this.accaoTeste = false
     },

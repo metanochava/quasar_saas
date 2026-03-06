@@ -98,7 +98,7 @@ async function defaultFetchRelationOptions(relationStr, search = '') {
   // Sugestão de endpoint padrão:
   // GET /saas/relations/?model=app.Model&search=...
   // Se tu não tens, troca aqui por GET /saas/<model-endpoint>/
-  const { data } = await HTTPAuth.get(url({type:'u', url: '/api/django_saas/relations/',  params: { model: relationStr, search: search || '' }}))
+  const { data } = await HTTPAuth.get(url({type:'u', url: '/api/django_resaas/relations/',  params: { model: relationStr, search: search || '' }}))
 
   // esperado: [{id, label}] ou [{id, nome}] etc
   const rows = data?.results || data?.data || data || []
@@ -120,7 +120,7 @@ export async function buildFormFromSchema({
   console.log(module +' '+ model)
   // if (!module || !model) throw new Error('module/model required')
 
-  const { data } = await HTTPAuth.get(url({type:'u', url:`api/django_saas/modulos/${module}/${model}/schema/`, params:{}}))
+  const { data } = await HTTPAuth.get(url({type:'u', url:`api/django_resaas/modulos/${module}/${model}/schema/`, params:{}}))
 
   // ✅ resolve schemaPath
   const fields =
@@ -353,6 +353,6 @@ export async function buildFormFromSchema({
 
 
 export async function actionsFromSchema(module, model) {
-  const { data } = await HTTPAuth.get(url({type:'u', url:`/api/django_saas/modulos/${module}/${model}/schema/`, params:{}}))
+  const { data } = await HTTPAuth.get(url({type:'u', url:`/api/django_resaas/modulos/${module}/${model}/schema/`, params:{}}))
   return data.actions 
 }
