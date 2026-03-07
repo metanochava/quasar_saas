@@ -480,7 +480,7 @@ export const UserStore = defineStore("user", {
           return  
         }
         const grupos = []
-        grupos.push( { label: 'Gest', value: {id: 1,  name: 'Gest' } })
+        // grupos.push( { label: 'Guest', value: {id: 1,  name: 'Guest' } })
         res.data.forEach(element => {
           grupos.push({ label: this.perfilSplint(element.name), value: element })
         })
@@ -565,7 +565,7 @@ export const UserStore = defineStore("user", {
             console.log(err)
           })
 
-          const lay = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/tipoentidades/' + Entidade?.id + '/layoutsettingsGet/', params: { } }))
+          const lay = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/tipoentidades/' + TipoEntidade?.id + '/layoutsettingsGet/', params: { } }))
           .then(res => {
             setStorage('c', 'tipoEntidadeThemeLayoutsettings', JSON.stringify(res.data), 365)
             tipoEntidadeStore.LayoutSettings = res.data || {}
