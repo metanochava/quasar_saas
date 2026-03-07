@@ -86,7 +86,7 @@ export default defineComponent({
           domain = window.location.href.split('/')[2].split('.')[1]
         }
       }
-
+      console.log(domain, tipoEnt.nome.toLowerCase())
       if(domain){
         if (domain.toLocaleLowerCase() !== tipoEnt.nome.toLowerCase()) {
           return true
