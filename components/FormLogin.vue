@@ -75,7 +75,7 @@
 
 import { defineComponent } from 'vue'
 import { tdc } from '../boot/base'
-import { TipoEntidadeStore, UserStore } from '../stores/TipoEntidadeStore'
+import { TipoEntidadeStore, UserStore } from '../stores/AuthStore'
 import { setStorage, getStorage } from '../boot/storage'
 import AllLogo  from './../components/AllLogo.vue'
 import { useQuasar } from 'quasar'

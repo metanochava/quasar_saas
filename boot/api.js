@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getStorage, setStorage } from './storage'
-import { LoadStore, UserStore } from '../stores/TipoEntidadeStore'
+import { LoadStore, UserStore } from '../stores/AuthStore'
 
 import { Alert } from './alerts'
 

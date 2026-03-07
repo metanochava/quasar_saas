@@ -35,7 +35,7 @@
 <script>
 import { defineComponent } from 'vue'
 import { tdc } from '../../boot/base'
-import { TipoEntidadeStore, UserStore } from '../../stores/TipoEntidadeStore'
+import { TipoEntidadeStore, UserStore } from '../../stores/AuthStore'
 import { setStorage } from '../../boot/storage';
 
 

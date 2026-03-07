@@ -41,7 +41,7 @@
 
 import { defineComponent } from 'vue'
 import { tdc, toPlural} from '../boot/base'
-import { TipoEntidadeStore, UserStore } from '../stores/TipoEntidadeStore'
+import { TipoEntidadeStore, UserStore } from '../stores/AuthStore'
 import SearchMenu from './SearchMenu.vue'
 import SubMenu from './SubMenu.vue'
 

@@ -12,7 +12,7 @@
 <script>
 import { defineComponent } from 'vue'
 import { tdc } from '../boot/base'
-import { UserStore } from '../stores/TipoEntidadeStore'
+import { UserStore } from '../stores/AuthStore'
 
 export default defineComponent({
   name: 'SearchMenu',
