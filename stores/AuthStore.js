@@ -530,7 +530,7 @@ export const UserStore = defineStore("user", {
 
 
     async setEntidadeThemeLayoutSettings (Entidade) {
-      if (getStorage('c', 'userEntidade') !== null) {
+      
         const tipoEntidadeStore = TipoEntidadeStore()
         const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + Entidade?.id + '/themeGet/', params: { } }))
           .then(res => {
@@ -550,7 +550,7 @@ export const UserStore = defineStore("user", {
 
           
         return lay 
-      }
+      
     },
 
     async setTipoEntidadeThemeLayoutSettings (TipoEntidade) {
