@@ -186,8 +186,8 @@ export const UserStore = defineStore("user", {
 
       await HTTPClient.get(url({type: "u", url: "api/site", params: {}}) )
       .then(res => {
-        this.User.Theme = res.data.theme
-        this.User.LayoutSettings = res.data.layoutSettings
+        this.Theme = res.data.theme
+        this.LayoutSettings = res.data.layoutSettings
         this.set_layout_theme()
       })
       .catch( () => {
@@ -195,7 +195,7 @@ export const UserStore = defineStore("user", {
       })
     },
     async set_layout_theme() {
-      Object.entries(this.User.Theme).forEach(([key, value]) => {
+      Object.entries(this.Theme).forEach(([key, value]) => {
         setCssVar(key, value)
       })
     },
