@@ -117,10 +117,10 @@ export const LanguageStore = defineStore("lang", {
         this.TraducaoMap = flattenTranslations(payload)
 
       } catch (err) {
-        
+
       }
     },
-    
+
     async get() {
       await HTTPClient.get(url({type: "u", url: "api/django_resaas/idiomas", params: {}}) )
       .then(res => {
@@ -146,7 +146,7 @@ export const UserStore = defineStore("user", {
     Sucursals: [],
     Sucursal: null,
     Grupos: [],
-    Grupo: {id: 1,  name: 'Gest' },  
+    Grupo: {id: 1,  name: 'Gest' },
     Menus: [],
     search: '',
     AllMenus: [],
@@ -182,6 +182,35 @@ export const UserStore = defineStore("user", {
   },
 
   actions: {
+    normalizeTheme(theme = {}) {
+
+      const ignore = [
+        'id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'estado',
+        'nome',
+        'created_by',
+        'updated_by'
+      ]
+
+      const cleanTheme = {}
+
+      Object.entries(theme).forEach(([key, value]) => {
+
+        if (
+          !ignore.includes(key) &&
+          typeof value === 'string' &&
+          value.trim() !== ''
+        ) {
+          cleanTheme[key] = value
+        }
+
+      })
+
+      return cleanTheme
+    },
     async get_layout_theme() {
 
       await HTTPClient.get(url({type: "u", url: "api/site", params: {}}) )
@@ -195,7 +224,8 @@ export const UserStore = defineStore("user", {
       })
     },
     async set_layout_theme() {
-      Object.entries(this.Theme).forEach(([key, value]) => {
+      const theme = this.normalizeTheme(this.Theme)
+      Object.entries(theme).forEach(([key, value]) => {
         setCssVar(key, value)
       })
     },
@@ -279,7 +309,7 @@ export const UserStore = defineStore("user", {
         this.loading = false
         console.log(err)
         this.loginMsg = 'error'
-        
+
       })
       return rsp
     },
@@ -350,15 +380,15 @@ export const UserStore = defineStore("user", {
           this.selectEntidade_(res.data[0], q)
         } else {
           if (res.data.length === 0) {
-            
+
             this.redirect = 'welcome'
-            return  
+            return
           }
           const entidades = res.data.map(e => ({
             label: this.perfilSplint(e.nome),
             value: e
           }))
-          
+
           q.dialog({
             title: tdc('Seleccione a Entidade'),
             options: {
@@ -370,7 +400,7 @@ export const UserStore = defineStore("user", {
             persistent: true
           }).onOk(data => this.selectEntidade_(data, q))
           .onCancel(() => {
-            
+
             this.redirect = 'welcome'
           })
         }
@@ -390,14 +420,14 @@ export const UserStore = defineStore("user", {
       await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/users/' + this.data?.id + '/userSucursals/', params: { } }))
         .then(async res => {
           setStorage('c', 'userSucursals', JSON.stringify(res.data), 365)
-          
+
           if (res.data.length === 1) {
             this.selectSucursal_(res.data[0], q)
           } else {
             if (res.data.length === 0) {
-              
+
               this.redirect = 'authwelcome'
-              return  
+              return
             }
             const sucursals = []
             res.data.forEach(element => {
@@ -416,7 +446,7 @@ export const UserStore = defineStore("user", {
             }).onOk(data => {
               this.selectSucursal_(data, q)
             }).onCancel(() => {
-              
+
               this.redirect = 'authwelcome'
             })
           }
@@ -448,7 +478,7 @@ export const UserStore = defineStore("user", {
     async getSucursals () {
       this.spiner = true
       if (getStorage('c', 'userEntidade') !== null) {
-      
+
         const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/users/' + this.data?.id + '/userSucursals/', params: { } }))
           .then(res => {
             this.Sucursal = {}
@@ -482,8 +512,8 @@ export const UserStore = defineStore("user", {
         this.selectGrupo_(res.data[0])
       }
       return res
-    }, 
-    
+    },
+
     async getGrupos_ (q) {
 
       const res = await HTTPAuth.get(
@@ -497,7 +527,7 @@ export const UserStore = defineStore("user", {
       }else{
         if (res.data.length === 0) {
           this.redirect = 'authwelcome'
-          return  
+          return
         }
         const grupos = []
         // grupos.push( { label: 'Guest', value: {id: 1,  name: 'Guest' } })
@@ -542,8 +572,8 @@ export const UserStore = defineStore("user", {
             console.log(err)
           })
 
-          
-        return rsp 
+
+        return rsp
       }
     },
 
@@ -557,17 +587,17 @@ export const UserStore = defineStore("user", {
           console.log(err)
         })
 
-      const lay = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + Entidade?.id + '/layoutsettingsGet/', params: { } }))
+      const lay = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + Entidade?.id + '/layoutSettingsGet/', params: { } }))
         .then(res => {
           this.LayoutSettings = res.data  || tipoEntidadeStore.LayoutSettings
           setStorage('c', 'entidadeThemeLayoutsettings', JSON.stringify(this.LayoutSettings), 365)
         }).catch(err => {
           console.log(err)
         })
-      
+
         this.set_layout_theme()
-      
-      return lay 
+
+      return lay
     },
 
     async setTipoEntidadeThemeLayoutSettings (TipoEntidade) {
@@ -578,25 +608,27 @@ export const UserStore = defineStore("user", {
           .then(res => {
             setStorage('c', 'tipoEntidadeTheme', JSON.stringify(res.data), 365)
             tipoEntidadeStore.Theme = res.data || {}
-            
+            this.Theme = tipoEntidadeStore.Theme
+
           }).catch(err => {
             console.log(err)
           })
 
-        const lay = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/tipoentidades/' + TipoEntidade?.id + '/layoutsettingsGet/', params: { } }))
+        const lay = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/tipoentidades/' + TipoEntidade?.id + '/layoutSettingsGet/', params: { } }))
           .then(res => {
             setStorage('c', 'tipoEntidadeThemeLayoutsettings', JSON.stringify(res.data), 365)
             tipoEntidadeStore.LayoutSettings = res.data || {}
-            
+            this.LayoutSettings = tipoEntidadeStore.LayoutSettings
+
           }).catch(err => {
             console.log(err)
           })
 
           this.set_layout_theme()
-        return lay 
+        return lay
       }
     },
-    
+
     async getPermicoes () {
       if (getStorage('c', 'userSucursal') !== null) {
 
@@ -636,7 +668,7 @@ export const UserStore = defineStore("user", {
       const perms = this.safeParse(getStorage('l', 'userPermicoes'))
       this.Permicoes = new Set(Array.isArray(perms) ? perms : [])
     },
-      
+
 
     perfilSplint (txt) {
       if (!txt) return null
@@ -680,7 +712,7 @@ export const UserStore = defineStore("user", {
         this.isLogout = !this.isLogout
         this.isLogin = false
         return
-      } 
+      }
 
       const rsp = await HTTPAuth.post(url({type: "u", url: "api/logout/", params: {}}), {refresh: this.refresh} )
       .then(res => {
@@ -721,8 +753,8 @@ export const UserStore = defineStore("user", {
 
         if (x !== 'x') {
           setStorage('c', 'userEntidade', userEntidade, 365)
-        } 
-        
+        }
+
         setStorage('c', 'userGrupo', this.Grupo, 365)
         this.isLogout = !this.isLogout
         this.isLogin = false
@@ -731,7 +763,7 @@ export const UserStore = defineStore("user", {
         this.isLogin = false
       })
 
-      return rsp 
+      return rsp
     }
 
   },

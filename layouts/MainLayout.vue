@@ -10,19 +10,7 @@
     </q-dialog>
 
     <q-dialog v-model="User.Settings" full-width full-height>
-      <q-card>
-        <q-bar :class="$q.dark.isActive ? 'bg-primary' : 'bg-primary text-white'">
-          <q-toolbar-title>
-            <span class="text-weight-bold">Definições de Layout</span>
-          </q-toolbar-title>
-          <q-space />
-          <q-btn dense flat icon="close" v-close-popup />
-        </q-bar>
-        <q-separator />
-        <q-card-section class="scroll">
-          <DefinicoesLayout />
-        </q-card-section>
-      </q-card>
+      <DefinicoesLayout />
     </q-dialog>
 
     <q-dialog v-model="api_retorno_modal" full-width full-height>
@@ -168,8 +156,8 @@ export default defineComponent({
     return {
       Auth,
       User,
-      barStyle, 
-      thumbStyle 
+      barStyle,
+      thumbStyle
     }
   },
   data() {
