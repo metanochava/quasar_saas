@@ -393,14 +393,14 @@
                   :dense="previewState.layout.toolbar_dense"
                   :class="previewState.layout.toolbar_elevated ? 'shadow-2' : ''"
                 >
-                  <TBtn flat round icon="menu" />
+                  <SBtn flat round icon="menu" />
                   <q-toolbar-title>Preview</q-toolbar-title>
-                  <TBtn flat round icon="notifications" />
-                  <TBtn flat round icon="account_circle" />
+                  <SBtn flat round icon="notifications" />
+                  <SBtn flat round icon="account_circle" />
                 </q-toolbar>
               </q-header>
 
-              <TDrawer
+              <SDrawer
                 show-if-above
                 bordered
                 :mini="previewState.layout.sidebar_mini"
@@ -435,13 +435,13 @@
                     <q-item-section>Agenda</q-item-section>
                   </q-item>
                 </q-list>
-              </TDrawer>
+              </SDrawer>
 
               <q-page-container>
                 <transition :name="transitionName" mode="out-in">
                   <q-page class="q-pa-md" :key="transitionKey">
                     <!-- PREVIEW CORES -->
-                    <TCard class="q-mb-md">
+                    <SCard class="q-mb-md">
                       <q-card-section class="bg-secondary text-white">
                         Cores do tema
                       </q-card-section>
@@ -470,10 +470,10 @@
                           </div>
                         </div>
                       </q-card-section>
-                    </TCard>
+                    </SCard>
 
                     <!-- PREVIEW TYPOGRAPHY -->
-                    <TCard class="q-mb-md">
+                    <SCard class="q-mb-md">
                       <q-card-section>
                         <div :style="headingStyle">
                           Título H1 Preview
@@ -489,10 +489,10 @@
                           weight e spacing aplicados em tempo real.
                         </div>
                       </q-card-section>
-                    </TCard>
+                    </SCard>
 
                     <!-- PREVIEW LAYOUT -->
-                    <TCard class="q-mb-md">
+                    <SCard class="q-mb-md">
                       <q-card-section class="text-subtitle1">
                         Formulário + Botões
                       </q-card-section>
@@ -500,14 +500,14 @@
                       <q-card-section>
                         <div class="row q-col-gutter-md">
                           <div class="col-12 col-md-6">
-                            <TInput
+                            <SInput
                               v-model="previewForm.name"
                               label="Nome"
                             />
                           </div>
 
                           <div class="col-12 col-md-6">
-                            <TInput
+                            <SInput
                               v-model="previewForm.email"
                               label="Email"
                             />
@@ -515,16 +515,16 @@
                         </div>
 
                         <div class="q-mt-md q-gutter-sm">
-                          <TBtn color="primary" label="Primário" />
-                          <TBtn color="secondary" label="Secundário" />
-                          <TBtn color="accent" label="Accent" />
-                          <TBtn color="positive" icon="check" label="Guardar" />
+                          <SBtn color="primary" label="Primário" />
+                          <SBtn color="secondary" label="Secundário" />
+                          <SBtn color="accent" label="Accent" />
+                          <SBtn color="positive" icon="check" label="Guardar" />
                         </div>
                       </q-card-section>
-                    </TCard>
+                    </SCard>
 
                     <!-- PREVIEW ANIMATION -->
-                    <TCard class="q-mb-md">
+                    <SCard class="q-mb-md">
                       <q-card-section class="text-subtitle1">
                         Animações / Interações
                       </q-card-section>
@@ -532,27 +532,27 @@
                       <q-card-section>
                         <div class="row q-col-gutter-md">
                           <div class="col-12 col-md-4">
-                            <TCard class="preview-mini-card">
+                            <SCard class="preview-mini-card">
                               <q-card-section>
                                 Card 1
                               </q-card-section>
-                            </TCard>
+                            </SCard>
                           </div>
 
                           <div class="col-12 col-md-4">
-                            <TCard class="preview-mini-card">
+                            <SCard class="preview-mini-card">
                               <q-card-section>
                                 Card 2
                               </q-card-section>
-                            </TCard>
+                            </SCard>
                           </div>
 
                           <div class="col-12 col-md-4">
-                            <TCard class="preview-mini-card">
+                            <SCard class="preview-mini-card">
                               <q-card-section>
                                 Card 3
                               </q-card-section>
-                            </TCard>
+                            </SCard>
                           </div>
                         </div>
 
@@ -561,7 +561,7 @@
                           refletidos aqui conforme a tab Animation.
                         </div>
                       </q-card-section>
-                    </TCard>
+                    </SCard>
                   </q-page>
                 </transition>
               </q-page-container>
@@ -779,6 +779,7 @@ export default defineComponent({
       },
       transitionKey: 0,
       fontOptions: [
+        "Ubuntu",
         "Roboto",
         "Inter",
         "Open Sans",
