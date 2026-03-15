@@ -1,6 +1,6 @@
 <template>
 
-  <s-input
+  <q-input
     v-bind="attrs"
 
     :dense="attrs.dense ?? layout.input_dense"
@@ -19,7 +19,7 @@
     }"
   >
     <slot/>
-  </s-input>
+  </q-input>
 
 </template>
 

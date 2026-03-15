@@ -81,11 +81,11 @@
     </s-drawer>
 
     <!-- -------------------- RIGHT DRAWER -------------------- -->
-    <q-drawer v-model="User.RightTop" side="right" bordered :width="300">
+    <s-drawer v-model="User.RightTop" side="right" bordered :width="300">
       <q-scroll-area class="fit">
         <RightMenu />
       </q-scroll-area>
-    </q-drawer>
+    </s-drawer>
 
     <!-- -------------------- PAGE CONTAINER -------------------- -->
 
