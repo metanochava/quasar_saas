@@ -19,7 +19,7 @@
 
       <!-- ADD BUTTON -->
       <q-item-section side v-if="item.add_rota">
-        <q-btn dense flat icon="add" :to="resolveRoute(item, 1)" />
+        <s-btn dense flat icon="add" :to="resolveRoute(item, 1)" />
       </q-item-section>
 
       <!-- Arrow if has submenu -->

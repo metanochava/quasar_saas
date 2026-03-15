@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- Conteúdo do HeaderServices -->
-    <q-btn round dense flat  size="14px" icon="apps">
+    <s-btn round dense flat  size="14px" icon="apps">
           <q-tooltip :class="$q.dark.isActive ? 'bg-transparent' : 'bg-primary'" >{{tdc("Serviços")}}</q-tooltip>
           <q-menu flat bordered square  fit :offset="[175, 5]"  >
-            <q-card class="my-card"  style="min-width:270px;" >
-                <q-card-section class="text-center"   flat bordered square  >
+            <s-card class="my-card"  style="min-width:270px;" >
+                <s-card-section class="text-center"   flat bordered square  >
                   <q-scroll-area
                     :thumb-style="thumbStyle"
                     :bar-style="barStyle"
@@ -25,10 +25,10 @@
                         </div>
                     </div>
                   </q-scroll-area>
-                </q-card-section>
-              </q-card>
+                </s-card-section>
+              </s-card>
           </q-menu>
-      </q-btn>
+      </s-btn>
   </div>
 </template>
 

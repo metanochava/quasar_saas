@@ -16,19 +16,19 @@
           <!-- RIGHT: CRIAR -->
           <!-- ================================= -->
           <div class="col-12 col-md-3">
-            <q-card bordered flat class="q-pa-lg">
+            <s-card bordered flat class="q-pa-lg">
               <div class="text-h6 q-mb-md">
                 ➕ Criar Módulo
               </div>
 
-              <q-input
+              <s-input
                 v-model="name"
                 label="Nome do módulo"
                 outlined
                 @keyup.enter="createModule"
               />
 
-              <q-btn
+              <s-btn
                 class="q-mt-md full-width"
                 color="primary"
                 icon="add"
@@ -36,7 +36,7 @@
                 :loading="loading"
                 @click="createModule"
               />
-            </q-card>
+            </s-card>
           </div>
 
           <div class="col-12 col-md-9 row q-col-gutter-sm">
@@ -45,9 +45,9 @@
               :key="app.name"
               class="col-12 col-sm-3"
             >
-              <q-card bordered flat class="module-card">
+              <s-card bordered flat class="module-card">
 
-                <q-card-section class="row items-center">
+                <s-card-section class="row items-center">
 
                   <q-icon name="folder" size="28px" />
 
@@ -62,14 +62,14 @@
                     {{ app.models }}
                   </q-badge>
 
-                </q-card-section>
+                </s-card-section>
 
                 <q-separator />
 
-                <q-card-actions align="between">
+                <s-card-actions align="between">
 
                   <!-- abrir scaffold -->
-                  <q-btn
+                  <s-btn
                     flat
                     color="primary"
                     icon="build"
@@ -78,7 +78,7 @@
                   />
 
                   <!-- apagar -->
-                  <q-btn
+                  <s-btn
                     flat
                     round
                     color="negative"
@@ -86,8 +86,8 @@
                     @click="confirmDelete(app.name)"
                   />
 
-                </q-card-actions>
-              </q-card>
+                </s-card-actions>
+              </s-card>
             </div>
           </div>
           

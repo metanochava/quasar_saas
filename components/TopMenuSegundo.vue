@@ -1,6 +1,6 @@
 <template>
     <div >
-      <q-btn class="q-mr-xs" flat square
+      <s-btn class="q-mr-xs" flat square
         v-for="App in User.Menus" :key="App"
         style="padding: 0px;"
         :icon="App.icon"
@@ -12,7 +12,7 @@
             <SubMenu :Dados="App.submenu" />
           </q-list>
         </q-menu>
-      </q-btn>
+      </s-btn>
       </div>
 </template>
 

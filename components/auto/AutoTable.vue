@@ -167,9 +167,9 @@ async function executeAction() {
 <template>
 
   <q-dialog v-model="showConfirm">
-    <q-card style="min-width: 400px">
+    <s-card style="min-width: 400px">
 
-      <q-card-section class="row items-center q-gutter-sm">
+      <s-card-section class="row items-center q-gutter-sm">
         <q-icon
           :name="actionType === 'hard_delete' ? 'warning' : 'help'"
           :color="actionType === 'hard_delete' ? 'red' : 'orange'"
@@ -178,9 +178,9 @@ async function executeAction() {
         <div class="text-h6">
           {{ actionType === 'hard_delete' ? 'Eliminar permanentemente?' : 'Confirmar eliminação?' }}
         </div>
-      </q-card-section>
+      </s-card-section>
 
-      <q-card-section>
+      <s-card-section>
         <div>
           {{tdc('Tens certeza que queres eliminar:')}}
         </div>
@@ -192,19 +192,19 @@ async function executeAction() {
         <div v-if="actionType === 'hard_delete'" class="text-red q-mt-sm">
           ⚠️ {{ tdc('Esta ação é irreversível') }}
         </div>
-      </q-card-section>
+      </s-card-section>
 
-      <q-card-actions align="right">
-        <q-btn flat label="Cancelar" v-close-popup />
+      <s-card-actions align="right">
+        <s-btn flat label="Cancelar" v-close-popup />
 
-        <q-btn
+        <s-btn
           :color="actionType === 'hard_delete' ? 'red' : 'orange'"
           :label="actionType === 'hard_delete' ? 'Eliminar Permanentemente' : 'Eliminar'"
           @click="executeAction"
         />
-      </q-card-actions>
+      </s-card-actions>
 
-    </q-card>
+    </s-card>
   </q-dialog>
 
   <q-table
@@ -268,15 +268,15 @@ async function executeAction() {
             label="Colunas"
           />
 
-          <q-btn v-if="show_filter" flat icon="filter_list" @click="emit('filter')" />
-          <q-btn v-if="show_filter" flat icon="refresh" @click="emit('refresh')" />
-          <q-btn v-if="show_filter" flat icon="download" @click="exportCSV" />
+          <s-btn v-if="show_filter" flat icon="filter_list" @click="emit('filter')" />
+          <s-btn v-if="show_filter" flat icon="refresh" @click="emit('refresh')" />
+          <s-btn v-if="show_filter" flat icon="download" @click="exportCSV" />
 
-          <q-btn  flat :icon="show_filter? 'arrow_forward' : 'arrow_back'"  @click=" show_filter = !show_filter" >
+          <s-btn  flat :icon="show_filter? 'arrow_forward' : 'arrow_back'"  @click=" show_filter = !show_filter" >
             <q-tooltip>{{tdc('Mostar Filtros')}} </q-tooltip>
-          </q-btn>
+          </s-btn>
 
-          <q-input
+          <s-input
             icon="search"
             v-model="search"
             dense
@@ -285,7 +285,7 @@ async function executeAction() {
             :label="tdc('Search')"
             @keyup.enter="emit('search', search)"
           />
-          <q-btn
+          <s-btn
             icon="add"
             color="primary"
             @click="emit('create')"
@@ -310,7 +310,7 @@ async function executeAction() {
               value: val
             })"
           >
-            <q-input v-model="scope.value" dense autofocus />
+            <s-input v-model="scope.value" dense autofocus />
           </q-popup-edit>
 
           <span class="cursor-pointer">{{ props.value }}</span>
@@ -328,7 +328,7 @@ async function executeAction() {
       <q-td :props="props">
 
         <!-- BOTÃO 3 PONTOS -->
-        <q-btn
+        <s-btn
           dense
           flat
           round
@@ -407,7 +407,7 @@ async function executeAction() {
             </q-list>
 
           </q-menu>
-        </q-btn>
+        </s-btn>
 
       </q-td>
     </template>

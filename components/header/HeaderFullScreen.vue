@@ -1,11 +1,11 @@
 <template>
-  <q-btn flat dense round
+  <s-btn flat dense round
     :icon="fullscreen ? 'fullscreen_exit' : 'fullscreen'"
     @click="toggleFullScreen" >
     <q-tooltip :class="$q.dark.isActive ? 'bg-transparent' : 'bg-primary'">
       {{ fullscreen ? tdc('Clique para desactivar da tela cheia'): tdc('Clique para activar da tela cheia') }}
     </q-tooltip>
-  </q-btn>
+  </s-btn>
 </template>
 
 <script>

@@ -130,7 +130,7 @@ async function save() {
   <q-dialog v-model="localModel" persistent>
 
     
-    <q-card style="min-width: 760px; max-width: 92vw;">
+    <s-card style="min-width: 760px; max-width: 92vw;">
       <!-- HEADER -->
 
       <!-- HEADER -->
@@ -138,19 +138,19 @@ async function save() {
          <div class="text-h6">
           {{ form?.id ? ('Editar') : tdc('Novo') }}
         </div>
-        <q-btn dense flat icon="close" @click="close" >
+        <s-btn dense flat icon="close" @click="close" >
           <q-tooltip>{{('Fechar')}}</q-tooltip>
-        </q-btn>
+        </s-btn>
       </q-bar>
 
       <q-separator />
 
       <!-- BODY -->
-      <q-card-section v-if="!schema.length">
+      <s-card-section v-if="!schema.length">
         <q-spinner />
-      </q-card-section>
+      </s-card-section>
 
-      <q-card-section v-else>
+      <s-card-section v-else>
           <!-- form normal -->
 
 
@@ -217,16 +217,16 @@ async function save() {
 
         </q-tab-panels>
 
-      </q-card-section>
+      </s-card-section>
 
       <q-separator />
 
       <!-- ACTIONS -->
-      <q-card-actions align="right">
-        <q-btn flat label="Cancelar" @click="close" />
-        <q-btn color="primary" :loading="saving" label="Salvar" @click="save" />
-      </q-card-actions>
+      <s-card-actions align="right">
+        <s-btn flat label="Cancelar" @click="close" />
+        <s-btn color="primary" :loading="saving" label="Salvar" @click="save" />
+      </s-card-actions>
 
-    </q-card>
+    </s-card>
   </q-dialog>
 </template>

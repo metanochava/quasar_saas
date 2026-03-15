@@ -1,5 +1,5 @@
 <template>
-  <q-btn flat round dense @click="verNotificacoes()" 
+  <s-btn flat round dense @click="verNotificacoes()" 
    :class="$q.dark.isActive ? 'bg-dark text-white' : 'bg-primary text-white'"
   >
     <q-icon name="notifications" />
@@ -9,7 +9,7 @@
     <q-tooltip :class="$q.dark.isActive ? 'bg-dark text-white' : 'bg-primary text-white'">
       {{tdc('Ver notificações')}}
     </q-tooltip>
-  </q-btn>
+  </s-btn>
 </template>
 
 <script >

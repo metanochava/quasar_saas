@@ -2,41 +2,41 @@
 <template>
   <div>
     <q-dialog v-model="pergunta" persistent class="row">
-        <q-card style="width: 400px;" flat>
+        <s-card style="width: 400px;" flat>
 
-          <q-card-section class="row ">
+          <s-card-section class="row ">
             <label class="text-h6 text-grey-9 text-center">
               {{tdc('De qual deseja sair')}}
             </label>
-          </q-card-section>
+          </s-card-section>
           <q-separator />
 
-          <q-card-actions class="row" >
-            <q-btn flat   class="col-12" color="primary" type="submit" @click="logout(User?.Entidade?.id)" > {{tdc(User?.Entidade?.nome)}}</q-btn>
-          </q-card-actions>
+          <s-card-actions class="row" >
+            <s-btn flat   class="col-12" color="primary" type="submit" @click="logout(User?.Entidade?.id)" > {{tdc(User?.Entidade?.nome)}}</s-btn>
+          </s-card-actions>
 
-          <q-card-actions class="row" >
-            <q-btn flat   class="col-12" color="primary" type="submit" @click="logout('x')" > {{tdc(User?.TipoEntidade?.nome)}}</q-btn>
-          </q-card-actions>
+          <s-card-actions class="row" >
+            <s-btn flat   class="col-12" color="primary" type="submit" @click="logout('x')" > {{tdc(User?.TipoEntidade?.nome)}}</s-btn>
+          </s-card-actions>
           <q-separator/>
-          <q-card-actions class="row" >
-            <q-btn  class="col-12" flat v-close-popup>{{tdc('Cancelar')}}</q-btn>
-          </q-card-actions>
-        </q-card>
+          <s-card-actions class="row" >
+            <s-btn  class="col-12" flat v-close-popup>{{tdc('Cancelar')}}</s-btn>
+          </s-card-actions>
+        </s-card>
 
     </q-dialog>
 
-    <q-btn round flat>
+    <s-btn round flat>
       <q-avatar class="" size="45px" :class="$q.dark.isActive ? 'bg-white' : 'bg-white'" >
         <img  v-if="UserPessoa" :src="User?.perfil?.url" >
         <img  v-else src="https://awsacademy.instructure.com/images/messages/avatar-50.png" >
-        <q-card-actions align="center" v-if="User" flat>
+        <s-card-actions align="center" v-if="User" flat>
           <div class="text-h6 text-gry-8 row text-center">{{User?.username}}</div>
-        </q-card-actions>
+        </s-card-actions>
         <q-separator />
         <q-menu flat  square  fit :offset="[130, 5]"  >
-          <q-card class="my-card"  style="width:270px;"  flat bordered square  >
-            <q-card-actions class="text-center row" v-if="User">
+          <s-card class="my-card"  style="width:270px;"  flat bordered square  >
+            <s-card-actions class="text-center row" v-if="User">
               <div class=" col-12">
                 <q-avatar class="" size="120px"  >
                   <img  v-if="User" :src="User?.perfil?.url" >
@@ -46,7 +46,7 @@
               <div class=" text-center col-12 text-grey-9 text-h6">
                 {{User?.username}}
               </div>
-            </q-card-actions>
+            </s-card-actions>
             <q-separator  v-if="User" />
             <q-expansion-item
                 v-if="User"
@@ -87,7 +87,7 @@
                 </q-item>
               </q-expansion-item>
 
-            <q-btn dense  flat  size="" @click="sucursalClosed = false" color="grey" :label="tdc(perfilSplint(User?.Grupo?.name)) " style="width: 100%; border-color: transparent;">
+            <s-btn dense  flat  size="" @click="sucursalClosed = false" color="grey" :label="tdc(perfilSplint(User?.Grupo?.name)) " style="width: 100%; border-color: transparent;">
               <q-menu fit>
                 <q-list dense   class="rounded-borders" style="min-width: 100px" >
                   <q-item clickable v-close-popup v-if="'domain'=='domain'" @click="selectGroup({id:'1', name:'Hóspede'})"  >
@@ -108,22 +108,22 @@
                   </q-item>
                 </q-list>
               </q-menu>
-            </q-btn>
+            </s-btn>
 
-            <q-btn v-show="User" style="width: 100%; border-color: transparent;"  icon="settings" dense size=""  :to="{name:'userDetails', params:{'user_id': User?.id}}" flat color="secondary" class="">{{tdc('Definições')}}</q-btn>
-            <q-btn v-show="User" style="width: 100%; border-color: transparent;"  icon="logout" dense size="" flat color="red" @click="modal_pergunta">{{tdc('Sair')}}</q-btn>
+            <s-btn v-show="User" style="width: 100%; border-color: transparent;"  icon="settings" dense size=""  :to="{name:'userDetails', params:{'user_id': User?.id}}" flat color="secondary" class="">{{tdc('Definições')}}</s-btn>
+            <s-btn v-show="User" style="width: 100%; border-color: transparent;"  icon="logout" dense size="" flat color="red" @click="modal_pergunta">{{tdc('Sair')}}</s-btn>
 
-            <q-btn v-show="!User"  style="width: 100%; border-color: transparent;" dense size="" :to="{name:'registarUser'}" flat color="primary" class="" :label="tdc('Registar')" />
-            <q-btn v-show="!User"  style="width: 100%; border-color: transparent;" dense size="" :to="{name:'login'}" flat color="secondary" class="" >{{tdc('login')}}</q-btn>
+            <s-btn v-show="!User"  style="width: 100%; border-color: transparent;" dense size="" :to="{name:'registarUser'}" flat color="primary" class="" :label="tdc('Registar')" />
+            <s-btn v-show="!User"  style="width: 100%; border-color: transparent;" dense size="" :to="{name:'login'}" flat color="secondary" class="" >{{tdc('login')}}</s-btn>
 
             <q-separator color="primary" dense size="xs" />
-          </q-card>
+          </s-card>
 
         </q-menu>
       </q-avatar>
       <q-tooltip :class="$q.dark.isActive ? 'bg-transparent' : 'bg-primary'" v-if="User">{{User?.username }} </q-tooltip>
       <q-tooltip :class="$q.dark.isActive ? 'bg-transparent' : 'bg-primary'" v-else>{{tdc('Hóspede')}}</q-tooltip>
-    </q-btn>
+    </s-btn>
   </div>
 </template>
 

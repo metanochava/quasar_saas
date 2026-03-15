@@ -1,5 +1,5 @@
 <template>
-  <q-btn dense flat round icon="language">
+  <s-btn dense flat round icon="language">
     <q-menu>
       <q-list dense>
         <q-item
@@ -16,7 +16,7 @@
     <q-tooltip :class="$q.dark.isActive ? 'bg-dark text-white' : 'bg-primary text-white'">
       {{Language.current?.nome }}
     </q-tooltip>
-  </q-btn>
+  </s-btn>
 </template>
 
 <script>

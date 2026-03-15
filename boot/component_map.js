@@ -19,7 +19,7 @@ import {
 
 export const componentMap = {
   // 🔤 TEXT / INPUT
-  'q-input': QInput,
+  's-input': QInput,
   'q-field': QField,
 
   // 🔽 SELECT / RELATIONS

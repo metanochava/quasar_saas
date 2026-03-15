@@ -1,5 +1,5 @@
 <template>
-  <q-card class="theme-studio-engine">
+  <s-card class="theme-studio-engine">
     <q-bar class="bg-primary text-white">
       <div class="text-h6">🎨 Theme Studio</div>
 
@@ -11,7 +11,7 @@
         @update:model-value="applyDarkMode"
       />
 
-      <q-btn-toggle
+      <s-btn-toggle
         v-model="previewMode"
         dense
         toggle-color="white"
@@ -22,11 +22,11 @@
         ]"
       />
 
-      <q-btn flat dense icon="save" label="Salvar" @click="saveTheme" />
-      <q-btn flat dense icon="close" v-close-popup />
+      <s-btn flat dense icon="save" label="Salvar" @click="saveTheme" />
+      <s-btn flat dense icon="close" v-close-popup />
     </q-bar>
 
-    <q-card-section class="q-pa-md">
+    <s-card-section class="q-pa-md">
       <div class="row q-col-gutter-lg">
         <!-- LEFT -->
         <div class="col-12 col-md-4">
@@ -42,7 +42,7 @@
           <q-tab-panels v-model="tab" animated>
             <!-- CORES -->
             <q-tab-panel name="cores">
-              <q-input
+              <s-input
                 v-model="search"
                 dense
                 outlined
@@ -53,7 +53,7 @@
                 <template #prepend>
                   <q-icon name="search" />
                 </template>
-              </q-input>
+              </s-input>
 
               <div class="row q-col-gutter-sm">
                 <div
@@ -61,13 +61,13 @@
                   :key="key"
                   class="col-6"
                 >
-                  <q-card
+                  <s-card
                     flat
                     bordered
                     class="cursor-pointer"
                     @click="openColor(key)"
                   >
-                    <q-card-section class="q-pa-sm">
+                    <s-card-section class="q-pa-sm">
                       <div class="text-caption">{{ key }}</div>
 
                       <div
@@ -82,20 +82,20 @@
                       <div class="text-caption q-mt-xs">
                         {{ value }}
                       </div>
-                    </q-card-section>
-                  </q-card>
+                    </s-card-section>
+                  </s-card>
                 </div>
               </div>
             </q-tab-panel>
 
             <!-- FONT -->
             <q-tab-panel name="font">
-              <q-card bordered>
-                <q-card-section class="text-subtitle1">
+              <s-card bordered>
+                <s-card-section class="text-subtitle1">
                   Tipografia
-                </q-card-section>
+                </s-card-section>
 
-                <q-card-section class="q-gutter-md">
+                <s-card-section class="q-gutter-md">
                   <q-select
                     v-model="User.Typography.font_family"
                     :options="fontOptions"
@@ -104,77 +104,77 @@
                     outlined
                   />
 
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_size_base"
                     label="Font Base"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_size_h1"
                     label="H1"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_size_h2"
                     label="H2"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_size_h3"
                     label="H3"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_size_h4"
                     label="H4"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_size_h5"
                     label="H5"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_size_h6"
                     label="H6"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_size_body"
                     label="Body"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_weight_normal"
                     label="Peso normal"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.font_weight_bold"
                     label="Peso bold"
                     type="number"
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.line_height"
                     label="Line height"
                     type="number"
@@ -182,7 +182,7 @@
                     dense
                     outlined
                   />
-                  <q-input
+                  <s-input
                     v-model.number="User.Typography.letter_spacing"
                     label="Letter spacing"
                     type="number"
@@ -194,18 +194,18 @@
                     v-model="User.Typography.uppercase_headings"
                     label="Uppercase headings"
                   />
-                </q-card-section>
-              </q-card>
+                </s-card-section>
+              </s-card>
             </q-tab-panel>
 
             <!-- LAYOUT -->
             <q-tab-panel name="layout">
-              <q-card bordered class="q-mb-md">
-                <q-card-section class="text-subtitle1">
+              <s-card bordered class="q-mb-md">
+                <s-card-section class="text-subtitle1">
                   Botões
-                </q-card-section>
+                </s-card-section>
 
-                <q-card-section class="q-gutter-md">
+                <s-card-section class="q-gutter-md">
                   <q-select
                     v-model="User.LayoutSettings.button_style"
                     :options="buttonStyleOptions"
@@ -222,15 +222,15 @@
                     v-model="User.LayoutSettings.button_round"
                     label="Round"
                   />
-                </q-card-section>
-              </q-card>
+                </s-card-section>
+              </s-card>
 
-              <q-card bordered class="q-mb-md">
-                <q-card-section class="text-subtitle1">
+              <s-card bordered class="q-mb-md">
+                <s-card-section class="text-subtitle1">
                   Inputs
-                </q-card-section>
+                </s-card-section>
 
-                <q-card-section class="q-gutter-md">
+                <s-card-section class="q-gutter-md">
                   <q-select
                     v-model="User.LayoutSettings.input_style"
                     :options="inputStyleOptions"
@@ -243,15 +243,15 @@
                     v-model="User.LayoutSettings.input_dense"
                     label="Dense"
                   />
-                </q-card-section>
-              </q-card>
+                </s-card-section>
+              </s-card>
 
-              <q-card bordered class="q-mb-md">
-                <q-card-section class="text-subtitle1">
+              <s-card bordered class="q-mb-md">
+                <s-card-section class="text-subtitle1">
                   Cards
-                </q-card-section>
+                </s-card-section>
 
-                <q-card-section class="q-gutter-md">
+                <s-card-section class="q-gutter-md">
                   <q-toggle
                     v-model="User.LayoutSettings.card_flat"
                     label="Flat"
@@ -268,21 +268,21 @@
                     v-model="User.LayoutSettings.square"
                     label="Square global"
                   />
-                </q-card-section>
-              </q-card>
+                </s-card-section>
+              </s-card>
 
-              <q-card bordered>
-                <q-card-section class="text-subtitle1">
+              <s-card bordered>
+                <s-card-section class="text-subtitle1">
                   Sidebar / Toolbar
-                </q-card-section>
+                </s-card-section>
 
-                <q-card-section class="q-gutter-md">
+                <s-card-section class="q-gutter-md">
                   <q-toggle
                     v-model="User.LayoutSettings.sidebar_mini"
                     label="Mini sidebar"
                   />
 
-                  <q-input
+                  <s-input
                     v-model.number="User.LayoutSettings.sidebar_width"
                     label="Sidebar width"
                     type="number"
@@ -298,18 +298,18 @@
                     v-model="User.LayoutSettings.toolbar_elevated"
                     label="Toolbar elevated"
                   />
-                </q-card-section>
-              </q-card>
+                </s-card-section>
+              </s-card>
             </q-tab-panel>
 
             <!-- ANIMATION -->
             <q-tab-panel name="animation">
-              <q-card bordered>
-                <q-card-section class="text-subtitle1">
+              <s-card bordered>
+                <s-card-section class="text-subtitle1">
                   Animation
-                </q-card-section>
+                </s-card-section>
 
-                <q-card-section class="q-gutter-md">
+                <s-card-section class="q-gutter-md">
                   <q-toggle
                     v-model="User.AnimationSettings.enable_animations"
                     label="Enable animations"
@@ -367,8 +367,8 @@
                     dense
                     outlined
                   />
-                </q-card-section>
-              </q-card>
+                </s-card-section>
+              </s-card>
             </q-tab-panel>
           </q-tab-panels>
         </div>
@@ -442,11 +442,11 @@
                   <q-page class="q-pa-md" :key="transitionKey">
                     <!-- PREVIEW CORES -->
                     <SCard class="q-mb-md">
-                      <q-card-section class="bg-secondary text-white">
+                      <s-card-section class="bg-secondary text-white">
                         Cores do tema
-                      </q-card-section>
+                      </s-card-section>
 
-                      <q-card-section>
+                      <s-card-section>
                         <div class="row q-col-gutter-md">
                           <div class="col-6 col-sm-3">
                             <div class="preview-color-box bg-primary text-white">
@@ -469,12 +469,12 @@
                             </div>
                           </div>
                         </div>
-                      </q-card-section>
+                      </s-card-section>
                     </SCard>
 
                     <!-- PREVIEW TYPOGRAPHY -->
                     <SCard class="q-mb-md">
-                      <q-card-section>
+                      <s-card-section>
                         <div :style="headingStyle">
                           Título H1 Preview
                         </div>
@@ -488,16 +488,16 @@
                           permite ver font family, font size, line height,
                           weight e spacing aplicados em tempo real.
                         </div>
-                      </q-card-section>
+                      </s-card-section>
                     </SCard>
 
                     <!-- PREVIEW LAYOUT -->
                     <SCard class="q-mb-md">
-                      <q-card-section class="text-subtitle1">
+                      <s-card-section class="text-subtitle1">
                         Formulário + Botões
-                      </q-card-section>
+                      </s-card-section>
 
-                      <q-card-section>
+                      <s-card-section>
                         <div class="row q-col-gutter-md">
                           <div class="col-12 col-md-6">
                             <SInput
@@ -520,38 +520,38 @@
                           <SBtn color="accent" label="Accent" />
                           <SBtn color="positive" icon="check" label="Guardar" />
                         </div>
-                      </q-card-section>
+                      </s-card-section>
                     </SCard>
 
                     <!-- PREVIEW ANIMATION -->
                     <SCard class="q-mb-md">
-                      <q-card-section class="text-subtitle1">
+                      <s-card-section class="text-subtitle1">
                         Animações / Interações
-                      </q-card-section>
+                      </s-card-section>
 
-                      <q-card-section>
+                      <s-card-section>
                         <div class="row q-col-gutter-md">
                           <div class="col-12 col-md-4">
                             <SCard class="preview-mini-card">
-                              <q-card-section>
+                              <s-card-section>
                                 Card 1
-                              </q-card-section>
+                              </s-card-section>
                             </SCard>
                           </div>
 
                           <div class="col-12 col-md-4">
                             <SCard class="preview-mini-card">
-                              <q-card-section>
+                              <s-card-section>
                                 Card 2
-                              </q-card-section>
+                              </s-card-section>
                             </SCard>
                           </div>
 
                           <div class="col-12 col-md-4">
                             <SCard class="preview-mini-card">
-                              <q-card-section>
+                              <s-card-section>
                                 Card 3
-                              </q-card-section>
+                              </s-card-section>
                             </SCard>
                           </div>
                         </div>
@@ -560,7 +560,7 @@
                           Hover, ripple, transições e animações de card são
                           refletidos aqui conforme a tab Animation.
                         </div>
-                      </q-card-section>
+                      </s-card-section>
                     </SCard>
                   </q-page>
                 </transition>
@@ -569,32 +569,32 @@
           </div>
         </div>
       </div>
-    </q-card-section>
-  </q-card>
+    </s-card-section>
+  </s-card>
 
   <q-dialog
     v-model="colorDialog"
     :transition-show="dialogTransition"
     :transition-hide="dialogTransition"
   >
-    <q-card style="min-width: 350px">
-      <q-card-section>
+    <s-card style="min-width: 350px">
+      <s-card-section>
         Alterar cor: {{ selectedKey }}
-      </q-card-section>
+      </s-card-section>
 
-      <q-card-section>
+      <s-card-section>
         <q-color
           v-model="tempColor"
           format-model="hex"
           @update:model-value="previewColor"
         />
-      </q-card-section>
+      </s-card-section>
 
-      <q-card-actions align="right">
-        <q-btn flat label="Cancelar" v-close-popup />
-        <q-btn color="primary" label="Aplicar" @click="applyColor" />
-      </q-card-actions>
-    </q-card>
+      <s-card-actions align="right">
+        <s-btn flat label="Cancelar" v-close-popup />
+        <s-btn color="primary" label="Aplicar" @click="applyColor" />
+      </s-card-actions>
+    </s-card>
   </q-dialog>
 </template>
 

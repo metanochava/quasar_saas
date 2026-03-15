@@ -1,35 +1,35 @@
 
 <template>
   <q-page class=" row items-center justify-evenly" >
-      <q-card square  flat class="text-center" style="max-width: 300px">
+      <s-card square  flat class="text-center" style="max-width: 300px">
         <AllLogo />
-        <q-card-section class="text-left justify-evenly">
-          <q-card  v-if="User.loginMsg == 'error'" class="my-card bg-red text-white">
-            <q-card-section>
+        <s-card-section class="text-left justify-evenly">
+          <s-card  v-if="User.loginMsg == 'error'" class="my-card bg-red text-white">
+            <s-card-section>
               <div class="text-subtitle2">{{ tdc('Incorrect username or password entered') }} <br> {{ tdc('please try again') }}</div>
-            </q-card-section>
+            </s-card-section>
 
-          </q-card>
-          <q-card  v-if="User.loginMsg == 'good'" class="my-card bg-green text-white">
-            <q-card-section>
+          </s-card>
+          <s-card  v-if="User.loginMsg == 'good'" class="my-card bg-green text-white">
+            <s-card-section>
               <div class="text-subtitle2"> {{ tdc('Login successfuly') }} <br>
                 {{ tdc('Redirect to home page') }}...</div>
-            </q-card-section>
+            </s-card-section>
 
-          </q-card>
+          </s-card>
           <br>
           <q-form  @submit.prevent="login">
 
-            <q-input outlined dense @keyup.enter="login()" clearable v-model="identifier" :label="tdc('Usuario ou Celular ou Email')">
+            <s-input outlined dense @keyup.enter="login()" clearable v-model="identifier" :label="tdc('Usuario ou Celular ou Email')">
               <template v-slot:prepend>
                 <q-icon name="email" />
               </template>
               <template v-slot:append>
                 <q-icon name="phone" />
               </template>
-            </q-input>
+            </s-input>
             <br/>
-            <q-input outlined dense @keyup.enter="login()"  :readonly="readonly" clearable v-model="password" :type="isPwd ? 'password': 'text'" :label="tdc('Senha')">
+            <s-input outlined dense @keyup.enter="login()"  :readonly="readonly" clearable v-model="password" :type="isPwd ? 'password': 'text'" :label="tdc('Senha')">
 
               <template v-slot:prepend>
                 <q-icon
@@ -45,27 +45,27 @@
                   @click="isPwd = !isPwd"
                 />
               </template>
-            </q-input>
+            </s-input>
 
             <br/>
             <q-checkbox  class="text-grey-7" dense   clearable v-model="User.manterLogado"  @click="check" :label="tdc('Manter-me logado')">
             </q-checkbox>
           </q-form>
-        </q-card-section>
+        </s-card-section>
 
-        <q-card-actions class="q-px-md" >
-          <q-btn  :readonly="User.loading" :disable="User.loading"
+        <s-card-actions class="q-px-md" >
+          <s-btn  :readonly="User.loading" :disable="User.loading"
                   :loading="User.loading" size="md" @click="login()"  
                   color="positive" dense class="full-width " 
                   :label="tdc('Entrar')"
           />
           <p></p>
-        </q-card-actions>
-        <q-card-actions align="around" >
-          <q-btn flat :to="{name:'esquecerpassword'}"  size="md"  color="purple" :label="tdc('Esqueci minha') + ' ' + tdc('Senha')" />
-          <q-btn flat :to="{name:'registarUser'}"  size="md" color="primary" class="" :label="tdc('Registar')" />
-        </q-card-actions>
-      </q-card>
+        </s-card-actions>
+        <s-card-actions align="around" >
+          <s-btn flat :to="{name:'esquecerpassword'}"  size="md"  color="purple" :label="tdc('Esqueci minha') + ' ' + tdc('Senha')" />
+          <s-btn flat :to="{name:'registarUser'}"  size="md" color="primary" class="" :label="tdc('Registar')" />
+        </s-card-actions>
+      </s-card>
   </q-page>
 </template>
 <style scoped>

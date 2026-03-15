@@ -1,6 +1,6 @@
 <template>
 
-  <q-card
+  <s-card
     v-bind="attrs"
 
     :flat="attrs.flat ?? layout.card_flat"
@@ -21,7 +21,7 @@
 
   >
     <slot/>
-  </q-card>
+  </s-card>
 
 </template>
 

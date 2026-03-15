@@ -8,20 +8,20 @@
     <!-- HEADER -->
     
     <div class="row">
-      <q-card flat bordered class="col">
+      <s-card flat bordered class="col">
 
-        <q-card-section class="text-subtitle1" dense>
+        <s-card-section class="text-subtitle1" dense>
           <div class="row items-center  sticky-header">
             <div class="text-h5"> ⚡ Scaffold Command Wizard</div>
             <q-space/>
-            <q-btn flat icon="visibility" label="Preview" @click="generatePreview" />
-            <q-btn color="primary" icon="save" label="Create / Update" @click="submit" />
+            <s-btn flat icon="visibility" label="Preview" @click="generatePreview" />
+            <s-btn color="primary" icon="save" label="Create / Update" @click="submit" />
           </div>
-        </q-card-section>
+        </s-card-section>
 
         <q-separator/>
 
-        <q-card-section>
+        <s-card-section>
 
           <div class="row  q-col-gutter-md ">
             <div class="col">
@@ -40,7 +40,7 @@
             </div>
 
             <div class="col">
-              <q-input dense
+              <s-input dense
                 v-model="form.modelo"
                 label="Model Name"
                 outlined
@@ -98,24 +98,24 @@
 
 
             <div class="col" v-if="models.includes(form.modelo)">
-              <q-btn class="full-width" color="primary" icon="refresh"  label="Reload Model" @click="reloadModelShema" />
+              <s-btn class="full-width" color="primary" icon="refresh"  label="Reload Model" @click="reloadModelShema" />
             </div>
           </div>
-        </q-card-section>
-      </q-card>
+        </s-card-section>
+      </s-card>
     </div>
     <div class="row q-col-gutter-md">
 
       <!-- ================= LEFT (COMMAND STYLE FORM) ================= -->
       <div class="col-4">
         <!-- ================= FIELDS ================= -->
-        <q-card flat bordered class=" q-mt-md" dense>
+        <s-card flat bordered class=" q-mt-md" dense>
 
-          <q-card-section class="row items-center" dense>
+          <s-card-section class="row items-center" dense>
             <div class="text-subtitle1" dense>📋 Fields</div>
             <q-space/>
-            <q-btn dense icon="add" @click="addField" />
-          </q-card-section>
+            <s-btn dense icon="add" @click="addField" />
+          </s-card-section>
 
           <q-separator/>
 
@@ -136,7 +136,7 @@
 
                 <div class="row q-gutter-sm q-col-gutter-sm">
                   <div class="col">
-                    <q-input dense v-model="f.name" label="name" outlined />
+                    <s-input dense v-model="f.name" label="name" outlined />
                   </div>
                   <div class="col-7">
                     <q-select
@@ -162,11 +162,11 @@
 
                 <div class="row q-gutter-sm q-col-gutter-sm">
                   <div class="col">
-                    <q-input dense v-model="f.verbose_name" label="Verbose name" outlined />
+                    <s-input dense v-model="f.verbose_name" label="Verbose name" outlined />
                   </div>
 
                   <div class="col-7 q-pr-sm">
-                    <q-input dense v-model="f.help_text" label="Help text" outlined />
+                    <s-input dense v-model="f.help_text" label="Help text" outlined />
                   </div>
                 </div>
 
@@ -178,26 +178,26 @@
                     <q-toggle v-model="f.unique" label="unique" />
                   </div>
                   <div class="col" v-if="!(['ForeignKey','OneToOneField','ManyToManyField'].includes(f.type))">
-                    <q-input dense v-model="f.default" label="default" outlined />
+                    <s-input dense v-model="f.default" label="default" outlined />
                   </div>
                 </div>
 
                 <div  v-if="isChar(f) " class="row q-gutter-sm q-col-gutter-sm q-mt-md">
                   <div class="col">
-                    <q-input dense v-model="f.min_length" type="number" label="min length" outlined/>
+                    <s-input dense v-model="f.min_length" type="number" label="min length" outlined/>
                   </div>
                   <div class="col">
-                    <q-input  dense v-model="f.max_length" type="number" label="max length" outlined/>
+                    <s-input  dense v-model="f.max_length" type="number" label="max length" outlined/>
                   </div>
                 </div>
 
 
                 <div  v-if="isDecimalOrMoney(f) " class="row q-gutter-sm q-col-gutter-sm q-mt-md">
                   <div class="col">
-                    <q-input dense v-model="f.max_digits" type="number" label="max digits" outlined/>
+                    <s-input dense v-model="f.max_digits" type="number" label="max digits" outlined/>
                   </div>
                   <div class="col">
-                    <q-input  dense v-model="f.decimal_places" type="number" label="decimal places" outlined/>
+                    <s-input  dense v-model="f.decimal_places" type="number" label="decimal places" outlined/>
                   </div>
                   <div class="col">
                     <q-select
@@ -222,19 +222,19 @@
 
                 <div  v-if="isInteger(f) " class="row q-gutter-sm q-col-gutter-sm q-mt-md">
                   <div class="col">
-                    <q-input dense v-model="f.min" type="number" label="min" outlined/>
+                    <s-input dense v-model="f.min" type="number" label="min" outlined/>
                   </div>
                   <div class="col">
-                    <q-input  dense v-model="f.max" type="number" label="max" outlined/>
+                    <s-input  dense v-model="f.max" type="number" label="max" outlined/>
                   </div>
                 </div>
 
                 <div  v-if="isFile(f) " class="row q-gutter-sm q-col-gutter-sm q-mt-md">
                   <div class="col">
-                    <q-input dense v-model="f.width_field" type="number" label="width_field" outlined/>
+                    <s-input dense v-model="f.width_field" type="number" label="width_field" outlined/>
                   </div>
                   <div class="col">
-                    <q-input  dense v-model="f.height_field" type="number" label="height_field" outlined/>
+                    <s-input  dense v-model="f.height_field" type="number" label="height_field" outlined/>
                   </div>
                 </div>
 
@@ -248,12 +248,12 @@
                 </div>
                 
               
-                <q-card flat bordered class=" q-mt-md"  v-if="!(['ForeignKey','OneToOneField','ManyToManyField','FileField', 'ImageField', 'TextField'].includes(f.type))" >
-                  <q-card-section>
+                <s-card flat bordered class=" q-mt-md"  v-if="!(['ForeignKey','OneToOneField','ManyToManyField','FileField', 'ImageField', 'TextField'].includes(f.type))" >
+                  <s-card-section>
                     ♋️ Choices
                     <div class="row q-col-gutter-sm q-pa-0">
                       <div class="col">
-                        <q-input
+                        <s-input
                           v-model="newChoice.key"
                           label="Key"
                           outlined
@@ -263,7 +263,7 @@
                       </div>
 
                       <div class="col">
-                        <q-input
+                        <s-input
                           v-model="newChoice.label"
                           label="Label"
                           outlined
@@ -292,7 +292,7 @@
                         </q-item-section>
 
                         <q-item-section side>
-                          <q-btn
+                          <s-btn
                             icon="delete"
                             color="negative"
                             flat
@@ -303,8 +303,8 @@
                         </q-item-section>
                       </q-item>
                     </q-list>
-                  </q-card-section>
-                </q-card>
+                  </s-card-section>
+                </s-card>
                 
                 <!-- RELATION -->
                 <div v-if="isRelation(f)">
@@ -347,18 +347,18 @@
                   </div>
                 </div>
                 
-                <q-btn flat color="negative" label="remove" @click="removeField(i)" dense/>
+                <s-btn flat color="negative" label="remove" @click="removeField(i)" dense/>
 
               </div>
 
             </q-expansion-item>
 
           </q-list>
-        </q-card>
+        </s-card>
 
         <!-- ================= actions ================= -->
-        <q-card flat bordered class="q-mt-md" v-if="accaoTeste">
-          <q-card-section class="row q-col-gutter-sm q-gutter-s">
+        <s-card flat bordered class="q-mt-md" v-if="accaoTeste">
+          <s-card-section class="row q-col-gutter-sm q-gutter-s">
             <div class="text-h6 text-grey col-12">🔐 Extra actions of {{ form.modulo }}.{{form.modelo}}</div>
             <div class="col-12">
               <q-select
@@ -409,10 +409,10 @@
               outlined
               dense 
             />
-            <q-input class="col" dense v-model="accao.Permission" @keyup.enter="addPerm()" outlined label="Permission" placeholder="Permission"/>
-            <q-input class="col-12" dense v-model="accao.Url" @keyup.enter="addPerm()" placeholder="'(?P<model>[^/.]+)/schema'" outlined/>
+            <s-input class="col" dense v-model="accao.Permission" @keyup.enter="addPerm()" outlined label="Permission" placeholder="Permission"/>
+            <s-input class="col-12" dense v-model="accao.Url" @keyup.enter="addPerm()" placeholder="'(?P<model>[^/.]+)/schema'" outlined/>
 
-            <q-btn v-if="form.modelo" class=" col-12" flat icon="arrow_upward" color="success" :label="'Permissions Updade' + ' '+ form.modelo" @click="permissionUpdade" />
+            <s-btn v-if="form.modelo" class=" col-12" flat icon="arrow_upward" color="success" :label="'Permissions Updade' + ' '+ form.modelo" @click="permissionUpdade" />
 
             <q-chip
               @dblclick="accaoMetodo(p)"
@@ -435,9 +435,9 @@
               </q-tooltip>
             </q-chip>
             
-          </q-card-section>
+          </s-card-section>
           
-        </q-card>
+        </s-card>
 
       </div>
 
@@ -445,7 +445,7 @@
       
       <div class="col-8">
         <div class="row" >
-          <q-btn v-if="form.modulo" class=" col" flat icon="refresh" color="accent" :label="'Migrate' + ' '+ form.modulo" @click="generateMigrate" />
+          <s-btn v-if="form.modulo" class=" col" flat icon="refresh" color="accent" :label="'Migrate' + ' '+ form.modulo" @click="generateMigrate" />
         </div>
         <div class="col" v-if="out">
           <br>

@@ -1,17 +1,17 @@
 
 <template>
 
-    <q-card>
+    <s-card>
         <q-bar :class="$q.dark.isActive ? 'bg-primary text-white' : 'bg-primary text-white'">
         &nbsp; {{tdc('')}} {{ modulo }}  | {{ modelo }} 
         <q-space />
-        <q-btn dense flat icon="close" v-close-popup>
+        <s-btn dense flat icon="close" v-close-popup>
             <q-tooltip>{{tdc('Fechar')}}</q-tooltip>
-        </q-btn>
+        </s-btn>
         </q-bar>
 
-        <q-card-section >
-            <q-input outlined
+        <s-card-section >
+            <s-input outlined
                 v-model="text_text"
                 class=""
                 dense
@@ -19,18 +19,18 @@
                 type="textarea"
                 :rules="[ val => val && val.length > 0 || tdc('Este campo e obrigatório.')]"
                 />
-        </q-card-section>
+        </s-card-section>
 
-        <q-card-section >
+        <s-card-section >
         {{accao}}
-        </q-card-section>
+        </s-card-section>
         <q-separator />
 
-        <q-card-actions align="right">
-        <q-btn  v-close-popup   :color="$q.dark.isActive ? '' : 'dark'" >{{tdc('Cancelar')}}</q-btn>
-        <q-btn  :color="$q.dark.isActive ? 'primary' : 'primary'" type="submit" @click="save_text" > {{tdc('Enviar')}}</q-btn>
-        </q-card-actions>
-    </q-card>
+        <s-card-actions align="right">
+        <s-btn  v-close-popup   :color="$q.dark.isActive ? '' : 'dark'" >{{tdc('Cancelar')}}</s-btn>
+        <s-btn  :color="$q.dark.isActive ? 'primary' : 'primary'" type="submit" @click="save_text" > {{tdc('Enviar')}}</s-btn>
+        </s-card-actions>
+    </s-card>
 
 </template>
 

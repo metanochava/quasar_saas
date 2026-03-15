@@ -1,12 +1,12 @@
 
 <template>
   <q-layout >
-    <q-card  square
+    <s-card  square
         :class="$q.dark.isActive ? 'bg-dark text-white fixed-top  q-pa-sm ' : 'bg-primary text-white   q-pa-sm fixed-top'"
         flat
       >
       <div class="text-center text-h6">{{ User?.username }}</div>
-      <q-btn
+      <s-btn
         flat dense
         :label="User.Grupo?.name"
         class="full-width"
@@ -23,7 +23,7 @@
             </q-item>
           </q-list>
         </q-menu>
-      </q-btn>
+      </s-btn>
       <q-list  >
         <q-item clickable replace v-ripple  exact
           :class="$q.dark.isActive ? 'bg-dark text-white' : 'bg-primary text-white'"
@@ -33,17 +33,17 @@
           </q-item-section>
           <q-item-section class="text-h6" @click="$router.push({ name: 'home'})">{{ tdc('Casa') }}</q-item-section>
           <q-item-section side >
-            <q-btn
+            <s-btn
             round dense flat
             :icon="'settings'" :class="$q.dark.isActive ? 'text-white' : 'text-white'"
             @click="User.toggleSettings()"
           >
           <q-tooltip :class="$q.dark.isActive ? 'bg-dark text-white' : 'bg-primary text-white'">{{ tdc('Configurações') }}</q-tooltip>
-          </q-btn>
+          </s-btn>
           </q-item-section>
         </q-item>
       </q-list>
-    </q-card>
+    </s-card>
 
     <LeftMenuSegundo :class="$q.dark.isActive ? 'bg-dark text-white fixed-top' : 'bg-primary text-white  fixed-top'" style="margin-top:127px" ></LeftMenuSegundo>
 

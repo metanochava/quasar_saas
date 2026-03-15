@@ -1,5 +1,5 @@
 <template>
-  <q-btn
+  <s-btn
     v-bind="attrs"
 
     :dense="attrs.dense ?? layout.button_dense"
@@ -27,7 +27,7 @@
 
   >
     <slot/>
-  </q-btn>
+  </s-btn>
 </template>
 
 <script>

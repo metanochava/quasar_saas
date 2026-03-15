@@ -9,13 +9,13 @@
           </q-item-section>
           <q-item-section class="text-body1" @click="$router.push({ name: 'home'})" >{{ tdc('Casa') }}</q-item-section>
           <q-item-section side>
-            <q-btn
+            <s-btn
             round dense flat
             :icon="'settings'" :class="$q.dark.isActive ? 'text-white' : 'text-white'"
             @click="User.toggleSettings()"
           >
             <q-tooltip :class="$q.dark.isActive ? 'bg-dark text-white' : 'bg-primary text-white'">{{ tdc('Configurações') }}</q-tooltip>
-          </q-btn>
+          </s-btn>
           </q-item-section>
         </q-item>
       </div>

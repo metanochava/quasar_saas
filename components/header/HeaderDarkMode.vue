@@ -1,5 +1,5 @@
 <template>
-  <q-btn
+  <s-btn
     dense flat round
     :icon="$q.dark.isActive ? 'mdi-weather-night' : 'mdi-white-balance-sunny'"
     @click="toggleDark"
@@ -9,7 +9,7 @@
     >
       {{ $q.dark.isActive ? tdc('Clique para modo dia') : tdc('Clique para modo noite') }}
     </q-tooltip>
-  </q-btn>
+  </s-btn>
 </template>
 
 

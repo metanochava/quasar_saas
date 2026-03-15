@@ -90,24 +90,24 @@ function apply() {
 
 <template>
   <q-dialog v-model="localModel" persistent>
-    <q-card style="min-width: 720px; max-width: 92vw;">
-      <q-btn :label="'Aplicar ' + ( activeCount )" />
+    <s-card style="min-width: 720px; max-width: 92vw;">
+      <s-btn :label="'Aplicar ' + ( activeCount )" />
       <!-- HEADER -->
       <q-bar class="row items-center justify-between" :class="$q.dark.isActive ? 'bg-primary text-white' : 'bg-primary text-white'">
         <div class="text-h6">Filtros</div>
-        <q-btn dense flat icon="close" @click="close" >
+        <s-btn dense flat icon="close" @click="close" >
           <q-tooltip>{{('Fechar')}}</q-tooltip>
-        </q-btn>
+        </s-btn>
       </q-bar>
 
       <q-separator />
 
       <!-- BODY -->
-      <q-card-section v-if="!schema.length">
+      <s-card-section v-if="!schema.length">
         <q-spinner />
-      </q-card-section>
+      </s-card-section>
 
-      <q-card-section v-else>
+      <s-card-section v-else>
           <!-- form normal -->
 
         <q-tabs v-model="tab" dense>
@@ -149,17 +149,17 @@ function apply() {
 
         </q-tab-panels>
 
-      </q-card-section>
+      </s-card-section>
 
       <q-separator />
 
       <!-- ACTIONS -->
-      <q-card-actions align="right">
-        <q-btn flat label="Limpar" @click="clear" />
-        <q-btn flat label="Cancelar" @click="close" />
-        <q-btn color="primary" label="Aplicar" @click="apply" />
-      </q-card-actions>
+      <s-card-actions align="right">
+        <s-btn flat label="Limpar" @click="clear" />
+        <s-btn flat label="Cancelar" @click="close" />
+        <s-btn color="primary" label="Aplicar" @click="apply" />
+      </s-card-actions>
 
-    </q-card>
+    </s-card>
   </q-dialog>
 </template>

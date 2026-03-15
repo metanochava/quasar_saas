@@ -1,7 +1,7 @@
 <template>
   <div class="col-12" style="margin-top: 2px;">
     <search-menu :size="'300'" />
-    <q-card
+    <s-card
       square
       flat
       class="col-xs-12 col-md-12 col-lg-12 q-bt-md"
@@ -26,7 +26,7 @@
           <SubMenu :Dados="App.submenu" />
         <q-separator />
       </q-expansion-item>
-    </q-card>
+    </s-card>
   </div>
 </template>
 

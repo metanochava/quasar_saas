@@ -39,21 +39,21 @@ export async function buildFormFromSchema({'module':module, 'model': model}) {
     // ignora id/auto se quiser (podes comentar)
     if ([ 'created_at', 'updated_at'].includes(f.name)) continue
 
-    let component = 'q-input'
+    let component = 's-input'
     const props = {}
 
     // TYPE MAPPING
     switch (f.type) {
       case 'CharField':
       case 'TextField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'text'
         break
 
       case 'IntegerField':
       case 'DecimalField':
       case 'MoneyField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'number'
         break
 
@@ -63,12 +63,12 @@ export async function buildFormFromSchema({'module':module, 'model': model}) {
 
       case 'DateField':
       case 'DateTimeField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'date'
         break
 
       case 'JSONField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'textarea'
         props.autogrow = true
         break
@@ -93,7 +93,7 @@ export async function buildFormFromSchema({'module':module, 'model': model}) {
         break
 
       default:
-        component = 'q-input'
+        component = 's-input'
     }
 
     // CHOICES
@@ -296,7 +296,7 @@ export async function buildFormFromSchemaPRO({
     if (!f?.name) continue
     if (ignoreFields.includes(f.name)) continue
 
-    let component = 'q-input'
+    let component = 's-input'
     const props = {
       filled: true,
       dense: true,
@@ -315,7 +315,7 @@ export async function buildFormFromSchemaPRO({
       case 'EmailField':
       case 'URLField':
       case 'UUIDField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'text'
         if (f.type === 'EmailField') props.type = 'email'
         if (f.type === 'URLField') props.type = 'url'
@@ -335,7 +335,7 @@ export async function buildFormFromSchemaPRO({
       case 'FloatField':
       case 'DecimalField':
       case 'MoneyField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'number'
         props.step = (f.type === 'DecimalField' || f.type === 'MoneyField' || f.type === 'FloatField') ? 'any' : '1'
         if (f.min != null) props.min = f.min
@@ -345,7 +345,7 @@ export async function buildFormFromSchemaPRO({
         if (f.type === 'MoneyField') {
           props.prefix = props.prefix || ''
           props.inputmode = 'decimal'
-          // se tu usas q-input-mask / mask plugin:
+          // se tu usas s-input-mask / mask plugin:
           // props.mask = moneyMask
         }
         break
@@ -358,21 +358,21 @@ export async function buildFormFromSchemaPRO({
 
       // DATE/TIME
       case 'DateField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'date'
         break
       case 'DateTimeField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'datetime-local'
         break
       case 'TimeField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'time'
         break
 
       // JSON
       case 'JSONField':
-        component = 'q-input'
+        component = 's-input'
         props.type = 'textarea'
         props.autogrow = true
         props.placeholder = '{ "key": "value" }'
@@ -421,7 +421,7 @@ export async function buildFormFromSchemaPRO({
         break
 
       default:
-        component = 'q-input'
+        component = 's-input'
         props.type = 'text'
     }
 
@@ -441,7 +441,7 @@ export async function buildFormFromSchemaPRO({
 
     // ---------- masks by name ----------
     const m = guessMaskByName(f.name)
-    if (m && component === 'q-input') props.mask = m
+    if (m && component === 's-input') props.mask = m
 
     // ---------- required visual ----------
     props.label = label

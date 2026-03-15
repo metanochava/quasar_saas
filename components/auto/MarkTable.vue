@@ -220,7 +220,7 @@ const rangeText = computed(() => {
       <div class="row items-center q-gutter-sm">
         <slot name="top" />
 
-        <q-btn
+        <s-btn
           dense
           flat
           :icon="localDense ? 'density_small' : 'density_medium'"
