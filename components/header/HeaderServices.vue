@@ -95,7 +95,7 @@ export default defineComponent({
           this.User.TipoEntidade = tipoEnt
           this.Auth.TipoEntidade = tipoEnt
           this.User.setTipoEntidadeLayoutSettings()
-          setStorage('c', 'tipoEntidade', JSON.stringify(this.User.TipoEntidade))
+          setStorage('l', 'tipoEntidade', JSON.stringify(this.User.TipoEntidade))
           return false
         }
       }

@@ -172,9 +172,9 @@ export default defineComponent({
 
     /* --------------------- SELECT ENTIDADE --------------------- */
     selectEntidade (entidade) {
-      setStorage('c', 'userEntidade', JSON.stringify(entidade), 365)
+      setStorage('l', 'userEntidade', JSON.stringify(entidade))
 
-      if (this.User) this.User.Entidade = JSON.parse(getStorage('c', 'userEntidade'))
+      if (this.User) this.User.Entidade = JSON.parse(getStorage('l', 'userEntidade'))
 
       this.selectSucursalModal = false
       this.getUserSucursals()
@@ -184,9 +184,9 @@ export default defineComponent({
 
     /* --------------------- SELECT SUCURSAL --------------------- */
     selectSucursal (sucursal) {
-      setStorage('c', 'userSucursal', JSON.stringify(sucursal), 365)
+      setStorage('l', 'userSucursal', JSON.stringify(sucursal))
 
-      if (this.User) this.User.Sucursal = JSON.parse(getStorage('c', 'userSucursal'))
+      if (this.User) this.User.Sucursal = JSON.parse(getStorage('l', 'userSucursal'))
 
       this.selectSucursalModal = false
       this.getUserPerfils()
@@ -197,11 +197,11 @@ export default defineComponent({
     async getUserSucursals () {
       this.spiner = true
 
-      if (getStorage('c', 'userEntidade') !== null) {
+      if (getStorage('l', 'userEntidade') !== null) {
         try {
           await HTTPAuth.get(url({ type: 'u', url: 'saas/usuarios/' + this.User?.id + '/userSucursals/', params: {} }))
             .then(res => {
-              setStorage('c', 'userSucursals', JSON.stringify(res.data), 365)
+              setStorage('l', 'userSucursals', JSON.stringify(res.data))
 
               if (this.User) this.User.Sucursals = res.data
             })
@@ -217,7 +217,7 @@ export default defineComponent({
       try {
         await HTTPAuth.get(url({ type: 'u', url: 'saas/usuarios/' + this.User?.id + '/userPerfils/', params: {} }))
           .then(res => {
-            setStorage('c', 'userPerfils', JSON.stringify(res.data), 365)
+            setStorage('l', 'userPerfils', JSON.stringify(res.data))
 
             if (this.User) this.User.Grupos = res.data
           })
@@ -229,7 +229,7 @@ export default defineComponent({
 
     /* --------------------- SELECT GROUP --------------------- */
     async selectGroup (group) {
-      setStorage('c', 'userGrupo', JSON.stringify(group), 365)
+      setStorage('l', 'userGrupo', JSON.stringify(group))
 
       if (this.User) this.User.Grupo = group
 
@@ -239,13 +239,13 @@ export default defineComponent({
 
     /* --------------------- GET USER PERMISSOES --------------------- */
     async getUserPermicoes () {
-      if (getStorage('c', 'userSucursal') !== null) {
+      if (getStorage('l', 'userSucursal') !== null) {
         try {
           await HTTPAuth.get(url({ type: 'u', url: 'saas/usuarios/' + this.User?.data?.id + '/userPermicoes/', params: {} }))
             .then(res => {
               if (this.User) {
                 this.User.Permicoes = new Set(res.data)
-                setStorage('l', 'userPermicoes', JSON.stringify(this.User.Permicoes), 365)
+                setStorage('l', 'userPermicoes', JSON.stringify(this.User.Permicoes))
               }
             })
             .catch(err => console.log(err))
@@ -257,11 +257,11 @@ export default defineComponent({
 
     /* --------------------- GET ENTIDADE MODULOS --------------------- */
     async getEntidadeModulos () {
-      if (getStorage('c', 'userEntidade') !== null) {
+      if (getStorage('l', 'userEntidade') !== null) {
         try {
           await HTTPAuth.get(url({ type: 'u', url: 'saas/entidades/' + this.User?.Entidade.id + '/modulos/', params: {} }))
             .then(res => {
-              setStorage('c', 'entidadeModulos', JSON.stringify(res.data), 365)
+              setStorage('l', 'entidadeModulos', JSON.stringify(res.data))
 
               if (this.User) this.User.EntidadeModulos = res.data
             })
@@ -274,7 +274,7 @@ export default defineComponent({
   },
 
   mounted () {
-    const storedUser = getStorage('c', 'user')
+    const storedUser = getStorage('l', 'user')
 
     if (storedUser) {
       try {
@@ -288,9 +288,9 @@ export default defineComponent({
     }
 
     if (this.User) {
-      const ent = getStorage('c', 'userEntidade')
-      const suc = getStorage('c', 'userSucursal')
-      const gru = getStorage('c', 'userGrupo')
+      const ent = getStorage('l', 'userEntidade')
+      const suc = getStorage('l', 'userSucursal')
+      const gru = getStorage('l', 'userGrupo')
 
       try {
         this.User.Entidade = ent ? JSON.parse(ent) : null

@@ -34,7 +34,7 @@ export default defineComponent({
     document.addEventListener("fullscreenchange", () => {
       this.fullscreen = !!document.fullscreenElement
     })
-    this.fullscreen = ('' + getStorage('c', 'FullScreen')).toLowerCase() === 'true'
+    this.fullscreen = ('' + getStorage('l', 'FullScreen')).toLowerCase() === 'true'
   },
 
   methods: {
@@ -42,11 +42,11 @@ export default defineComponent({
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen()
         this.fullscreen = !!document.fullscreenElement
-        setStorage('c', 'FullScreen', this.fullscreen, 365)
+        setStorage('l', 'FullScreen', this.fullscreen)
       } else if (document.exitFullscreen) {
         document.exitFullscreen()
         this.fullscreen = !!document.fullscreenElement
-        setStorage('c', 'FullScreen', this.fullscreen, 365)
+        setStorage('l', 'FullScreen', this.fullscreen)
       }
 
     }

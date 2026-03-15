@@ -1,15 +1,11 @@
 import axios from 'axios'
-import { getStorage, setStorage } from './storage'
+import { getStorage } from './storage'
 import { LoadStore, UserStore } from '../stores/AuthStore'
-
 import { Alert } from './alerts'
 
 const apiBaseUrl = process.env.API
-axios.defaults.baseURL = apiBaseUrl
-axios.defaults.withCredentials = false
 
-
-function safeParse (value) {
+const safeParse = (value) => {
   try {
     return value ? JSON.parse(value) : null
   } catch {
@@ -17,207 +13,142 @@ function safeParse (value) {
   }
 }
 
-export const url = (payload = {type: 'u', url: '', params: {} }) => {
-  let tipoEntidadeNome = UserStore()?.TipoEntidade?.nome
+/* ======================================================
+   URL BUILDER
+====================================================== */
+
+export const url = (payload = { type: 'u', url: '', params: {} }) => {
+
+  const User = UserStore()
+  const tipoEntidadeNome = User?.TipoEntidade?.nome
 
   let urlFinal = ''
 
   if (payload.type === 'u') {
-    urlFinal = apiBaseUrl + '/' + payload.url
+    urlFinal = `${apiBaseUrl}/${payload.url}`
   }
 
   if (payload.type === 'nu') {
-    urlFinal = apiBaseUrl + '/' + tipoEntidadeNome.toLowerCase() + '/' + payload.url
+    urlFinal = `${apiBaseUrl}/${tipoEntidadeNome?.toLowerCase()}/${payload.url}`
   }
-  
-  urlFinal = urlFinal + '?format=json'
-  for (const [key, value] of Object.entries(payload?.params)) {
-    urlFinal = urlFinal + `&${key}=${value}`
-  }
+
+  urlFinal += '?format=json'
+
+  Object.entries(payload?.params || {}).forEach(([k, v]) => {
+    urlFinal += `&${k}=${v}`
+  })
+
   return urlFinal
 }
 
-axios.defaults.headers = {
-  Accept: 'application/json'
+
+/* ======================================================
+   BASE AXIOS
+====================================================== */
+
+const createClient = (auth = false, blob = false) => {
+
+  const instance = axios.create({
+    baseURL: apiBaseUrl,
+    withCredentials: false,
+    headers: {
+      Accept: 'application/json'
+    },
+    responseType: blob ? 'blob' : 'json'
+  })
+
+  /* ================= REQUEST ================= */
+
+  instance.interceptors.request.use((config) => {
+
+    const User = UserStore()
+    const Load = LoadStore()
+
+    config.headers = config.headers || {}
+
+    if (auth) {
+      const token = User.access || getStorage('l', 'access')
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+    }
+
+    if (config.data instanceof FormData) {
+      config.headers['Content-Type'] = 'multipart/form-data'
+    }
+
+    const headersMap = {
+      E: 'userEntidade',
+      S: 'userSucursal',
+      G: 'userGrupo',
+      ET: 'tipoEntidade',
+      L: 'userLang'
+    }
+
+    Object.entries(headersMap).forEach(([key, storage]) => {
+      const data = safeParse(getStorage('l', storage))
+      if (data?.id) config.headers[key] = data.id
+    })
+
+    config.headers['fek'] = process.env.FRONT_END_KEY
+    config.headers['fep'] = process.env.FRONT_END_PASSWORD
+
+    Load.inc()
+
+    return config
+  })
+
+
+  /* ================= RESPONSE ================= */
+
+  instance.interceptors.response.use(
+
+    (response) => {
+
+      const Load = LoadStore()
+      Load.dec()
+
+      Alert(response)
+
+      return response
+    },
+
+    (error) => {
+
+      const User = UserStore()
+      const Load = LoadStore()
+
+      Load.dec()
+
+      Alert(error?.response)
+
+      const status = error?.response?.status
+
+      if (status === 401) {
+        User.logout('N')
+      }
+
+      return Promise.reject(error)
+    }
+  )
+
+  return instance
 }
 
-export const wsApi = (process.env.API + '/' + apiBaseUrl).replace('http', 'ws')
+
+/* ======================================================
+   CLIENTES EXPORTADOS
+====================================================== */
+
+export const HTTPClient = createClient(false)
+export const HTTPClientBlob = createClient(false, true)
+
+export const HTTPAuth = createClient(true)
+export const HTTPAuthBlob = createClient(true, true)
 
 
-export const HTTPClient = axios.create({
-  baseURL: process.env.API,
-  headers: {
-  }
-})
+/* ======================================================
+   WEBSOCKET URL
+====================================================== */
 
-export const HTTPClientBlob = axios.create({
-  baseURL: process.env.API,
-  headers: {
-  }
-})
-
-export const HTTPAuth = axios.create({
-  baseURL: process.env.API,
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json'
-  }
-}) 
-
-export const HTTPAuthBlob = axios.create({
-  baseURL: process.env.API,
-  headers: {
-    Accept: 'application/json'
-  },
-  responseType: 'blob'
-})
-
-HTTPAuthBlob.interceptors.request.use(async config => {
-  const User = UserStore()
-  config.headers.Authorization = `Bearer ${User.access || getStorage('c', 'access') || ''}`
-  const Load = LoadStore()
-  Load.inc()
-  return config
-})
-
-
-HTTPAuthBlob.interceptors.response.use(
-  (response) => {
-    const Load = LoadStore()
-    Load.dec()
-    return response
-  },
-  (error) => {
-    const Load = LoadStore()
-    Load.dec()
-    
-    return Promise.reject(error)
-  }
-)
-
-
-HTTPAuth.interceptors.request.use(async config => {
-  const User = UserStore()
-
-  config.headers = config.headers || {}
-
-  config.withCredentials = false
-
-  if (config.headers.Cookie) {
-    delete config.headers.Cookie
-  }
-
-  if (config.data instanceof FormData) {
-    config.headers['Content-Type'] = 'multipart/form-data'
-  }
-
-  const token = User.access || getStorage('c', 'access')
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-
-  const headersMap = {
-    E: 'userEntidade',
-    S: 'userSucursal',
-    G: 'userGrupo',
-    ET: 'tipoEntidade',
-    L: 'userLang'
-  }
-
-  Object.entries(headersMap).forEach(([key, storage]) => {
-    const data = safeParse(getStorage('c', storage))
-    if (data?.id) config.headers[key] = data.id
-  })
-
-  config.headers['fek'] = process.env.FRONT_END_KEY
-  config.headers['fep'] = process.env.FRONT_END_PASSWORD
-
-  const Load = LoadStore()
-  Load.inc()
-
-  return config
-})
-
-
-HTTPAuth.interceptors.response.use(
-  (response) => {
-    const Load = LoadStore()
-    Load.dec()
-    Alert(response)
-    return response
-  },
-  (error) => {
-    const User = UserStore()
-    const Load = LoadStore()
-    Load.dec()
-    
-    Alert(error?.response)
-    const status = error.response?.status
-
-    if (status === 401) {
-      User.logout('N')
-    }
-  
-    return Promise.reject(error)
-  }
-)
-
-
-
-HTTPClient.interceptors.request.use(async config => {
-    const User = UserStore()
-
-  config.headers = config.headers || {}
-
-  config.withCredentials = false
-
-  if (config.headers.Cookie) {
-    delete config.headers.Cookie
-  }
-
-  if (config.data instanceof FormData) {
-    config.headers['Content-Type'] = 'multipart/form-data'
-  }
-
-
-  const headersMap = {
-    // L: 'userLang'
-  }
-
-  Object.entries(headersMap).forEach(([key, storage]) => {
-    const data = safeParse(getStorage('c', storage))
-    if (data?.id) config.headers[key] = data.id
-  })
-
-  config.headers['fek'] = process.env.FRONT_END_KEY
-  config.headers['fep'] = process.env.FRONT_END_PASSWORD
-
-  const Load = LoadStore()
-  Load.inc()
-
-  return config
-})
-
-HTTPClient.interceptors.response.use(
-  (response) => {
-    const Load = LoadStore()
-    Load.dec()
-    Alert(response)
-    return response
-  },
-  (error) => {
-    const User = UserStore()
-    const Load = LoadStore()
-    Load.dec()
-    
-    Alert(error?.response)
-    const status = error?.response?.status
-
-    if (status === 401 ) {
-      User.logout('N')
-    }
-  
-    return Promise.reject(error)
-  }
-)
+export const wsApi = (apiBaseUrl.replace('http', 'ws'))

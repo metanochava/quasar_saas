@@ -26,14 +26,14 @@
       }
     },
     mounted() {
-      const isDark = ( getStorage('c', 'dark')).toLowerCase() === 'true'
+      const isDark = ( getStorage('l', 'dark')).toLowerCase() === 'true'
       this.$q.dark.set(isDark) 
     },
     methods: {
       toggleDark () {
         const newValue = !this.$q.dark.isActive
         this.$q.dark.set(newValue)
-        setStorage('c', 'dark', newValue, 365)
+        setStorage('l', 'dark', newValue)
       }
     }
   })

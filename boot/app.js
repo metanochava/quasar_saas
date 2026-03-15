@@ -69,7 +69,7 @@ export const urlBase = (url = '') => {
 
 export const isTipoEntidade = (nome) => {
   let result = false
-  if (JSON.parse(getStorage('c', 'tipoEntidade'))?.nome === nome) {
+  if (JSON.parse(getStorage('l', 'tipoEntidade'))?.nome === nome) {
     result = true
   }
   return result

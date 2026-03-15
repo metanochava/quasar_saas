@@ -135,7 +135,7 @@ export default defineComponent({
   },
   mounted () {
 
-   if (getStorage('c', 'manterlogado') === 'true') {
+   if (getStorage('l', 'manterlogado') === 'true') {
       this.User.manterLogado = true
     } else {
       this.User.manterLogado = false
@@ -144,7 +144,7 @@ export default defineComponent({
   },
   methods: {
     check () {
-      setStorage('c', 'manterlogado', this.User.manterLogado, 365)
+      setStorage('l', 'manterlogado', this.User.manterLogado)
     },
     getGeolocation () {
       if (navigator.geolocation) {
@@ -171,7 +171,7 @@ export default defineComponent({
 
     async login () {
 
-      setStorage('c', 'manterlogado', this.User.manterLogado, 365)
+      setStorage('l', 'manterlogado', this.User.manterLogado)
 
       this.correctAuth = false
 

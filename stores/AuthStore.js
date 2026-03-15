@@ -329,22 +329,22 @@ export const UserStore = defineStore("user", {
     },
     setIdioma(idioma){
       this.Idioma = idioma
-      setStorage('c', 'userLang', JSON.stringify(idioma))
+      setStorage('l', 'userLang', JSON.stringify(idioma))
     },
     selectGroup(grupo){
       this.Grupo = grupo
     },
     toggleSettings(){
       this.Settings = !this.Settings
-      setStorage('c', 'settings', this.Settings)
+      setStorage('l', 'settings', this.Settings)
     },
     toggleLeftTop(){
       this.LeftTop = !this.LeftTop
-      setStorage('c', 'left_top', this.LeftTop)
+      setStorage('l', 'left_top', this.LeftTop)
     },
     toggleRightTop(){
       this.RightTop = !this.RightTop
-      setStorage('c', 'right_top', this.RightTop)
+      setStorage('l', 'right_top', this.RightTop)
     },
 
     async login(data, q) {
@@ -356,14 +356,14 @@ export const UserStore = defineStore("user", {
         this.loading = false
         this.access = res.data.tokens.access
         this.refresh = res.data.tokens.refresh
-        setStorage('c', 'access', this.access,  365)
-        setStorage('c', 'refresh', this.refresh,  365)
+        setStorage('l', 'access', this.access,  365)
+        setStorage('l', 'refresh', this.refresh,  365)
         if (this.manterLogado) {
-          setStorage('c', 'username', res.data.email, 365)
-          setStorage('c', 'password', res.data.password, 365)
+          setStorage('l', 'username', res.data.email)
+          setStorage('l', 'password', res.data.password)
         } else {
-          deleteStorage('c', 'username')
-          deleteStorage('c', 'password')
+          deleteStorage('l', 'username')
+          deleteStorage('l', 'password')
         }
         this.loginMsg = 'good'
         await this.me()
@@ -383,7 +383,7 @@ export const UserStore = defineStore("user", {
         this.data = res.data
         const Language = LanguageStore()
         Language.change(res.data.language)
-        setStorage('c', 'user', JSON.stringify(this.data),  365)
+        setStorage('l', 'user', JSON.stringify(this.data),  365)
       }).catch(err => {
         console.log(err)
       })
@@ -396,7 +396,7 @@ export const UserStore = defineStore("user", {
       const rsp = await HTTPAuth.post(url({type: "u", url: "api/refresh_token/", params: {}}), data )
       .then(res => {
         this.access = res.data.access
-        setStorage('c', 'access', this.access,  365)
+        setStorage('l', 'access', this.access,  365)
       }).catch(err => {
       })
       return rsp
@@ -417,7 +417,7 @@ export const UserStore = defineStore("user", {
     async getEntidades () {
       if (!this.data?.id) return
       const rsp = await HTTPAuth.get( url({ type: 'u', url: `api/django_resaas/users/${this.data.id}/userEntidades/`,params: {}}))
-      setStorage('c', 'userEntidades', JSON.stringify(rsp.data), 365)
+      setStorage('l', 'userEntidades', JSON.stringify(rsp.data))
       this.Entidades = rsp.data
       return rsp
     },
@@ -434,7 +434,7 @@ export const UserStore = defineStore("user", {
           })
         )
 
-        setStorage('c', 'userEntidades', JSON.stringify(res.data), 365)
+        setStorage('l', 'userEntidades', JSON.stringify(res.data))
         this.Entidades = res.data
 
         if (res.data.length === 1) {
@@ -473,14 +473,14 @@ export const UserStore = defineStore("user", {
     selectEntidade_ (entidade, q) {
       this.Entidade = entidade
       this.setEntidadeLayoutSettings()
-      setStorage('c', 'userEntidade', JSON.stringify(entidade), 365)
+      setStorage('l', 'userEntidade', JSON.stringify(entidade))
       this.getSucursals_(q)
     },
 
     async getSucursals_ (q) {
       await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/users/' + this.data?.id + '/userSucursals/', params: { } }))
         .then(async res => {
-          setStorage('c', 'userSucursals', JSON.stringify(res.data), 365)
+          setStorage('l', 'userSucursals', JSON.stringify(res.data))
 
           if (res.data.length === 1) {
             this.selectSucursal_(res.data[0], q)
@@ -518,13 +518,13 @@ export const UserStore = defineStore("user", {
 
     selectSucursal_ (sucursal, q) {
       this.Sucursal = sucursal
-      setStorage('c', 'userSucursal', JSON.stringify(sucursal), 365)
+      setStorage('l', 'userSucursal', JSON.stringify(sucursal))
       this.getGrupos_(q)
     },
 
     selectEntidade (entidade) {
-      setStorage('c', 'userEntidade', JSON.stringify(entidade), 365)
-      this.Entidade = JSON.parse(getStorage('c', 'userEntidade'))
+      setStorage('l', 'userEntidade', JSON.stringify(entidade))
+      this.Entidade = JSON.parse(getStorage('l', 'userEntidade'))
       this.setEntidadeLayoutSettings()
       this.getSucursals()
       this.setEntidadeModulos()
@@ -532,19 +532,19 @@ export const UserStore = defineStore("user", {
 
     selectSucursal (sucursal) {
       this.Sucursal = sucursal
-      setStorage('c', 'userSucursal', JSON.stringify(sucursal), 365)
+      setStorage('l', 'userSucursal', JSON.stringify(sucursal))
       this.getGrupos()
     },
 
     async getSucursals () {
       this.spiner = true
-      if (getStorage('c', 'userEntidade') !== null) {
+      if (getStorage('l', 'userEntidade') !== null) {
 
         const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/users/' + this.data?.id + '/userSucursals/', params: { } }))
           .then(res => {
             this.Sucursal = {}
-            setStorage('c', 'userSucursal', JSON.stringify({}), 365)
-            setStorage('c', 'userSucursals', JSON.stringify(res.data), 365)
+            setStorage('l', 'userSucursal', JSON.stringify({}))
+            setStorage('l', 'userSucursals', JSON.stringify(res.data))
             this.Sucursals = res.data
           }).catch(err => {
             console.log(err)
@@ -554,7 +554,7 @@ export const UserStore = defineStore("user", {
     },
 
     async selectGrupo (grupo) {
-      setStorage('c', 'userGrupo', JSON.stringify(grupo), 365)
+      setStorage('l', 'userGrupo', JSON.stringify(grupo))
       this.Grupo = grupo
       await this.getPermicoes()
       await this.getMenus()
@@ -566,7 +566,7 @@ export const UserStore = defineStore("user", {
         url({ type: 'u', url: `api/django_resaas/users/${this.data?.id}/userGrupos/`, params: {} })
       )
 
-      setStorage('c', 'userGrupos', JSON.stringify(res.data), 365)
+      setStorage('l', 'userGrupos', JSON.stringify(res.data))
       this.Grupos = res.data
 
       if (res.data.length === 1) {
@@ -580,7 +580,7 @@ export const UserStore = defineStore("user", {
       const res = await HTTPAuth.get(
         url({ type: 'u', url: `api/django_resaas/users/${this.data?.id}/userGrupos/`, params: {} })
       )
-      setStorage('c', 'userGrupos', JSON.stringify(res.data), 365)
+      setStorage('l', 'userGrupos', JSON.stringify(res.data))
       this.Grupos = res.data
 
       if (res.data.length === 1) {
@@ -615,18 +615,18 @@ export const UserStore = defineStore("user", {
 
     async selectGrupo_ (group) {
       this.Grupo = group
-      setStorage('c', 'userGrupo', JSON.stringify(group), 365)
+      setStorage('l', 'userGrupo', JSON.stringify(group))
       this.getPermicoes()
       await this.getMenus()
       this.redirect = 'authwelcome'
     },
 
     async setEntidadeModulos () {
-      if (getStorage('c', 'userEntidade') !== null) {
+      if (getStorage('l', 'userEntidade') !== null) {
 
         const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + this.Entidade?.id + '/modulos/', params: { } }))
           .then(res => {
-            setStorage('c', 'entidadeModulos', JSON.stringify(res.data), 365)
+            setStorage('l', 'entidadeModulos', JSON.stringify(res.data))
             this.EntidadeModulos = res.data
           }).catch(err => {
             console.log(err)
@@ -642,7 +642,7 @@ export const UserStore = defineStore("user", {
       const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + this.Entidade?.id + '/themeGet/', params: { } }))
         .then(res => {
           this.Theme = res.data   || tipoEntidadeStore.Theme
-          setStorage('c', 'entidadeTheme', JSON.stringify(this.Theme), 365)
+          setStorage('l', 'entidadeTheme', JSON.stringify(this.Theme))
         }).catch(err => {
           console.log(err)
         })
@@ -650,7 +650,7 @@ export const UserStore = defineStore("user", {
       const lay = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + this.Entidade?.id + '/layoutSettingsGet/', params: { } }))
         .then(res => {
           this.LayoutSettings = res.data  || tipoEntidadeStore.LayoutSettings
-          setStorage('c', 'entidadeLayoutSettings', JSON.stringify(this.LayoutSettings), 365)
+          setStorage('l', 'entidadeLayoutSettings', JSON.stringify(this.LayoutSettings))
         }).catch(err => {
           console.log(err)
         })
@@ -659,7 +659,7 @@ export const UserStore = defineStore("user", {
       const tp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + this.Entidade?.id + '/typographyGet/', params: { } }))
         .then(res => {
           this.Typography = res.data   || tipoEntidadeStore.Typography
-          setStorage('c', 'entidadeTypography', JSON.stringify(this.Typography), 365)
+          setStorage('l', 'entidadeTypography', JSON.stringify(this.Typography))
         }).catch(err => {
           console.log(err)
         })
@@ -667,7 +667,7 @@ export const UserStore = defineStore("user", {
       const as = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/entidades/' + this.Entidade?.id + '/animationSettingsGet/', params: { } }))
         .then(res => {
           this.AnimationSettings = res.data  || tipoEntidadeStore.AnimationSettings
-          setStorage('c', 'entidadeAnimationSettings', JSON.stringify(this.AnimationSettings), 365)
+          setStorage('l', 'entidadeAnimationSettings', JSON.stringify(this.AnimationSettings))
         }).catch(err => {
           console.log(err)
         })
@@ -679,11 +679,11 @@ export const UserStore = defineStore("user", {
 
     async setTipoEntidadeLayoutSettings () {
       const tipoEntidadeStore = TipoEntidadeStore()
-      if (getStorage('c', 'userTipoEntidade') !== null) {
+      if (getStorage('l', 'userTipoEntidade') !== null) {
 
         const rsp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/tipoentidades/' + this.TipoEntidade?.id + '/themeGet/', params: { } }))
           .then(res => {
-            setStorage('c', 'tipoEntidadeTheme', JSON.stringify(res.data), 365)
+            setStorage('l', 'tipoEntidadeTheme', JSON.stringify(res.data))
             tipoEntidadeStore.Theme = res.data || {}
             this.Theme = tipoEntidadeStore.Theme
 
@@ -693,7 +693,7 @@ export const UserStore = defineStore("user", {
 
         const lay = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/tipoentidades/' + this.TipoEntidade?.id + '/layoutSettingsGet/', params: { } }))
           .then(res => {
-            setStorage('c', 'tipoEntidadeLayoutsettings', JSON.stringify(res.data), 365)
+            setStorage('l', 'tipoEntidadeLayoutsettings', JSON.stringify(res.data))
             tipoEntidadeStore.LayoutSettings = res.data || {}
             this.LayoutSettings = tipoEntidadeStore.LayoutSettings
 
@@ -704,7 +704,7 @@ export const UserStore = defineStore("user", {
 
         const tp = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/tipoentidades/' + this.Entidade?.id + '/typographyGet/', params: { } }))
         .then(res => {
-          setStorage('c', 'tipoEntidadeTypography', JSON.stringify(res.data), 365)
+          setStorage('l', 'tipoEntidadeTypography', JSON.stringify(res.data))
           tipoEntidadeStore.Typography = res.data || {}
           this.Typography = tipoEntidadeStore.Typography
         }).catch(err => {
@@ -713,7 +713,7 @@ export const UserStore = defineStore("user", {
 
       const as = await HTTPAuth.get(url({ type: 'u', url: 'api/django_resaas/tipoentidades/' + this.Entidade?.id + '/animationSettingsGet/', params: { } }))
         .then(res => {
-          setStorage('c', 'tipoEntidadeAnimationSettings', JSON.stringify(res.data), 365)
+          setStorage('l', 'tipoEntidadeAnimationSettings', JSON.stringify(res.data))
           tipoEntidadeStore.AnimationSettings = res.data || {}
           this.AnimationSettings = tipoEntidadeStore.AnimationSettings
         }).catch(err => {
@@ -726,7 +726,7 @@ export const UserStore = defineStore("user", {
     },
 
     async getPermicoes () {
-      if (getStorage('c', 'userSucursal') !== null) {
+      if (getStorage('l', 'userSucursal') !== null) {
 
         const res = await HTTPAuth.get(
           url({ type: 'u', url: `api/django_resaas/users/${this.data?.id}/userPermicoes/`, params: {} })
@@ -738,26 +738,26 @@ export const UserStore = defineStore("user", {
 
         this.Permicoes = new Set(perms)
 
-        setStorage('l', 'userPermicoes', JSON.stringify(perms), 365)
+        setStorage('l', 'userPermicoes', JSON.stringify(perms))
 
         return res
       }
     },
 
     loadFromStorage () {
-      this.Entidade = this.safeParse(getStorage('c', 'userEntidade'))
-      this.Sucursals = this.safeParse(getStorage('c', 'userSucursals'))
-      this.Entidades = this.safeParse(getStorage('c', 'userEntidades'))
-      this.Sucursal = this.safeParse(getStorage('c', 'userSucursal'))
-      this.Grupo   = this.safeParse(getStorage('c', 'userGrupo'))
-      this.Grupos   = this.safeParse(getStorage('c', 'userGrupos'))
+      this.Entidade = this.safeParse(getStorage('l', 'userEntidade'))
+      this.Sucursals = this.safeParse(getStorage('l', 'userSucursals'))
+      this.Entidades = this.safeParse(getStorage('l', 'userEntidades'))
+      this.Sucursal = this.safeParse(getStorage('l', 'userSucursal'))
+      this.Grupo   = this.safeParse(getStorage('l', 'userGrupo'))
+      this.Grupos   = this.safeParse(getStorage('l', 'userGrupos'))
 
-      this.data   = this.safeParse(getStorage('c', 'user'))
-      this.access   = getStorage('c', 'access')
-      this.refresh   = getStorage('c', 'refresh')
+      this.data   = this.safeParse(getStorage('l', 'user'))
+      this.access   = getStorage('l', 'access')
+      this.refresh   = getStorage('l', 'refresh')
 
-      this.RightTop   = ('' + getStorage('c', 'right_top')).toLowerCase() === 'true'
-      this.LeftTop   = ('' + getStorage('c', 'left_top')).toLowerCase() === 'true'
+      this.RightTop   = ('' + getStorage('l', 'right_top')).toLowerCase() === 'true'
+      this.LeftTop   = ('' + getStorage('l', 'left_top')).toLowerCase() === 'true'
 
       const perms = this.safeParse(getStorage('l', 'userPermicoes'))
       this.Permicoes = new Set(Array.isArray(perms) ? perms : [])
@@ -806,26 +806,26 @@ export const UserStore = defineStore("user", {
         this.Sucursal = null
         this.Grupo = {id:'1', name:'Hóspede'}
 
-        const userEntidade = getStorage('c', 'userEntidade')
+        const userEntidade = getStorage('l', 'userEntidade')
 
 
-        deleteStorage('c', 'entidadeTheme')
-        deleteStorage('c', 'entidadeLayoutsettings')
-        deleteStorage('c', 'entidadeTypography')
-        deleteStorage('c', 'entidadeAnimationSettings')
+        deleteStorage('l', 'entidadeTheme')
+        deleteStorage('l', 'entidadeLayoutsettings')
+        deleteStorage('l', 'entidadeTypography')
+        deleteStorage('l', 'entidadeAnimationSettings')
 
-        deleteStorage('c', 'access')
-        deleteStorage('c', 'refresh')
-        deleteStorage('c', 'userEntidades')
-        deleteStorage('c', 'userEntidade')
-        deleteStorage('c', 'userSucursals')
-        deleteStorage('c', 'userSucursal')
-        deleteStorage('c', 'user')
-        deleteStorage('c', 'userGrupos')
-        deleteStorage('c', 'userGrupo')
-        deleteStorage('c', 'linga')
-        deleteStorage('c', 'entidadeModulos')
-        deleteStorage('c', 'entidadeModelos')
+        deleteStorage('l', 'access')
+        deleteStorage('l', 'refresh')
+        deleteStorage('l', 'userEntidades')
+        deleteStorage('l', 'userEntidade')
+        deleteStorage('l', 'userSucursals')
+        deleteStorage('l', 'userSucursal')
+        deleteStorage('l', 'user')
+        deleteStorage('l', 'userGrupos')
+        deleteStorage('l', 'userGrupo')
+        deleteStorage('l', 'linga')
+        deleteStorage('l', 'entidadeModulos')
+        deleteStorage('l', 'entidadeModelos')
 
         deleteStorage('l', 'traducao')
         deleteStorage('l', 'userPermicoes')
@@ -834,10 +834,10 @@ export const UserStore = defineStore("user", {
         deleteStorage('l', 'password')
 
         if (x !== 'x') {
-          setStorage('c', 'userEntidade', userEntidade, 365)
+          setStorage('l', 'userEntidade', userEntidade)
         }
 
-        setStorage('c', 'userGrupo', this.Grupo, 365)
+        setStorage('l', 'userGrupo', this.Grupo)
         this.isLogout = !this.isLogout
         this.isLogin = false
       }).catch(err => {
