@@ -171,6 +171,12 @@ export const UserStore = defineStore("user", {
 
   getters: {
     username: (state) => state.data?.username || "Guest",
+    ps: (state) => ({
+      'theme': state.Theme,
+      'layout': state.LayoutSettings,
+      'animation': state.AnimationSettings,
+      'typography': state.Typography,
+    }),
     perfil: (state) =>
       state.data?.perfil?.url ||
       "https://cdn-icons-png.flaticon.com/512/149/149071.png",
@@ -213,7 +219,7 @@ export const UserStore = defineStore("user", {
 
       return cleanTheme
     },
-    async get_layout_theme() {
+    async getSettings() {
 
       await HTTPClient.get(url({type: "u", url: "api/site", params: {}}) )
       .then(res => {
@@ -222,7 +228,7 @@ export const UserStore = defineStore("user", {
         this.AnimationSettings = res.data.animation_settings
         this.Typography = res.data.typography
 
-        this.set_layout_theme()
+        this.setSettings()
       })
       .catch( () => {
 
@@ -230,7 +236,7 @@ export const UserStore = defineStore("user", {
     },
 
 
-    set_layout_theme(){
+    setSettings(){
 
       /* =========================
         DARK MODE
@@ -655,7 +661,7 @@ export const UserStore = defineStore("user", {
           console.log(err)
         })
 
-        this.set_layout_theme()
+        this.setSettings()
 
       return lay
     },
@@ -703,7 +709,7 @@ export const UserStore = defineStore("user", {
           console.log(err)
         })
 
-          this.set_layout_theme()
+          this.setSettings()
         return lay
       }
     },
