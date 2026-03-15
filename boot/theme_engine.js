@@ -1,4 +1,3 @@
-import './../css/theme_engine.css'
 
 import { boot } from 'quasar/wrappers'
 import TBtn from './../components/engine/BtnComponent.vue'
