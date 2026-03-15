@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card class="theme-studio-engine">
     <q-bar class="bg-primary text-white">
       <div class="text-h6">🎨 Theme Studio</div>
 
@@ -27,6 +27,7 @@
 
     <q-card-section class="q-pa-md">
       <div class="row q-col-gutter-lg">
+        <!-- LEFT -->
         <div class="col-12 col-md-4">
           <q-tabs v-model="tab" dense align="justify">
             <q-tab name="cores" icon="palette" label="Cores" />
@@ -38,6 +39,7 @@
           <q-separator />
 
           <q-tab-panels v-model="tab" animated>
+            <!-- CORES -->
             <q-tab-panel name="cores">
               <q-input
                 v-model="search"
@@ -58,7 +60,12 @@
                   :key="key"
                   class="col-6"
                 >
-                  <q-card flat bordered class="cursor-pointer" @click="openColor(key)">
+                  <q-card
+                    flat
+                    bordered
+                    class="cursor-pointer"
+                    @click="openColor(key)"
+                  >
                     <q-card-section class="q-pa-sm">
                       <div class="text-caption">{{ key }}</div>
 
@@ -80,6 +87,7 @@
               </div>
             </q-tab-panel>
 
+            <!-- FONT -->
             <q-tab-panel name="font">
               <q-card bordered>
                 <q-card-section class="text-subtitle1">
@@ -95,21 +103,101 @@
                     outlined
                   />
 
-                  <q-input v-model.number="User.Typography.font_size_base" label="Font Base" type="number" dense outlined />
-                  <q-input v-model.number="User.Typography.font_size_h1" label="H1" type="number" dense outlined />
-                  <q-input v-model.number="User.Typography.font_size_h2" label="H2" type="number" dense outlined />
-                  <q-input v-model.number="User.Typography.font_size_h3" label="H3" type="number" dense outlined />
-                  <q-input v-model.number="User.Typography.font_size_h4" label="H4" type="number" dense outlined />
-                  <q-input v-model.number="User.Typography.font_size_h5" label="H5" type="number" dense outlined />
-                  <q-input v-model.number="User.Typography.font_size_h6" label="H6" type="number" dense outlined />
-
-                  <q-input v-model.number="User.Typography.font_weight_normal" label="Peso normal" type="number" dense outlined />
-                  <q-input v-model.number="User.Typography.font_weight_bold" label="Peso bold" type="number" dense outlined />
-                  <q-input v-model.number="User.Typography.line_height" label="Line height" type="number" step="0.1" dense outlined />
+                  <q-input
+                    v-model.number="User.Typography.font_size_base"
+                    label="Font Base"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_size_h1"
+                    label="H1"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_size_h2"
+                    label="H2"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_size_h3"
+                    label="H3"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_size_h4"
+                    label="H4"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_size_h5"
+                    label="H5"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_size_h6"
+                    label="H6"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_size_body"
+                    label="Body"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_weight_normal"
+                    label="Peso normal"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.font_weight_bold"
+                    label="Peso bold"
+                    type="number"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.line_height"
+                    label="Line height"
+                    type="number"
+                    step="0.1"
+                    dense
+                    outlined
+                  />
+                  <q-input
+                    v-model.number="User.Typography.letter_spacing"
+                    label="Letter spacing"
+                    type="number"
+                    step="0.1"
+                    dense
+                    outlined
+                  />
+                  <q-toggle
+                    v-model="User.Typography.uppercase_headings"
+                    label="Uppercase headings"
+                  />
                 </q-card-section>
               </q-card>
             </q-tab-panel>
 
+            <!-- LAYOUT -->
             <q-tab-panel name="layout">
               <q-card bordered class="q-mb-md">
                 <q-card-section class="text-subtitle1">
@@ -125,8 +213,14 @@
                     outlined
                   />
 
-                  <q-toggle v-model="User.LayoutSettings.button_dense" label="Dense" />
-                  <q-toggle v-model="User.LayoutSettings.button_round" label="Round" />
+                  <q-toggle
+                    v-model="User.LayoutSettings.button_dense"
+                    label="Dense"
+                  />
+                  <q-toggle
+                    v-model="User.LayoutSettings.button_round"
+                    label="Round"
+                  />
                 </q-card-section>
               </q-card>
 
@@ -144,7 +238,10 @@
                     outlined
                   />
 
-                  <q-toggle v-model="User.LayoutSettings.input_dense" label="Dense" />
+                  <q-toggle
+                    v-model="User.LayoutSettings.input_dense"
+                    label="Dense"
+                  />
                 </q-card-section>
               </q-card>
 
@@ -154,10 +251,22 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-md">
-                  <q-toggle v-model="User.LayoutSettings.card_flat" label="Flat" />
-                  <q-toggle v-model="User.LayoutSettings.card_bordered" label="Bordered" />
-                  <q-toggle v-model="User.LayoutSettings.rounded" label="Rounded global" />
-                  <q-toggle v-model="User.LayoutSettings.square" label="Square global" />
+                  <q-toggle
+                    v-model="User.LayoutSettings.card_flat"
+                    label="Flat"
+                  />
+                  <q-toggle
+                    v-model="User.LayoutSettings.card_bordered"
+                    label="Bordered"
+                  />
+                  <q-toggle
+                    v-model="User.LayoutSettings.rounded"
+                    label="Rounded global"
+                  />
+                  <q-toggle
+                    v-model="User.LayoutSettings.square"
+                    label="Square global"
+                  />
                 </q-card-section>
               </q-card>
 
@@ -167,7 +276,10 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-md">
-                  <q-toggle v-model="User.LayoutSettings.sidebar_mini" label="Mini sidebar" />
+                  <q-toggle
+                    v-model="User.LayoutSettings.sidebar_mini"
+                    label="Mini sidebar"
+                  />
 
                   <q-input
                     v-model.number="User.LayoutSettings.sidebar_width"
@@ -177,12 +289,19 @@
                     dense
                   />
 
-                  <q-toggle v-model="User.LayoutSettings.toolbar_dense" label="Toolbar dense" />
-                  <q-toggle v-model="User.LayoutSettings.toolbar_elevated" label="Toolbar elevated" />
+                  <q-toggle
+                    v-model="User.LayoutSettings.toolbar_dense"
+                    label="Toolbar dense"
+                  />
+                  <q-toggle
+                    v-model="User.LayoutSettings.toolbar_elevated"
+                    label="Toolbar elevated"
+                  />
                 </q-card-section>
               </q-card>
             </q-tab-panel>
 
+            <!-- ANIMATION -->
             <q-tab-panel name="animation">
               <q-card bordered>
                 <q-card-section class="text-subtitle1">
@@ -197,7 +316,7 @@
 
                   <q-select
                     v-model="User.AnimationSetting.animation_speed"
-                    :options="['slow','normal','fast']"
+                    :options="['slow', 'normal', 'fast']"
                     label="Animation speed"
                     dense
                     outlined
@@ -205,7 +324,7 @@
 
                   <q-select
                     v-model="User.AnimationSetting.page_transition"
-                    :options="['fade','slide-left','slide-right','scale']"
+                    :options="['fade', 'slide-left', 'slide-right', 'scale']"
                     label="Page transition"
                     dense
                     outlined
@@ -213,7 +332,7 @@
 
                   <q-select
                     v-model="User.AnimationSetting.button_animation"
-                    :options="['none','ripple','pulse']"
+                    :options="['none', 'ripple', 'pulse']"
                     label="Button animation"
                     dense
                     outlined
@@ -226,7 +345,7 @@
 
                   <q-select
                     v-model="User.AnimationSetting.hover_style"
-                    :options="['lift','shadow','grow']"
+                    :options="['lift', 'shadow', 'grow']"
                     label="Hover style"
                     dense
                     outlined
@@ -234,7 +353,7 @@
 
                   <q-select
                     v-model="User.AnimationSetting.card_animation"
-                    :options="['none','fade','slide-up']"
+                    :options="['none', 'fade', 'slide-up']"
                     label="Card animation"
                     dense
                     outlined
@@ -242,7 +361,7 @@
 
                   <q-select
                     v-model="User.AnimationSetting.modal_animation"
-                    :options="['none','scale','fade']"
+                    :options="['none', 'scale', 'fade']"
                     label="Modal animation"
                     dense
                     outlined
@@ -253,66 +372,197 @@
           </q-tab-panels>
         </div>
 
+        <!-- RIGHT / PREVIEW -->
         <div class="col-12 col-md-8">
-          <div :class="previewMode === 'mobile' ? 'mobile-frame' : ''">
-            <q-layout view="hHh lpR fFf" container style="height:700px">
+          <div
+            :class="[
+              previewMode === 'mobile' ? 'mobile-frame' : '',
+              animationSpeedClass,
+              previewState.animation.enable_animations ? 'anim-enabled' : 'anim-disabled'
+            ]"
+          >
+            <q-layout
+              view="hHh lpR fFf"
+              container
+              style="height: 760px"
+              class="preview-layout"
+            >
               <q-header bordered class="bg-primary text-white">
                 <q-toolbar
-                  :dense="ps.layout?.toolbar_dense"
-                  :class="ps.layout?.toolbar_elevated ? 'shadow-2' : ''"
+                  :dense="previewState.layout.toolbar_dense"
+                  :class="previewState.layout.toolbar_elevated ? 'shadow-2' : ''"
                 >
                   <TBtn flat round icon="menu" />
                   <q-toolbar-title>Preview</q-toolbar-title>
+                  <TBtn flat round icon="notifications" />
+                  <TBtn flat round icon="account_circle" />
                 </q-toolbar>
               </q-header>
 
               <TDrawer
                 show-if-above
                 bordered
-                :mini="ps.layout?.sidebar_mini"
-                :width="ps.layout?.sidebar_width"
+                :mini="previewState.layout.sidebar_mini"
+                :width="previewState.layout.sidebar_width || 260"
               >
-                <q-list>
-                  <q-item clickable>
+                <q-list padding>
+                  <q-item clickable active>
                     <q-item-section avatar>
-                      <q-icon name="home" />
+                      <q-icon name="dashboard" />
                     </q-item-section>
                     <q-item-section>Dashboard</q-item-section>
+                  </q-item>
+
+                  <q-item clickable>
+                    <q-item-section avatar>
+                      <q-icon name="groups" />
+                    </q-item-section>
+                    <q-item-section>Pacientes</q-item-section>
+                  </q-item>
+
+                  <q-item clickable>
+                    <q-item-section avatar>
+                      <q-icon name="badge" />
+                    </q-item-section>
+                    <q-item-section>Médicos</q-item-section>
+                  </q-item>
+
+                  <q-item clickable>
+                    <q-item-section avatar>
+                      <q-icon name="event" />
+                    </q-item-section>
+                    <q-item-section>Agenda</q-item-section>
                   </q-item>
                 </q-list>
               </TDrawer>
 
               <q-page-container>
-                <q-page class="q-pa-md">
-                  <TCard class="q-mb-md">
-                    <q-card-section class="bg-secondary text-white">
-                      Card Preview
-                    </q-card-section>
+                <transition :name="transitionName" mode="out-in">
+                  <q-page class="q-pa-md" :key="transitionKey">
+                    <!-- PREVIEW CORES -->
+                    <TCard class="q-mb-md">
+                      <q-card-section class="bg-secondary text-white">
+                        Cores do tema
+                      </q-card-section>
 
-                    <q-card-section>
-                      <TInput
-                        label="Nome"
-                        v-model="previewForm.name"
-                      />
+                      <q-card-section>
+                        <div class="row q-col-gutter-md">
+                          <div class="col-6 col-sm-3">
+                            <div class="preview-color-box bg-primary text-white">
+                              Primary
+                            </div>
+                          </div>
+                          <div class="col-6 col-sm-3">
+                            <div class="preview-color-box bg-secondary text-white">
+                              Secondary
+                            </div>
+                          </div>
+                          <div class="col-6 col-sm-3">
+                            <div class="preview-color-box bg-accent text-white">
+                              Accent
+                            </div>
+                          </div>
+                          <div class="col-6 col-sm-3">
+                            <div class="preview-color-box bg-positive text-white">
+                              Positive
+                            </div>
+                          </div>
+                        </div>
+                      </q-card-section>
+                    </TCard>
 
-                      <div class="q-mt-md">
-                        <TBtn
-                          color="primary"
-                          label="Primário"
-                        />
-                      </div>
-                    </q-card-section>
-                  </TCard>
+                    <!-- PREVIEW TYPOGRAPHY -->
+                    <TCard class="q-mb-md">
+                      <q-card-section>
+                        <div :style="headingStyle">
+                          Título H1 Preview
+                        </div>
 
-                  <TCard class="q-mb-md">
-                    <q-card-section>
-                      <div :style="headingStyle">Título H1 Preview</div>
-                      <div :style="bodyStyle" class="q-mt-sm">
-                        Texto base vindo da tipografia configurada.
-                      </div>
-                    </q-card-section>
-                  </TCard>
-                </q-page>
+                        <div class="q-mt-sm" :style="subHeadingStyle">
+                          Subtítulo H3 Preview
+                        </div>
+
+                        <div :style="bodyStyle" class="q-mt-md">
+                          Texto base vindo da tipografia configurada. Este bloco
+                          permite ver font family, font size, line height,
+                          weight e spacing aplicados em tempo real.
+                        </div>
+                      </q-card-section>
+                    </TCard>
+
+                    <!-- PREVIEW LAYOUT -->
+                    <TCard class="q-mb-md">
+                      <q-card-section class="text-subtitle1">
+                        Formulário + Botões
+                      </q-card-section>
+
+                      <q-card-section>
+                        <div class="row q-col-gutter-md">
+                          <div class="col-12 col-md-6">
+                            <TInput
+                              v-model="previewForm.name"
+                              label="Nome"
+                            />
+                          </div>
+
+                          <div class="col-12 col-md-6">
+                            <TInput
+                              v-model="previewForm.email"
+                              label="Email"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="q-mt-md q-gutter-sm">
+                          <TBtn color="primary" label="Primário" />
+                          <TBtn color="secondary" label="Secundário" />
+                          <TBtn color="accent" label="Accent" />
+                          <TBtn color="positive" icon="check" label="Guardar" />
+                        </div>
+                      </q-card-section>
+                    </TCard>
+
+                    <!-- PREVIEW ANIMATION -->
+                    <TCard class="q-mb-md">
+                      <q-card-section class="text-subtitle1">
+                        Animações / Interações
+                      </q-card-section>
+
+                      <q-card-section>
+                        <div class="row q-col-gutter-md">
+                          <div class="col-12 col-md-4">
+                            <TCard class="preview-mini-card">
+                              <q-card-section>
+                                Card 1
+                              </q-card-section>
+                            </TCard>
+                          </div>
+
+                          <div class="col-12 col-md-4">
+                            <TCard class="preview-mini-card">
+                              <q-card-section>
+                                Card 2
+                              </q-card-section>
+                            </TCard>
+                          </div>
+
+                          <div class="col-12 col-md-4">
+                            <TCard class="preview-mini-card">
+                              <q-card-section>
+                                Card 3
+                              </q-card-section>
+                            </TCard>
+                          </div>
+                        </div>
+
+                        <div class="q-mt-md text-caption text-grey-7">
+                          Hover, ripple, transições e animações de card são
+                          refletidos aqui conforme a tab Animation.
+                        </div>
+                      </q-card-section>
+                    </TCard>
+                  </q-page>
+                </transition>
               </q-page-container>
             </q-layout>
           </div>
@@ -321,8 +571,12 @@
     </q-card-section>
   </q-card>
 
-  <q-dialog v-model="colorDialog">
-    <q-card style="min-width:350px">
+  <q-dialog
+    v-model="colorDialog"
+    :transition-show="dialogTransition"
+    :transition-hide="dialogTransition"
+  >
+    <q-card style="min-width: 350px">
       <q-card-section>
         Alterar cor: {{ selectedKey }}
       </q-card-section>
@@ -345,7 +599,7 @@
 
 <script>
 import { defineComponent, h } from "vue"
-import { Dark, setCssVar } from "quasar"
+import { Dark, setCssVar, QBtn, QInput, QCard, QDrawer } from "quasar"
 import { HTTPAuth, url } from "../boot/api"
 import { UserStore } from "../stores/AuthStore"
 
@@ -358,13 +612,28 @@ export default defineComponent({
       inheritAttrs: false,
       setup(props, { attrs, slots }) {
         const User = UserStore()
+
         return () => {
-          const ps = User.ps || {}
-          const layout = ps.layout || {}
-          const animation = ps.animation || {}
+          const layout = User.LayoutSettings || {}
+          const animation = User.AnimationSetting || {}
+          const enableAnimations = animation.enable_animations !== false
+
+          const classList = [attrs.class]
+
+          if (enableAnimations && animation.hover_effect && animation.hover_style) {
+            classList.push(`hover-${animation.hover_style}`)
+          }
+
+          if (
+            enableAnimations &&
+            animation.button_animation &&
+            animation.button_animation !== "none"
+          ) {
+            classList.push(`btn-anim-${animation.button_animation}`)
+          }
 
           return h(
-            "q-btn",
+            QBtn,
             {
               ...attrs,
               dense: attrs.dense ?? layout.button_dense,
@@ -375,11 +644,10 @@ export default defineComponent({
               outline: attrs.outline ?? layout.button_style === "outline",
               unelevated: attrs.unelevated ?? layout.button_style === "unelevated",
               push: attrs.push ?? layout.button_style === "push",
-              ripple: attrs.ripple ?? animation.button_animation === "ripple",
-              class: [
-                attrs.class,
-                animation.hover_effect ? `hover-${animation.hover_style}` : ""
-              ]
+              ripple:
+                attrs.ripple ??
+                (enableAnimations && animation.button_animation === "ripple"),
+              class: classList
             },
             slots
           )
@@ -390,21 +658,21 @@ export default defineComponent({
     TInput: defineComponent({
       name: "TInput",
       inheritAttrs: false,
-      emits: ["update:modelValue"],
       props: {
         modelValue: {
-          type: [String, Number, null],
+          type: [String, Number],
           default: ""
         }
       },
+      emits: ["update:modelValue"],
       setup(props, { attrs, emit, slots }) {
         const User = UserStore()
+
         return () => {
-          const ps = User.ps || {}
-          const layout = ps.layout || {}
+          const layout = User.LayoutSettings || {}
 
           return h(
-            "q-input",
+            QInput,
             {
               ...attrs,
               modelValue: props.modelValue,
@@ -427,31 +695,42 @@ export default defineComponent({
       inheritAttrs: false,
       setup(props, { attrs, slots }) {
         const User = UserStore()
+
         return () => {
-          const ps = User.ps || {}
-          const layout = ps.layout || {}
-          const animation = ps.animation || {}
+          const layout = User.LayoutSettings || {}
+          const animation = User.AnimationSetting || {}
+          const enableAnimations = animation.enable_animations !== false
+
+          const styleObj = {
+            ...(attrs.style || {})
+          }
+
+          if (layout.square) {
+            styleObj.borderRadius = "0px"
+          } else if (layout.rounded) {
+            styleObj.borderRadius = "16px"
+          } else {
+            styleObj.borderRadius = "4px"
+          }
+
+          const classList = [attrs.class]
+
+          if (
+            enableAnimations &&
+            animation.card_animation &&
+            animation.card_animation !== "none"
+          ) {
+            classList.push(`anim-${animation.card_animation}`)
+          }
 
           return h(
-            "q-card",
+            QCard,
             {
               ...attrs,
               flat: attrs.flat ?? layout.card_flat,
               bordered: attrs.bordered ?? layout.card_bordered,
-              class: [
-                attrs.class,
-                animation.card_animation && animation.card_animation !== "none"
-                  ? `anim-${animation.card_animation}`
-                  : ""
-              ],
-              style: {
-                ...(attrs.style || {}),
-                borderRadius: layout.square
-                  ? "0px"
-                  : layout.rounded
-                    ? "16px"
-                    : "4px"
-              }
+              class: classList,
+              style: styleObj
             },
             slots
           )
@@ -464,20 +743,17 @@ export default defineComponent({
       inheritAttrs: false,
       setup(props, { attrs, slots }) {
         const User = UserStore()
-        return () => {
-          const ps = User.ps || {}
-          const layout = ps.layout || {}
 
-          return h(
-            "q-drawer",
+        return () =>
+          h(
+            QDrawer,
             {
               ...attrs,
-              mini: attrs.mini ?? layout.sidebar_mini,
-              width: attrs.width ?? layout.sidebar_width
+              mini: attrs.mini ?? User.LayoutSettings?.sidebar_mini,
+              width: attrs.width ?? User.LayoutSettings?.sidebar_width
             },
             slots
           )
-        }
       }
     })
   },
@@ -496,10 +772,20 @@ export default defineComponent({
       tempColor: "#1976D2",
       previewMode: "desktop",
       darkMode: false,
-      previewForm: { name: "" },
+      previewForm: {
+        name: "",
+        email: ""
+      },
+      transitionKey: 0,
       fontOptions: [
-        "Roboto", "Inter", "Open Sans", "Lato", "Poppins",
-        "Montserrat", "Nunito", "Source Sans Pro"
+        "Roboto",
+        "Inter",
+        "Open Sans",
+        "Lato",
+        "Poppins",
+        "Montserrat",
+        "Nunito",
+        "Source Sans Pro"
       ],
       buttonStyleOptions: ["flat", "outline", "unelevated", "push"],
       inputStyleOptions: ["outlined", "filled", "standout"]
@@ -507,12 +793,12 @@ export default defineComponent({
   },
 
   computed: {
-    ps() {
-      return this.User.ps || {
-        theme: {},
-        layout: {},
-        animation: {},
-        typography: {}
+    previewState() {
+      return {
+        theme: this.User.Theme || {},
+        layout: this.User.LayoutSettings || {},
+        typography: this.User.Typography || {},
+        animation: this.User.AnimationSetting || {}
       }
     },
 
@@ -527,33 +813,62 @@ export default defineComponent({
     },
 
     headingStyle() {
+      const t = this.previewState.typography
       return {
-        fontFamily: this.ps.typography?.font_family || "Roboto",
-        fontSize: `${this.ps.typography?.font_size_h1 || 32}px`,
-        fontWeight: this.ps.typography?.font_weight_bold || 700,
-        lineHeight: this.ps.typography?.line_height || 1.5,
-        letterSpacing: `${this.ps.typography?.letter_spacing || 0}px`,
-        textTransform: this.ps.typography?.uppercase_headings ? "uppercase" : "none"
+        fontFamily: t.font_family || "Roboto",
+        fontSize: `${t.font_size_h1 || 32}px`,
+        fontWeight: t.font_weight_bold || 700,
+        lineHeight: t.line_height || 1.5,
+        letterSpacing: `${t.letter_spacing || 0}px`,
+        textTransform: t.uppercase_headings ? "uppercase" : "none"
+      }
+    },
+
+    subHeadingStyle() {
+      const t = this.previewState.typography
+      return {
+        fontFamily: t.font_family || "Roboto",
+        fontSize: `${t.font_size_h3 || 24}px`,
+        fontWeight: t.font_weight_bold || 700,
+        lineHeight: t.line_height || 1.5,
+        letterSpacing: `${t.letter_spacing || 0}px`,
+        textTransform: t.uppercase_headings ? "uppercase" : "none"
       }
     },
 
     bodyStyle() {
+      const t = this.previewState.typography
       return {
-        fontFamily: this.ps.typography?.font_family || "Roboto",
-        fontSize: `${this.ps.typography?.font_size_body || 14}px`,
-        fontWeight: this.ps.typography?.font_weight_normal || 400,
-        lineHeight: this.ps.typography?.line_height || 1.5
+        fontFamily: t.font_family || "Roboto",
+        fontSize: `${t.font_size_body || t.font_size_base || 14}px`,
+        fontWeight: t.font_weight_normal || 400,
+        lineHeight: t.line_height || 1.5,
+        letterSpacing: `${t.letter_spacing || 0}px`
       }
+    },
+
+    animationSpeedClass() {
+      const speed = this.previewState.animation.animation_speed || "normal"
+      return `anim-speed-${speed}`
+    },
+
+    transitionName() {
+      if (this.previewState.animation.enable_animations === false) {
+        return ""
+      }
+      return this.previewState.animation.page_transition || "fade"
+    },
+
+    dialogTransition() {
+      if (this.previewState.animation.enable_animations === false) {
+        return "none"
+      }
+      return this.previewState.animation.modal_animation || "fade"
     }
   },
 
   mounted() {
-    Object.entries(this.User.Theme || {}).forEach(([k, v]) => {
-      if (typeof v === "string") {
-        setCssVar(k, v)
-      }
-    })
-
+    this.applyThemeVars()
     this.darkMode = this.$q.dark.isActive
     this.applyTypography()
   },
@@ -566,10 +881,12 @@ export default defineComponent({
     },
 
     previewColor(color) {
+      if (!this.selectedKey) return
       setCssVar(this.selectedKey, color)
     },
 
     applyColor() {
+      if (!this.selectedKey) return
       this.User.Theme[this.selectedKey] = this.tempColor
       setCssVar(this.selectedKey, this.tempColor)
       this.colorDialog = false
@@ -577,108 +894,229 @@ export default defineComponent({
 
     applyDarkMode(val) {
       Dark.set(val)
+      this.darkMode = val
+    },
+
+    applyThemeVars() {
+      Object.entries(this.User.Theme || {}).forEach(([k, v]) => {
+        if (typeof v === "string") {
+          setCssVar(k, v)
+        }
+      })
     },
 
     applyTypography() {
-      if (this.User.Typography?.font_family) {
-        document.body.style.fontFamily = this.User.Typography.font_family
-      }
-      if (this.User.Typography?.font_size_base) {
-        document.body.style.fontSize = `${this.User.Typography.font_size_base}px`
-      }
-      if (this.User.Typography?.line_height) {
-        document.body.style.lineHeight = this.User.Typography.line_height
-      }
+      const t = this.User.Typography || {}
+
+      document.body.style.fontFamily = t.font_family || "Roboto"
+      document.body.style.fontSize = `${t.font_size_base || 14}px`
+      document.body.style.lineHeight = t.line_height || 1.5
+    },
+
+    touchPreview() {
+      this.transitionKey += 1
     },
 
     async saveTheme() {
       this.applyTypography()
+      this.applyThemeVars()
 
-      await HTTPAuth.put(url({
-        type: "u",
-        url: `/api/django_resaas/entidades/${this.User.Entidade.id}/themePut/`
-      }), this.User.Theme)
+      await HTTPAuth.put(
+        url({
+          type: "u",
+          url: `/api/django_resaas/entidades/${this.User.Entidade.id}/themePut/`
+        }),
+        this.User.Theme
+      )
 
-      await HTTPAuth.put(url({
-        type: "u",
-        url: `/api/django_resaas/entidades/${this.User.Entidade.id}/layoutSettingsPut/`
-      }), this.User.LayoutSettings)
+      await HTTPAuth.put(
+        url({
+          type: "u",
+          url: `/api/django_resaas/entidades/${this.User.Entidade.id}/layoutSettingsPut/`
+        }),
+        this.User.LayoutSettings
+      )
 
-      await HTTPAuth.put(url({
-        type: "u",
-        url: `/api/django_resaas/entidades/${this.User.Entidade.id}/typographyPut/`
-      }), this.User.Typography)
+      await HTTPAuth.put(
+        url({
+          type: "u",
+          url: `/api/django_resaas/entidades/${this.User.Entidade.id}/typographyPut/`
+        }),
+        this.User.Typography
+      )
 
-      await HTTPAuth.put(url({
-        type: "u",
-        url: `/api/django_resaas/entidades/${this.User.Entidade.id}/animationSettingsPut/`
-      }), this.User.AnimationSetting)
+      await HTTPAuth.put(
+        url({
+          type: "u",
+          url: `/api/django_resaas/entidades/${this.User.Entidade.id}/animationSettingsPut/`
+        }),
+        this.User.AnimationSetting
+      )
     }
   },
 
   watch: {
-    "User.Typography.font_family"() {
-      this.applyTypography()
+    "User.Theme": {
+      deep: true,
+      handler() {
+        this.applyThemeVars()
+      }
     },
-    "User.Typography.font_size_base"() {
-      this.applyTypography()
+
+    "User.Typography": {
+      deep: true,
+      handler() {
+        this.applyTypography()
+      }
     },
-    "User.Typography.line_height"() {
-      this.applyTypography()
+
+    "User.LayoutSettings": {
+      deep: true,
+      handler() {
+        this.touchPreview()
+      }
+    },
+
+    "User.AnimationSetting": {
+      deep: true,
+      handler() {
+        this.touchPreview()
+      }
     }
   }
 })
 </script>
 
 <style scoped>
+.theme-studio-engine {
+  overflow: hidden;
+}
+
 .mobile-frame {
   max-width: 390px;
   margin: auto;
 }
 
+.preview-layout {
+  background: var(--q-dark-page, #f5f5f5);
+}
+
+.preview-color-box {
+  border-radius: 10px;
+  padding: 18px 12px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.preview-mini-card {
+  cursor: pointer;
+}
+
+.anim-disabled *,
+.anim-disabled *::before,
+.anim-disabled *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.anim-speed-fast * {
+  transition-duration: 0.15s !important;
+}
+
+.anim-speed-normal * {
+  transition-duration: 0.3s !important;
+}
+
+.anim-speed-slow * {
+  transition-duration: 0.6s !important;
+}
+
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .3s;
+  transition: opacity 0.3s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
 
-.slide-left-enter-active {
-  transition: all .3s;
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.3s ease;
 }
-.slide-left-enter-from {
+
+.slide-left-enter-from,
+.slide-left-leave-to {
   transform: translateX(40px);
+  opacity: 0;
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.3s ease;
+}
+
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(-40px);
+  opacity: 0;
+}
+
+.scale-enter-active,
+.scale-leave-active {
+  transition: all 0.25s ease;
+}
+
+.scale-enter-from,
+.scale-leave-to {
+  transform: scale(0.95);
   opacity: 0;
 }
 
 .hover-lift:hover {
   transform: translateY(-4px);
-  transition: all .2s;
 }
 
 .hover-shadow:hover {
-  box-shadow: 0 10px 25px rgba(0,0,0,.2);
-  transition: all .2s;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .hover-grow:hover {
   transform: scale(1.05);
-  transition: all .2s;
+}
+
+.btn-anim-pulse:hover {
+  animation: pulseBtn 0.6s ease;
+}
+
+@keyframes pulseBtn {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .anim-fade {
-  animation: fadeCard .35s ease;
+  animation: fadeCard 0.35s ease;
 }
 
 @keyframes fadeCard {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .anim-slide-up {
-  animation: slideUp .35s ease;
+  animation: slideUp 0.35s ease;
 }
 
 @keyframes slideUp {

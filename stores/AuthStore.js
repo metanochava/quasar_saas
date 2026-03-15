@@ -11,7 +11,7 @@ export const LoadStore = defineStore('load', {
     count: 0
   }),
   getters: {
-    value: (state) => state.counter,
+    value: (state) => state.count,
   },
   actions: {
     inc() {
@@ -155,7 +155,7 @@ export const UserStore = defineStore("user", {
     access: null,
     refresh: null,
     LeftTop: true,
-    RigthTop: true,
+    RightTop: true,
     LeftMenu: true,
     isLogin: false,
     isLogout: false,
@@ -180,11 +180,9 @@ export const UserStore = defineStore("user", {
     perfil: (state) =>
       state.data?.perfil?.url ||
       "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-    // ⭐ NOVO (PERMISSÃO REATIVA)
     hasPermission: (state) => (perm) =>
       state.Permicoes.has(String(perm).toLowerCase()),
 
-    // ⭐ alias curto (mais bonito no template)
     can: (state) => (perm) =>
       state.Permicoes.has(String(perm).toLowerCase()),
   },
@@ -244,7 +242,7 @@ export const UserStore = defineStore("user", {
         DARK MODE
       ========================= */
 
-      Dark.set(this.LayoutSettings.dark_mode)
+      Dark.set(!!this.LayoutSettings.dark_mode)
 
       /* =========================
         CORES
@@ -260,24 +258,38 @@ export const UserStore = defineStore("user", {
       ========================= */
       document.body.style.background =
         Dark.isActive
-          ? this.Theme.background_dark
-          : this.Theme.background
+          ? (this.Theme.background_dark || this.Theme.background || '')
+          : (this.Theme.background || this.Theme.background_dark || '')
 
 
       /* =========================
         TIPOGRAFIA
       ========================= */
-      const font = this.Typography.font_family
+      const font = this.Typography.font_family || "Roboto"
 
-      const link = document.createElement("link")
-      link.href = `https://fonts.googleapis.com/css2?family=${font.replace(" ","+")}:wght@300;400;500;700&display=swap`
-      link.rel = "stylesheet"
+      let link = document.getElementById("dynamic-theme-font")
+      const fontHref = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, "+")}:wght@300;400;500;700&display=swap`
 
-      document.head.appendChild(link)
+      if (!link) {
+        link = document.createElement("link")
+        link.id = "dynamic-theme-font"
+        link.rel = "stylesheet"
+        document.head.appendChild(link)
+      }
+
+      if (link.href !== fontHref) {
+        link.href = fontHref
+      }
 
       document.body.style.fontFamily = font
 
+      if (this.Typography.font_size_base) {
+        document.body.style.fontSize = `${this.Typography.font_size_base}px`
+      }
 
+      if (this.Typography.line_height) {
+        document.body.style.lineHeight = this.Typography.line_height
+      }
     },
 
 
@@ -385,9 +397,7 @@ export const UserStore = defineStore("user", {
       .then(res => {
         this.access = res.data.access
         setStorage('c', 'access', this.access,  365)
-        // console.log('deu  access')
       }).catch(err => {
-        // console.log('nao deu  access')
       })
       return rsp
     },
@@ -581,7 +591,6 @@ export const UserStore = defineStore("user", {
           return
         }
         const grupos = []
-        // grupos.push( { label: 'Guest', value: {id: 1,  name: 'Guest' } })
         res.data.forEach(element => {
           grupos.push({ label: this.perfilSplint(element.name), value: element })
         })
@@ -727,10 +736,8 @@ export const UserStore = defineStore("user", {
           .map(p => p?.codename?.toLowerCase())
           .filter(Boolean)
 
-        // ⭐ store usa Set
         this.Permicoes = new Set(perms)
 
-        // ⭐ storage usa ARRAY
         setStorage('l', 'userPermicoes', JSON.stringify(perms), 365)
 
         return res
@@ -763,26 +770,12 @@ export const UserStore = defineStore("user", {
       return p[1] ?? p[0]
     },
 
-    isTokenExpired (token) {
-      if (!token) return true
-
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]))
-        const now = Math.floor(Date.now() / 1000)
-
-        return payload.exp < now
-      } catch (e) {
-        return true
-      }
-    },
     async checkSession () {
       console.log('checkSession')
-      // access ainda válido → nada a fazer
       if (!this.isTokenExpired(this.access)) {
         console.log('access valido')
         return
       }
-      // access expirou → tenta refresh
       if (!this.isTokenExpired(this.refresh)) {
         console.log('access invalido')
         try {
@@ -857,4 +850,3 @@ export const UserStore = defineStore("user", {
 
   },
 })
-
