@@ -5,7 +5,7 @@
 
       <q-space />
 
-      <q-toggle
+      <s-switch
         v-model="darkMode"
         label="Dark"
         @update:model-value="applyDarkMode"
@@ -97,7 +97,7 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-md">
-                  <q-select
+                  <s-select
                     v-model="User.Typography.font_family"
                     :options="fontOptions"
                     label="Font Family"
@@ -191,7 +191,7 @@
                     dense
                     outlined
                   />
-                  <q-toggle
+                  <s-switch
                     v-model="User.Typography.uppercase_headings"
                     label="Uppercase headings"
                   />
@@ -207,7 +207,7 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-md">
-                  <q-select
+                  <s-select
                     v-model="User.LayoutSettings.button_style"
                     :options="buttonStyleOptions"
                     label="Estilo"
@@ -215,11 +215,11 @@
                     outlined
                   />
 
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.button_dense"
                     label="Dense"
                   />
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.button_round"
                     label="Round"
                   />
@@ -232,7 +232,7 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-md">
-                  <q-select
+                  <s-select
                     v-model="User.LayoutSettings.input_style"
                     :options="inputStyleOptions"
                     label="Estilo"
@@ -240,7 +240,7 @@
                     outlined
                   />
 
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.input_dense"
                     label="Dense"
                   />
@@ -253,19 +253,19 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-md">
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.card_flat"
                     label="Flat"
                   />
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.card_bordered"
                     label="Bordered"
                   />
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.rounded"
                     label="Rounded global"
                   />
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.square"
                     label="Square global"
                   />
@@ -278,7 +278,7 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-md">
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.sidebar_mini"
                     label="Mini sidebar"
                   />
@@ -291,11 +291,11 @@
                     dense
                   />
 
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.toolbar_dense"
                     label="Toolbar dense"
                   />
-                  <q-toggle
+                  <s-switch
                     v-model="User.LayoutSettings.toolbar_elevated"
                     label="Toolbar elevated"
                   />
@@ -311,12 +311,12 @@
                 </q-card-section>
 
                 <q-card-section class="q-gutter-md">
-                  <q-toggle
+                  <s-switch
                     v-model="User.AnimationSettings.enable_animations"
                     label="Enable animations"
                   />
 
-                  <q-select
+                  <s-select
                     v-model="User.AnimationSettings.animation_speed"
                     :options="['slow', 'normal', 'fast']"
                     label="Animation speed"
@@ -324,7 +324,7 @@
                     outlined
                   />
 
-                  <q-select
+                  <s-select
                     v-model="User.AnimationSettings.page_transition"
                     :options="['fade', 'slide-left', 'slide-right', 'scale']"
                     label="Page transition"
@@ -332,7 +332,7 @@
                     outlined
                   />
 
-                  <q-select
+                  <s-select
                     v-model="User.AnimationSettings.button_animation"
                     :options="['none', 'ripple', 'pulse']"
                     label="Button animation"
@@ -340,12 +340,12 @@
                     outlined
                   />
 
-                  <q-toggle
+                  <s-switch
                     v-model="User.AnimationSettings.hover_effect"
                     label="Hover effect"
                   />
 
-                  <q-select
+                  <s-select
                     v-model="User.AnimationSettings.hover_style"
                     :options="['lift', 'shadow', 'grow']"
                     label="Hover style"
@@ -353,7 +353,7 @@
                     outlined
                   />
 
-                  <q-select
+                  <s-select
                     v-model="User.AnimationSettings.card_animation"
                     :options="['none', 'fade', 'slide-up']"
                     label="Card animation"
@@ -361,7 +361,7 @@
                     outlined
                   />
 
-                  <q-select
+                  <s-select
                     v-model="User.AnimationSettings.modal_animation"
                     :options="['none', 'scale', 'fade']"
                     label="Modal animation"

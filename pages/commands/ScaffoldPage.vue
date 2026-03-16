@@ -25,7 +25,7 @@
 
           <div class="row  q-col-gutter-md ">
             <div class="col">
-              <q-select
+              <s-select
                 v-model="form.modulo"
                 :options="modules"
                 label="Module"
@@ -50,17 +50,17 @@
             </div>
 
              <div class="col">
-              <q-toggle
+              <s-switch
                 v-model="form.crud"
                 label="Crudeble"
                 dense
                 outlined
               >
-              </q-toggle>
+              </s-switch>
             </div>
 
             <div class="col">
-              <q-select
+              <s-select
                 v-model="form.icon"
                 :options="ICONS"
                 label="Icon"
@@ -90,7 +90,7 @@
                   </q-item>
                 </template>
 
-              </q-select>
+              </s-select>
             </div>
 
            
@@ -139,7 +139,7 @@
                     <s-input dense v-model="f.name" label="name" outlined />
                   </div>
                   <div class="col-7">
-                    <q-select
+                    <s-select
                       dense
                       v-model="f.type"
                       :options="filteredTypes"
@@ -155,7 +155,7 @@
                         </q-item-section>
                       </q-item>
                       </template>
-                    </q-select>
+                    </s-select>
 
                   </div> 
                 </div>
@@ -172,10 +172,10 @@
 
                 <div class="row q-gutter-sm  q-mt-md">
                   <div class="col">
-                    <q-toggle v-model="f.required" label="required" />
+                    <s-switch v-model="f.required" label="required" />
                   </div>
                   <div class="col">
-                    <q-toggle v-model="f.unique" label="unique" />
+                    <s-switch v-model="f.unique" label="unique" />
                   </div>
                   <div class="col" v-if="!(['ForeignKey','OneToOneField','ManyToManyField'].includes(f.type))">
                     <s-input dense v-model="f.default" label="default" outlined />
@@ -200,7 +200,7 @@
                     <s-input  dense v-model="f.decimal_places" type="number" label="decimal places" outlined/>
                   </div>
                   <div class="col">
-                    <q-select
+                    <s-select
                       dense
                       v-model="f.default_currency"
                       :options="filteredMoneys"
@@ -216,7 +216,7 @@
                         </q-item-section>
                       </q-item>
                       </template>
-                    </q-select>
+                    </s-select>
                   </div>
                 </div>
 
@@ -240,10 +240,10 @@
 
                 <div  v-if="isDate(f) " class="row q-gutter-sm q-col-gutter-sm q-mt-md">
                   <div class="col">
-                    <q-toggle dense v-model="f.auto_now_add"  label="Auto Now Add" outlined/>
+                    <s-switch dense v-model="f.auto_now_add"  label="Auto Now Add" outlined/>
                   </div>
                   <div class="col">
-                    <q-toggle  dense v-model="f.auto_now"  label="Auto Now" outlined/>
+                    <s-switch  dense v-model="f.auto_now"  label="Auto Now" outlined/>
                   </div>
                 </div>
                 
@@ -311,7 +311,7 @@
 
                   <div class="row q-col-gutter-sm q-pa-0">
                     <div class="col">
-                      <q-select
+                      <s-select
                         v-model="f.relModule"
                         :options="modules"
                         label="module"
@@ -326,7 +326,7 @@
                     </div>
 
                     <div class="col">
-                      <q-select
+                      <s-select
                         v-model="f.relation"
                         :options="f?.models"
                         label="model"
@@ -336,7 +336,7 @@
                     </div>
 
                     <div class="col" v-if="f.type !== 'ManyToManyField'">
-                      <q-select
+                      <s-select
                         v-model="f.on_delete"
                         :options="onDeletes"
                         label="on_delete"
@@ -361,7 +361,7 @@
           <q-card-section class="row q-col-gutter-sm q-gutter-s">
             <div class="text-h6 text-grey col-12">🔐 Extra actions of {{ form.modulo }}.{{form.modelo}}</div>
             <div class="col-12">
-              <q-select
+              <s-select
                 v-model="accao.Icon"
                 :options="ICONS"
                 label="Icon"
@@ -391,10 +391,10 @@
                   </q-item>
                 </template>
 
-              </q-select>
+              </s-select>
             </div>
 
-            <q-select
+            <s-select
               class="col"
               v-model="accao.Method"
               :options="['get', 'post', 'put', 'delete']"
@@ -402,7 +402,7 @@
               outlined
               dense 
             />
-            <q-toggle
+            <s-switch
               class="col"
               v-model="accao.Details"
               label="Details"

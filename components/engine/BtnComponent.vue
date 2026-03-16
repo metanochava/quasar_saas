@@ -1,6 +1,9 @@
 <template>
+
   <q-btn
-    v-bind="attrs"
+    v-bind="btnAttrs"
+
+    :label="translatedLabel"
 
     :dense="attrs.dense ?? layout.button_dense"
     :round="attrs.round ?? layout.button_round"
@@ -10,11 +13,14 @@
     :unelevated="attrs.unelevated ?? layout.button_style === 'unelevated'"
     :push="attrs.push ?? layout.button_style === 'push'"
 
+    :loading="attrs.loading"
+
     :ripple="animation.button_animation === 'ripple'"
 
     :class="[
       attrs.class,
-      animation.hover_effect ? 'hover-' + animation.hover_style : ''
+      animation.hover_effect ? 'hover-' + animation.hover_style : '',
+      animation.button_animation === 'pulse' ? 'btn-anim-pulse' : ''
     ]"
 
     :style="{
@@ -26,13 +32,18 @@
     }"
 
   >
+
     <slot/>
+
   </q-btn>
+
 </template>
 
 <script>
+
 import { defineComponent, computed, useAttrs } from "vue"
 import { UserStore } from "./../../stores/AuthStore"
+import { tdc } from "../../boot/base"
 
 export default defineComponent({
 
@@ -47,13 +58,31 @@ export default defineComponent({
     const layout = computed(()=>User.ps?.layout || {})
     const animation = computed(()=>User.ps?.animation || {})
 
+    const translatedLabel = computed(()=>{
+      return attrs.label ? tdc(attrs.label) : undefined
+    })
+
+    const btnAttrs = computed(()=>{
+
+      const {
+        label,
+        ...rest
+      } = attrs
+
+      return rest
+
+    })
+
     return{
       attrs,
       layout,
-      animation
+      animation,
+      translatedLabel,
+      btnAttrs
     }
 
   }
 
 })
+   
 </script>

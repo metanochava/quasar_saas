@@ -196,7 +196,7 @@ export async function buildFormFromSchema({
 
       // BOOLEAN
       case 'BooleanField':
-        component = 'q-toggle'
+        component = 's-switch'
         props.clearable = false
         break
 
@@ -225,7 +225,7 @@ export async function buildFormFromSchema({
       // FILE/IMAGE
       case 'FileField':
       case 'ImageField':
-        component = 'q-file'
+        component = 's-upload'
         props.clearable = true
         props.useChips = true
         props.maxFiles = 1
@@ -237,7 +237,7 @@ export async function buildFormFromSchema({
       // RELATIONS
       case 'ForeignKey':
       case 'OneToOneField':
-        component = 'q-select'
+        component = 's-select'
         props.multiple = false
         props.emitValue = true
         props.mapOptions = true
@@ -251,7 +251,7 @@ export async function buildFormFromSchema({
         break
 
       case 'ManyToManyField':
-        component = 'q-select'
+        component = 's-select'
         props.multiple = true
         props.emitValue = true
         props.mapOptions = true
@@ -271,7 +271,7 @@ export async function buildFormFromSchema({
 
     // ---------- choices override ----------
     if (Array.isArray(f.choices) && f.choices.length) {
-      component = 'q-select'
+      component = 's-select'
       props.emitValue = true
       props.mapOptions = true
       props.options = f.choices.map(([v, l]) => ({

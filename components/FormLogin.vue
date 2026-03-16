@@ -48,8 +48,8 @@
             </s-input>
 
             <br/>
-            <q-checkbox  class="text-grey-7" dense   clearable v-model="User.manterLogado"  @click="check" :label="tdc('Manter-me logado')">
-            </q-checkbox>
+            <s-checkbox  class="text-grey-7" dense   clearable v-model="User.manterLogado"  @click="check" :label="tdc('Manter-me logado')">
+            </s-checkbox>
           </q-form>
         </q-card-section>
 

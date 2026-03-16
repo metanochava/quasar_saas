@@ -58,7 +58,7 @@ export async function buildFormFromSchema({'module':module, 'model': model}) {
         break
 
       case 'BooleanField':
-        component = 'q-toggle'
+        component = 's-switch'
         break
 
       case 'DateField':
@@ -75,18 +75,18 @@ export async function buildFormFromSchema({'module':module, 'model': model}) {
 
       case 'ImageField':
       case 'FileField':
-        component = 'q-file'
+        component = 's-upload'
         break
 
       case 'ForeignKey':
-        component = 'q-select'
+        component = 's-select'
         props.multiple = false
         props.relation = f.relation
         props._relation = true
         break
 
       case 'ManyToManyField':
-        component = 'q-select'
+        component = 's-select'
         props.multiple = true
         props.relation = f.relation
         props._relation = true
@@ -98,7 +98,7 @@ export async function buildFormFromSchema({'module':module, 'model': model}) {
 
     // CHOICES
     if (f.choices && Array.isArray(f.choices) && f.choices.length) {
-      component = 'q-select'
+      component = 's-select'
       props.options = f.choices.map(([v, l]) => ({ label: tdc(String(l)), value: v }))
       props.emitValue = true
       props.mapOptions = true
@@ -352,7 +352,7 @@ export async function buildFormFromSchemaPRO({
 
       // BOOLEAN
       case 'BooleanField':
-        component = 'q-toggle'
+        component = 's-switch'
         props.clearable = false
         break
 
@@ -381,7 +381,7 @@ export async function buildFormFromSchemaPRO({
       // FILE/IMAGE
       case 'FileField':
       case 'ImageField':
-        component = 'q-file'
+        component = 's-upload'
         props.clearable = true
         props.useChips = true
         props.maxFiles = 1
@@ -393,7 +393,7 @@ export async function buildFormFromSchemaPRO({
       // RELATIONS
       case 'ForeignKey':
       case 'OneToOneField':
-        component = 'q-select'
+        component = 's-select'
         props.multiple = false
         props.emitValue = true
         props.mapOptions = true
@@ -407,7 +407,7 @@ export async function buildFormFromSchemaPRO({
         break
 
       case 'ManyToManyField':
-        component = 'q-select'
+        component = 's-select'
         props.multiple = true
         props.emitValue = true
         props.mapOptions = true
@@ -427,7 +427,7 @@ export async function buildFormFromSchemaPRO({
 
     // ---------- choices override ----------
     if (Array.isArray(f.choices) && f.choices.length) {
-      component = 'q-select'
+      component = 's-select'
       props.emitValue = true
       props.mapOptions = true
       props.options = f.choices.map(([v, l]) => ({

@@ -23,12 +23,12 @@ export const componentMap = {
   'q-field': QField,
 
   // 🔽 SELECT / RELATIONS
-  'q-select': QSelect,
+  's-select': QSelect,
   'q-option-group': QOptionGroup,
 
   // ✅ BOOLEAN
-  'q-checkbox': QCheckbox,
-  'q-toggle': QToggle,
+  's-checkbox': QCheckbox,
+  's-switch': QToggle,
   'q-radio': QRadio,
 
   // 📅 DATE / TIME
@@ -36,7 +36,7 @@ export const componentMap = {
   'q-time': QTime,
 
   // 📂 FILES
-  'q-file': QFile,
+  's-upload': QFile,
   'q-uploader': QUploader,
 
   // ✍️ RICH TEXT

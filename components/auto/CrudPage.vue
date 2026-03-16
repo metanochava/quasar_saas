@@ -2,7 +2,7 @@
   <q-page class="q-pa-sm">
     <div class="row q-col-gutter-sm q-pa-0" v-if="!route.params.model ">
       <div class="col">
-        <q-select
+        <s-select
           v-model="module"
           :options="modules"
           :label="tdc('module')"
@@ -16,7 +16,7 @@
         />
       </div>
       <div class="col">
-        <q-select
+        <s-select
           v-model="model"
           :options="models"
           :label="tdc('model')"

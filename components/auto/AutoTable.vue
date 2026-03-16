@@ -235,7 +235,7 @@ async function executeAction() {
         <!-- RIGHT -->
         <div class="row q-gutter-sm">
 
-          <q-select
+          <s-select
             v-if="show_filter"
             v-model="objects"
             :options="objectsOptions"
@@ -249,7 +249,7 @@ async function executeAction() {
           />
           
 
-          <q-select v-if="show_filter"
+          <s-select v-if="show_filter"
             v-model="density"
             :options="['dense','normal']"
             dense
@@ -257,7 +257,7 @@ async function executeAction() {
             style="width:120px"
           />
 
-          <q-select
+          <s-select
             v-if="show_filter"
             v-model="visibleColumns"
             :options="allColumns"

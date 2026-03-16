@@ -228,7 +228,7 @@ const rangeText = computed(() => {
           :title="localDense ? 'Compacto' : 'Normal'"
         />
 
-        <q-select
+        <s-select
           dense
           outlined
           :model-value="localVisibleCols"
@@ -241,7 +241,7 @@ const rangeText = computed(() => {
       </div>
 
       <div class="row items-center q-gutter-sm">
-        <q-select
+        <s-select
           dense
           outlined
           :model-value="localPagination.rowsPerPage"
@@ -265,7 +265,7 @@ const rangeText = computed(() => {
         <thead>
           <tr>
             <th v-if="selectable" class="mark-th mark-th--select">
-              <q-checkbox
+              <s-checkbox
                 :model-value="allSelectedOnPage()"
                 :indeterminate="someSelectedOnPage()"
                 @update:model-value="toggleAllOnPage"
@@ -306,7 +306,7 @@ const rangeText = computed(() => {
 
           <tr v-for="row in rows" :key="rowKeyOf(row)">
             <td v-if="selectable" class="mark-td mark-td--select">
-              <q-checkbox
+              <s-checkbox
                 :model-value="isSelected(row)"
                 @update:model-value="val => toggleRow(row, val)"
                 dense
