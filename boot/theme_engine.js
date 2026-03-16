@@ -10,6 +10,6 @@ export default boot(({ app }) => {
   app.component('s-btn', TBtn)
   app.component('s-card', TCard)
   app.component('s-input', TInput)
-  app.component('SDrawer', TDrawer)
+  app.component('s-drawer', TDrawer)
 
 })

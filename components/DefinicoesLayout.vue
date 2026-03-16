@@ -39,7 +39,7 @@
 
           <q-separator />
 
-          <q-tab-panels v-model="tab" animated>
+          <q-tab-panels v-model="tab" animated style="height: 800px">
             <!-- CORES -->
             <q-tab-panel name="cores">
               <s-input
@@ -386,7 +386,7 @@
             <q-layout
               view="hHh lpR fFf"
               container
-              style="height: 760px"
+              style="height: 800px"
               class="preview-layout"
             >
               <q-header bordered class="bg-primary text-white">
@@ -401,7 +401,7 @@
                 </q-toolbar>
               </q-header>
 
-              <SDrawer
+              <s-drawer
                 show-if-above
                 bordered
                 :mini="previewState.layout.sidebar_mini"
@@ -436,7 +436,7 @@
                     <q-item-section>Agenda</q-item-section>
                   </q-item>
                 </q-list>
-              </SDrawer>
+              </s-drawer>
 
               <q-page-container>
                 <transition :name="transitionName" mode="out-in">

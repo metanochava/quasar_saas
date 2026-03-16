@@ -19,7 +19,7 @@ import { UserStore } from "./../../stores/AuthStore"
 
 export default defineComponent({
 
-  name:"SDrawer",
+  name:"s-drawer",
   inheritAttrs:false,
 
   setup(){
