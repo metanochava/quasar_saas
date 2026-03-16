@@ -60,6 +60,7 @@
                   v-for="(value, key) in filteredColors"
                   :key="key"
                   class="col-6"
+                  v-show="!['id','nome', 'created_by', 'updated_by', 'created_at', 'updated_at', 'estado', 'deleted_at'].includes(key)"
                 >
                   <s-card
                     flat
