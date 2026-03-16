@@ -10,7 +10,7 @@
         </s-btn>
         </q-bar>
 
-        <s-card-section >
+        <q-card-section >
             <s-input outlined
                 v-model="text_text"
                 class=""
@@ -19,11 +19,11 @@
                 type="textarea"
                 :rules="[ val => val && val.length > 0 || tdc('Este campo e obrigatório.')]"
                 />
-        </s-card-section>
+        </q-card-section>
 
-        <s-card-section >
+        <q-card-section >
         {{accao}}
-        </s-card-section>
+        </q-card-section>
         <q-separator />
 
         <s-card-actions align="right">

@@ -47,7 +47,7 @@
             >
               <s-card bordered flat class="module-card">
 
-                <s-card-section class="row items-center">
+                <q-card-section class="row items-center">
 
                   <q-icon name="folder" size="28px" />
 
@@ -62,7 +62,7 @@
                     {{ app.models }}
                   </q-badge>
 
-                </s-card-section>
+                </q-card-section>
 
                 <q-separator />
 

@@ -12,11 +12,11 @@
     <q-dialog v-model="pergunta" persistent class="row">
         <s-card style="width: 400px;" flat>
 
-          <s-card-section class="row ">
+          <q-card-section class="row ">
             <label class="text-h6 text-grey-9 text-center">
               {{tdc('De qual deseja sair')}}
             </label>
-          </s-card-section>
+          </q-card-section>
           <q-separator />
 
           <s-card-actions class="row" >

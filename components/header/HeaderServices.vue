@@ -5,7 +5,7 @@
           <q-tooltip :class="$q.dark.isActive ? 'bg-transparent' : 'bg-primary'" >{{tdc("Serviços")}}</q-tooltip>
           <q-menu flat bordered square  fit :offset="[175, 5]"  >
             <s-card class="my-card"  style="min-width:270px;" >
-                <s-card-section class="text-center"   flat bordered square  >
+                <q-card-section class="text-center"   flat bordered square  >
                   <q-scroll-area
                     :thumb-style="thumbStyle"
                     :bar-style="barStyle"
@@ -25,7 +25,7 @@
                         </div>
                     </div>
                   </q-scroll-area>
-                </s-card-section>
+                </q-card-section>
               </s-card>
           </q-menu>
       </s-btn>

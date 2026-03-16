@@ -10,7 +10,7 @@
             </s-btn>
           </q-bar>
 
-          <s-card-section >
+          <q-card-section >
             <s-input outlined
                 v-model="comment_text"
                 class=""
@@ -19,11 +19,11 @@
                 type="textarea"
                 :rules="[ val => val && val.length > 0 || tdc('Este campo e obrigatório.')]"
                 />
-          </s-card-section>
+          </q-card-section>
 
-          <s-card-section >
+          <q-card-section >
             {{tdc('Algumas informações da conta e do sistema podem ser enviadas para a Mytech. Nós o usaremos para corrigir problemas e melhorar nossos serviços de acordo com nossa Política de Privacidade e Termos de Serviço. Podemos enviar um e-mail para mais informações ou atualizações. Vá para a Ajuda Jurídica para solicitar alterações de conteúdo por motivos legais.')}}
-          </s-card-section>
+          </q-card-section>
           <q-separator />
 
           <s-card-actions align="right">

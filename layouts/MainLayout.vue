@@ -25,9 +25,9 @@
 
         <q-separator />
 
-        <s-card-section class="scroll">
+        <q-card-section class="scroll">
           <!-- <ApiRetorno /> -->
-        </s-card-section>
+        </q-card-section>
       </s-card>
     </q-dialog>
 

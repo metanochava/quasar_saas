@@ -26,7 +26,7 @@
       <s-btn flat dense icon="close" v-close-popup />
     </q-bar>
 
-    <s-card-section class="q-pa-md">
+    <q-card-section class="q-pa-md">
       <div class="row q-col-gutter-lg">
         <!-- LEFT -->
         <div class="col-12 col-md-4">
@@ -67,7 +67,7 @@
                     class="cursor-pointer"
                     @click="openColor(key)"
                   >
-                    <s-card-section class="q-pa-sm">
+                    <q-card-section class="q-pa-sm">
                       <div class="text-caption">{{ key }}</div>
 
                       <div
@@ -82,7 +82,7 @@
                       <div class="text-caption q-mt-xs">
                         {{ value }}
                       </div>
-                    </s-card-section>
+                    </q-card-section>
                   </s-card>
                 </div>
               </div>
@@ -91,11 +91,11 @@
             <!-- FONT -->
             <q-tab-panel name="font">
               <s-card bordered>
-                <s-card-section class="text-subtitle1">
+                <q-card-section class="text-subtitle1">
                   Tipografia
-                </s-card-section>
+                </q-card-section>
 
-                <s-card-section class="q-gutter-md">
+                <q-card-section class="q-gutter-md">
                   <q-select
                     v-model="User.Typography.font_family"
                     :options="fontOptions"
@@ -194,18 +194,18 @@
                     v-model="User.Typography.uppercase_headings"
                     label="Uppercase headings"
                   />
-                </s-card-section>
+                </q-card-section>
               </s-card>
             </q-tab-panel>
 
             <!-- LAYOUT -->
             <q-tab-panel name="layout">
               <s-card bordered class="q-mb-md">
-                <s-card-section class="text-subtitle1">
+                <q-card-section class="text-subtitle1">
                   Botões
-                </s-card-section>
+                </q-card-section>
 
-                <s-card-section class="q-gutter-md">
+                <q-card-section class="q-gutter-md">
                   <q-select
                     v-model="User.LayoutSettings.button_style"
                     :options="buttonStyleOptions"
@@ -222,15 +222,15 @@
                     v-model="User.LayoutSettings.button_round"
                     label="Round"
                   />
-                </s-card-section>
+                </q-card-section>
               </s-card>
 
               <s-card bordered class="q-mb-md">
-                <s-card-section class="text-subtitle1">
+                <q-card-section class="text-subtitle1">
                   Inputs
-                </s-card-section>
+                </q-card-section>
 
-                <s-card-section class="q-gutter-md">
+                <q-card-section class="q-gutter-md">
                   <q-select
                     v-model="User.LayoutSettings.input_style"
                     :options="inputStyleOptions"
@@ -243,15 +243,15 @@
                     v-model="User.LayoutSettings.input_dense"
                     label="Dense"
                   />
-                </s-card-section>
+                </q-card-section>
               </s-card>
 
               <s-card bordered class="q-mb-md">
-                <s-card-section class="text-subtitle1">
+                <q-card-section class="text-subtitle1">
                   Cards
-                </s-card-section>
+                </q-card-section>
 
-                <s-card-section class="q-gutter-md">
+                <q-card-section class="q-gutter-md">
                   <q-toggle
                     v-model="User.LayoutSettings.card_flat"
                     label="Flat"
@@ -268,15 +268,15 @@
                     v-model="User.LayoutSettings.square"
                     label="Square global"
                   />
-                </s-card-section>
+                </q-card-section>
               </s-card>
 
               <s-card bordered>
-                <s-card-section class="text-subtitle1">
+                <q-card-section class="text-subtitle1">
                   Sidebar / Toolbar
-                </s-card-section>
+                </q-card-section>
 
-                <s-card-section class="q-gutter-md">
+                <q-card-section class="q-gutter-md">
                   <q-toggle
                     v-model="User.LayoutSettings.sidebar_mini"
                     label="Mini sidebar"
@@ -298,18 +298,18 @@
                     v-model="User.LayoutSettings.toolbar_elevated"
                     label="Toolbar elevated"
                   />
-                </s-card-section>
+                </q-card-section>
               </s-card>
             </q-tab-panel>
 
             <!-- ANIMATION -->
             <q-tab-panel name="animation">
               <s-card bordered>
-                <s-card-section class="text-subtitle1">
+                <q-card-section class="text-subtitle1">
                   Animation
-                </s-card-section>
+                </q-card-section>
 
-                <s-card-section class="q-gutter-md">
+                <q-card-section class="q-gutter-md">
                   <q-toggle
                     v-model="User.AnimationSettings.enable_animations"
                     label="Enable animations"
@@ -367,7 +367,7 @@
                     dense
                     outlined
                   />
-                </s-card-section>
+                </q-card-section>
               </s-card>
             </q-tab-panel>
           </q-tab-panels>
@@ -393,10 +393,10 @@
                   :dense="previewState.layout.toolbar_dense"
                   :class="previewState.layout.toolbar_elevated ? 'shadow-2' : ''"
                 >
-                  <SBtn flat round icon="menu" />
+                  <s-btn flat round icon="menu" />
                   <q-toolbar-title>Preview</q-toolbar-title>
-                  <SBtn flat round icon="notifications" />
-                  <SBtn flat round icon="account_circle" />
+                  <s-btn flat round icon="notifications" />
+                  <s-btn flat round icon="account_circle" />
                 </q-toolbar>
               </q-header>
 
@@ -441,12 +441,12 @@
                 <transition :name="transitionName" mode="out-in">
                   <q-page class="q-pa-md" :key="transitionKey">
                     <!-- PREVIEW CORES -->
-                    <SCard class="q-mb-md">
-                      <s-card-section class="bg-secondary text-white">
+                    <s-card class="q-mb-md">
+                      <q-card-section class="bg-secondary text-white">
                         Cores do tema
-                      </s-card-section>
+                      </q-card-section>
 
-                      <s-card-section>
+                      <q-card-section>
                         <div class="row q-col-gutter-md">
                           <div class="col-6 col-sm-3">
                             <div class="preview-color-box bg-primary text-white">
@@ -469,12 +469,12 @@
                             </div>
                           </div>
                         </div>
-                      </s-card-section>
-                    </SCard>
+                      </q-card-section>
+                    </s-card>
 
                     <!-- PREVIEW TYPOGRAPHY -->
-                    <SCard class="q-mb-md">
-                      <s-card-section>
+                    <s-card class="q-mb-md">
+                      <q-card-section>
                         <div :style="headingStyle">
                           Título H1 Preview
                         </div>
@@ -488,26 +488,26 @@
                           permite ver font family, font size, line height,
                           weight e spacing aplicados em tempo real.
                         </div>
-                      </s-card-section>
-                    </SCard>
+                      </q-card-section>
+                    </s-card>
 
                     <!-- PREVIEW LAYOUT -->
-                    <SCard class="q-mb-md">
-                      <s-card-section class="text-subtitle1">
+                    <s-card class="q-mb-md">
+                      <q-card-section class="text-subtitle1">
                         Formulário + Botões
-                      </s-card-section>
+                      </q-card-section>
 
-                      <s-card-section>
+                      <q-card-section>
                         <div class="row q-col-gutter-md">
                           <div class="col-12 col-md-6">
-                            <SInput
+                            <s-input
                               v-model="previewForm.name"
                               label="Nome"
                             />
                           </div>
 
                           <div class="col-12 col-md-6">
-                            <SInput
+                            <s-input
                               v-model="previewForm.email"
                               label="Email"
                             />
@@ -515,44 +515,44 @@
                         </div>
 
                         <div class="q-mt-md q-gutter-sm">
-                          <SBtn color="primary" label="Primário" />
-                          <SBtn color="secondary" label="Secundário" />
-                          <SBtn color="accent" label="Accent" />
-                          <SBtn color="positive" icon="check" label="Guardar" />
+                          <s-btn color="primary" label="Primário" />
+                          <s-btn color="secondary" label="Secundário" />
+                          <s-btn color="accent" label="Accent" />
+                          <s-btn color="positive" icon="check" label="Guardar" />
                         </div>
-                      </s-card-section>
-                    </SCard>
+                      </q-card-section>
+                    </s-card>
 
                     <!-- PREVIEW ANIMATION -->
-                    <SCard class="q-mb-md">
-                      <s-card-section class="text-subtitle1">
+                    <s-card class="q-mb-md">
+                      <q-card-section class="text-subtitle1">
                         Animações / Interações
-                      </s-card-section>
+                      </q-card-section>
 
-                      <s-card-section>
+                      <q-card-section>
                         <div class="row q-col-gutter-md">
                           <div class="col-12 col-md-4">
-                            <SCard class="preview-mini-card">
-                              <s-card-section>
+                            <s-card class="preview-mini-card">
+                              <q-card-section>
                                 Card 1
-                              </s-card-section>
-                            </SCard>
+                              </q-card-section>
+                            </s-card>
                           </div>
 
                           <div class="col-12 col-md-4">
-                            <SCard class="preview-mini-card">
-                              <s-card-section>
+                            <s-card class="preview-mini-card">
+                              <q-card-section>
                                 Card 2
-                              </s-card-section>
-                            </SCard>
+                              </q-card-section>
+                            </s-card>
                           </div>
 
                           <div class="col-12 col-md-4">
-                            <SCard class="preview-mini-card">
-                              <s-card-section>
+                            <s-card class="preview-mini-card">
+                              <q-card-section>
                                 Card 3
-                              </s-card-section>
-                            </SCard>
+                              </q-card-section>
+                            </s-card>
                           </div>
                         </div>
 
@@ -560,8 +560,8 @@
                           Hover, ripple, transições e animações de card são
                           refletidos aqui conforme a tab Animation.
                         </div>
-                      </s-card-section>
-                    </SCard>
+                      </q-card-section>
+                    </s-card>
                   </q-page>
                 </transition>
               </q-page-container>
@@ -569,7 +569,7 @@
           </div>
         </div>
       </div>
-    </s-card-section>
+    </q-card-section>
   </s-card>
 
   <q-dialog
@@ -578,17 +578,17 @@
     :transition-hide="dialogTransition"
   >
     <s-card style="min-width: 350px">
-      <s-card-section>
+      <q-card-section>
         Alterar cor: {{ selectedKey }}
-      </s-card-section>
+      </q-card-section>
 
-      <s-card-section>
+      <q-card-section>
         <q-color
           v-model="tempColor"
           format-model="hex"
           @update:model-value="previewColor"
         />
-      </s-card-section>
+      </q-card-section>
 
       <s-card-actions align="right">
         <s-btn flat label="Cancelar" v-close-popup />

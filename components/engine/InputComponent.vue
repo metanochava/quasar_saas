@@ -30,7 +30,7 @@ import { UserStore } from "./../../stores/AuthStore"
 
 export default defineComponent({
 
-  name:"SInput",
+  name:"s-input",
   inheritAttrs:false,
 
   setup(){

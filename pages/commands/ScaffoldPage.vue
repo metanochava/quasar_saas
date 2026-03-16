@@ -10,18 +10,18 @@
     <div class="row">
       <s-card flat bordered class="col">
 
-        <s-card-section class="text-subtitle1" dense>
+        <q-card-section class="text-subtitle1" dense>
           <div class="row items-center  sticky-header">
             <div class="text-h5"> ⚡ Scaffold Command Wizard</div>
             <q-space/>
             <s-btn flat icon="visibility" label="Preview" @click="generatePreview" />
             <s-btn color="primary" icon="save" label="Create / Update" @click="submit" />
           </div>
-        </s-card-section>
+        </q-card-section>
 
         <q-separator/>
 
-        <s-card-section>
+        <q-card-section>
 
           <div class="row  q-col-gutter-md ">
             <div class="col">
@@ -101,7 +101,7 @@
               <s-btn class="full-width" color="primary" icon="refresh"  label="Reload Model" @click="reloadModelShema" />
             </div>
           </div>
-        </s-card-section>
+        </q-card-section>
       </s-card>
     </div>
     <div class="row q-col-gutter-md">
@@ -111,11 +111,11 @@
         <!-- ================= FIELDS ================= -->
         <s-card flat bordered class=" q-mt-md" dense>
 
-          <s-card-section class="row items-center" dense>
+          <q-card-section class="row items-center" dense>
             <div class="text-subtitle1" dense>📋 Fields</div>
             <q-space/>
             <s-btn dense icon="add" @click="addField" />
-          </s-card-section>
+          </q-card-section>
 
           <q-separator/>
 
@@ -249,7 +249,7 @@
                 
               
                 <s-card flat bordered class=" q-mt-md"  v-if="!(['ForeignKey','OneToOneField','ManyToManyField','FileField', 'ImageField', 'TextField'].includes(f.type))" >
-                  <s-card-section>
+                  <q-card-section>
                     ♋️ Choices
                     <div class="row q-col-gutter-sm q-pa-0">
                       <div class="col">
@@ -303,7 +303,7 @@
                         </q-item-section>
                       </q-item>
                     </q-list>
-                  </s-card-section>
+                  </q-card-section>
                 </s-card>
                 
                 <!-- RELATION -->
@@ -358,7 +358,7 @@
 
         <!-- ================= actions ================= -->
         <s-card flat bordered class="q-mt-md" v-if="accaoTeste">
-          <s-card-section class="row q-col-gutter-sm q-gutter-s">
+          <q-card-section class="row q-col-gutter-sm q-gutter-s">
             <div class="text-h6 text-grey col-12">🔐 Extra actions of {{ form.modulo }}.{{form.modelo}}</div>
             <div class="col-12">
               <q-select
@@ -435,7 +435,7 @@
               </q-tooltip>
             </q-chip>
             
-          </s-card-section>
+          </q-card-section>
           
         </s-card>
 

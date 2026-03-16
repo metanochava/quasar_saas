@@ -103,11 +103,11 @@ function apply() {
       <q-separator />
 
       <!-- BODY -->
-      <s-card-section v-if="!schema.length">
+      <q-card-section v-if="!schema.length">
         <q-spinner />
-      </s-card-section>
+      </q-card-section>
 
-      <s-card-section v-else>
+      <q-card-section v-else>
           <!-- form normal -->
 
         <q-tabs v-model="tab" dense>
@@ -149,7 +149,7 @@ function apply() {
 
         </q-tab-panels>
 
-      </s-card-section>
+      </q-card-section>
 
       <q-separator />
 

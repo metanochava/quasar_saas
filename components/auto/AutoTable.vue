@@ -169,7 +169,7 @@ async function executeAction() {
   <q-dialog v-model="showConfirm">
     <s-card style="min-width: 400px">
 
-      <s-card-section class="row items-center q-gutter-sm">
+      <q-card-section class="row items-center q-gutter-sm">
         <q-icon
           :name="actionType === 'hard_delete' ? 'warning' : 'help'"
           :color="actionType === 'hard_delete' ? 'red' : 'orange'"
@@ -178,9 +178,9 @@ async function executeAction() {
         <div class="text-h6">
           {{ actionType === 'hard_delete' ? 'Eliminar permanentemente?' : 'Confirmar eliminação?' }}
         </div>
-      </s-card-section>
+      </q-card-section>
 
-      <s-card-section>
+      <q-card-section>
         <div>
           {{tdc('Tens certeza que queres eliminar:')}}
         </div>
@@ -192,7 +192,7 @@ async function executeAction() {
         <div v-if="actionType === 'hard_delete'" class="text-red q-mt-sm">
           ⚠️ {{ tdc('Esta ação é irreversível') }}
         </div>
-      </s-card-section>
+      </q-card-section>
 
       <s-card-actions align="right">
         <s-btn flat label="Cancelar" v-close-popup />

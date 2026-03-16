@@ -32,7 +32,7 @@ import { UserStore } from "./../../stores/AuthStore"
 
 export default defineComponent({
 
-  name:"SCard",
+  name:"s-card",
   inheritAttrs:false,
 
   setup(){

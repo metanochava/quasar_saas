@@ -36,7 +36,7 @@ import { UserStore } from "./../../stores/AuthStore"
 
 export default defineComponent({
 
-  name:"SBtn",
+  name:"s-btn",
   inheritAttrs:false,
 
   setup(){

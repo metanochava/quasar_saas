@@ -3,18 +3,18 @@
   <q-page class=" row items-center justify-evenly" >
       <s-card square  flat class="text-center" style="max-width: 300px">
         <AllLogo />
-        <s-card-section class="text-left justify-evenly">
+        <q-card-section class="text-left justify-evenly">
           <s-card  v-if="User.loginMsg == 'error'" class="my-card bg-red text-white">
-            <s-card-section>
+            <q-card-section>
               <div class="text-subtitle2">{{ tdc('Incorrect username or password entered') }} <br> {{ tdc('please try again') }}</div>
-            </s-card-section>
+            </q-card-section>
 
           </s-card>
           <s-card  v-if="User.loginMsg == 'good'" class="my-card bg-green text-white">
-            <s-card-section>
+            <q-card-section>
               <div class="text-subtitle2"> {{ tdc('Login successfuly') }} <br>
                 {{ tdc('Redirect to home page') }}...</div>
-            </s-card-section>
+            </q-card-section>
 
           </s-card>
           <br>
@@ -51,7 +51,7 @@
             <q-checkbox  class="text-grey-7" dense   clearable v-model="User.manterLogado"  @click="check" :label="tdc('Manter-me logado')">
             </q-checkbox>
           </q-form>
-        </s-card-section>
+        </q-card-section>
 
         <s-card-actions class="q-px-md" >
           <s-btn  :readonly="User.loading" :disable="User.loading"

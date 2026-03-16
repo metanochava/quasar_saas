@@ -7,9 +7,9 @@ import TDrawer from './../components/engine/DrawerComponent.vue'
 
 export default boot(({ app }) => {
 
-  app.component('SBtn', TBtn)
-  app.component('SCard', TCard)
-  app.component('SInput', TInput)
+  app.component('s-btn', TBtn)
+  app.component('s-card', TCard)
+  app.component('s-input', TInput)
   app.component('SDrawer', TDrawer)
 
 })
