@@ -37,11 +37,8 @@
     }"
 
     @filter="onFilter"
-
   >
-
     <slot/>
-
   </q-select>
 
 </template>
@@ -75,7 +72,6 @@ export default defineComponent({
       type:Number,
       default:0
     }
-
   },
 
   emits:["update:modelValue"],
@@ -94,6 +90,36 @@ export default defineComponent({
 
     const cache = {}
 
+    // --------------------------
+    // 🔧 HELPERS (CORE FIX)
+    // --------------------------
+
+    const getLabel = (o) => {
+      if (!o) return ""
+
+      if (typeof o === "string") return o
+
+      if (typeof o.label === "string") return o.label
+      if (typeof o.name === "string") return o.name
+      if (typeof o.nome === "string") return o.nome
+
+      return ""
+    }
+
+    const normalizeOption = (o) => ({
+      label: tdc(getLabel(o)),
+      value: o?.id ?? o?.value ?? o,
+      raw: o
+    })
+
+    const normalizedOptions = computed(() =>
+      (props.options || []).map(normalizeOption)
+    )
+
+    // --------------------------
+    // 🔁 WATCHERS
+    // --------------------------
+
     watch(localValue,(v)=>{
       emit("update:modelValue",v)
     })
@@ -106,6 +132,10 @@ export default defineComponent({
       fetchOptions("")
     })
 
+    // --------------------------
+    // 🌐 API FETCH
+    // --------------------------
+
     const fetchOptions = async(search)=>{
 
       if(!props.api) return
@@ -117,24 +147,29 @@ export default defineComponent({
 
       loading.value = true
 
-      const r = await HTTPAuth.get(props.api,{
-        params:{search}
-      })
+      try{
+        const r = await HTTPAuth.get(props.api,{
+          params:{search}
+        })
 
-      const data = r.data.results ?? r.data
+        const data = r.data.results ?? r.data
 
-      optionsList.value = data.map(o=>({
+        optionsList.value = (data || []).map(normalizeOption)
 
-        label: tdc(o.label ?? o.name ?? o.nome),
-        value: o.id ?? o.value ?? o
+        cache[search] = optionsList.value
 
-      }))
-
-      cache[search] = optionsList.value
+      }catch(e){
+        console.error("Select API error:", e)
+        optionsList.value = []
+      }
 
       loading.value=false
 
     }
+
+    // --------------------------
+    // 🔍 FILTER
+    // --------------------------
 
     const onFilter=(val,update)=>{
 
@@ -146,7 +181,11 @@ export default defineComponent({
 
         }else{
 
-          optionsList.value = props.options.filter(o=> (o.label ?? o)?.toLowerCase()?.includes(val.toLowerCase()))
+          const search = (val || "").toLowerCase()
+
+          optionsList.value = normalizedOptions.value.filter(o =>
+            o.label.toLowerCase().includes(search)
+          )
 
         }
 
@@ -154,15 +193,23 @@ export default defineComponent({
 
     }
 
+    // --------------------------
+    // 🚀 INIT
+    // --------------------------
+
     onMounted(()=>{
 
       if(props.api){
         fetchOptions("")
       }else{
-        optionsList.value = props.options
+        optionsList.value = normalizedOptions.value
       }
 
     })
+
+    // --------------------------
+    // 🌍 TRANSLATIONS
+    // --------------------------
 
     const translatedLabel = computed(()=>{
       return attrs.label ? tdc(attrs.label) : undefined
