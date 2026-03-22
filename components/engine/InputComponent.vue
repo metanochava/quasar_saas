@@ -213,9 +213,5 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* 🔥 ESSENCIAL: aplicar no elemento certo do Quasar */
-.s-input :deep(.q-field__control) {
-  background: var(--input-bg);
-  border-color: var(--input-border);
-}
+
 </style>
