@@ -264,12 +264,17 @@ export const UserStore = defineStore("user", {
 
       console.log(this.LayoutSettings.border_radius)
       console.log(this.LayoutSettings.square)
+
       if (this.LayoutSettings.border_radius) {
         radius = this.LayoutSettings.border_radius
-      } else if (this.LayoutSettings.square) {
-        radius = "0px"
-      } else if (this.LayoutSettings.rounded) {
+      }
+       
+      if (this.LayoutSettings.rounded) {
         radius = "16px"
+      }
+
+      if (this.LayoutSettings.square) {
+        radius = "0px"
       }
 
       root.style.setProperty("--s-radius", radius)
