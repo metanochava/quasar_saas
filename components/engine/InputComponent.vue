@@ -73,7 +73,7 @@ export default defineComponent({
     // --------------------------
 
     const applyTheme = (v) => {
-      document.documentElement.style.setProperty("--s-radius")
+      
     }
 
     watch(layout, applyTheme, { immediate: true, deep: true })
