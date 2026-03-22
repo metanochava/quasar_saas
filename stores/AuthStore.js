@@ -262,6 +262,8 @@ export const UserStore = defineStore("user", {
       // 👉 BORDER RADIUS (🔥 AQUI ESTÁ O QUE FALTAVA)
       let radius = "4px"
 
+      console.log(this.LayoutSettings.border_radius)
+      console.log(this.LayoutSettings.square)
       if (this.LayoutSettings.border_radius) {
         radius = this.LayoutSettings.border_radius
       } else if (this.LayoutSettings.square) {
@@ -273,7 +275,7 @@ export const UserStore = defineStore("user", {
       root.style.setProperty("--s-radius", radius)
 
       // 👉 INPUT COLORS
-      root.style.setProperty("--input-bg", this.Theme.input_background || "#fff")
+      root.style.setProperty("--input-bg", this.Theme.input_background || "#f6d7d7ff")
       root.style.setProperty("--input-border", this.Theme.input_border || "#ccc")
       root.style.setProperty("--input-focus", this.Theme.input_focus || "#1976D2")
 
