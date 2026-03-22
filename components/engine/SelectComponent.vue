@@ -9,7 +9,6 @@
     input-debounce="300"
 
     :options="optionsList"
-
     :loading="loading"
 
     :multiple="attrs.multiple"
@@ -17,18 +16,17 @@
 
     :label="translatedLabel"
     :placeholder="translatedPlaceholder"
-    :hint="translatedHint"
-    :error-message="translatedError"
 
     :dense="attrs.dense ?? layout.input_dense"
 
     :outlined="attrs.outlined ?? layout.input_style === 'outlined'"
     :filled="attrs.filled ?? layout.input_style === 'filled'"
-    :standout="attrs.standout ?? layout.input_style === 'standout'"
 
-    :class="[ attrs.class]"
+    :class="attrs.class"
 
     @filter="onFilter"
+
+    @virtual-scroll="onScroll"
   >
     <slot/>
   </q-select>
@@ -36,7 +34,6 @@
 </template>
 
 <script>
-
 import { defineComponent, computed, useAttrs, ref, watch, onMounted } from "vue"
 import { UserStore } from "../../stores/AuthStore"
 import { tdc } from "../../boot/base"
@@ -49,21 +46,8 @@ export default defineComponent({
 
   props:{
     modelValue:[String,Number,Object,Array],
-
-    options:{
-      type:Array,
-      default:()=>[]
-    },
-
-    api:{
-      type:String,
-      default:null
-    },
-
-    reload:{
-      type:Number,
-      default:0
-    }
+    options:Array,
+    api:String
   },
 
   emits:["update:modelValue"],
@@ -80,57 +64,15 @@ export default defineComponent({
     const optionsList = ref([])
     const loading = ref(false)
 
-    const cache = {}
+    const nextPageUrl = ref(null)
+    const searchRef = ref("")
+    const loadingMore = ref(false)
 
     // --------------------------
-    // 🎨 THEME ENGINE (🔥 FINAL)
-    // --------------------------
-
-    const applyTheme = (v) => {
-
-      let radius = "4px" // fallback
-
-      // prioridade 1 → valor direto do backend
-      if (v?.border_radius) {
-        radius = v.border_radius
-      }
-
-      // prioridade 2 → modo
-      else {
-        switch (v?.mode) {
-
-          case "square":
-            radius = "0px"
-            break
-
-          case "rounded":
-            radius = "16px"
-            break
-
-          case "soft":
-            radius = "8px"
-            break
-
-          case "pill":
-            radius = "999px"
-            break
-
-          default:
-            radius = "4px"
-        }
-      }
-
-      document.documentElement.style.setProperty("--s-radius", radius)
-    }
-
-    watch(layout, applyTheme, { immediate: true, deep: true })
-
-    // --------------------------
-    // 🔑 OPTION CONFIG
+    // 🔑 LABEL
     // --------------------------
 
     const optionLabelKey = computed(() => attrs["option-label"])
-    const optionValueKey = computed(() => attrs["option-value"])
 
     const getLabel = (o) => {
       if (!o) return ""
@@ -143,14 +85,11 @@ export default defineComponent({
         return o?.[optionLabelKey.value] ?? ""
       }
 
-      if (typeof o === "string") return o
-      if (typeof o.label === "string") return o.label
-
-      return ""
+      return o?.label ?? ""
     }
 
     // --------------------------
-    // 🔁 WATCHERS
+    // 🔁 MODEL
     // --------------------------
 
     watch(localValue,(v)=>{
@@ -161,42 +100,44 @@ export default defineComponent({
       localValue.value=v
     })
 
-    watch(()=>props.reload,()=>{
-      fetchOptions("")
-    })
-
     // --------------------------
-    // 🌐 API FETCH
+    // 🌐 FETCH PAGE
     // --------------------------
 
-    const fetchOptions = async(search)=>{
+    const fetchPage = async(urlOverride = null, search = "") => {
 
-      if(!props.api) return
-
-      if(cache[search]){
-        optionsList.value = cache[search]
-        return
-      }
+      if (!props.api && !urlOverride) return
 
       loading.value = true
 
       try{
-        const r = await HTTPAuth.get(props.api,{
-          params:{search}
+
+        const url = urlOverride || props.api
+
+        const r = await HTTPAuth.get(url,{
+          params: urlOverride ? {} : { search }
         })
 
-        const data = r.data.results ?? r.data
+        const data = r.data
 
-        optionsList.value = data || []
+        const results = data.results ?? data
 
-        cache[search] = optionsList.value
+        if (urlOverride) {
+          // append
+          optionsList.value = [...optionsList.value, ...results]
+        } else {
+          // reset
+          optionsList.value = results
+        }
+
+        nextPageUrl.value = data.next
 
       }catch(e){
-        console.error("Select API error:", e)
-        optionsList.value = []
+        console.error("Pagination error:", e)
       }
 
-      loading.value=false
+      loading.value = false
+      loadingMore.value = false
 
     }
 
@@ -204,23 +145,43 @@ export default defineComponent({
     // 🔍 FILTER
     // --------------------------
 
-    const onFilter=(val,update)=>{
+    const onFilter = (val, update) => {
 
-      update(async()=>{
+      update(async () => {
 
-        const search = (val || "").toLowerCase()
+        searchRef.value = val
 
-        if(props.api){
-          await fetchOptions(val)
-        }else{
+        if (props.api) {
+          await fetchPage(null, val)
+        } else {
+          const search = (val || "").toLowerCase()
+
           optionsList.value = (props.options || []).filter(o => {
-            const label = String(getLabel(o)).toLowerCase()
-            return label.includes(search)
+            return String(getLabel(o)).toLowerCase().includes(search)
           })
         }
 
       })
 
+    }
+
+    // --------------------------
+    // 📜 SCROLL (INFINITE)
+    // --------------------------
+
+    const onScroll = async ({ to }) => {
+
+      if (!props.api) return
+
+      const lastIndex = optionsList.value.length - 1
+
+      // chegou perto do fim
+      if (to >= lastIndex - 5 && nextPageUrl.value && !loadingMore.value) {
+
+        loadingMore.value = true
+
+        await fetchPage(nextPageUrl.value, searchRef.value)
+      }
     }
 
     // --------------------------
@@ -230,15 +191,15 @@ export default defineComponent({
     onMounted(()=>{
 
       if(props.api){
-        fetchOptions("")
+        fetchPage()
       }else{
-        optionsList.value = props.options
+        optionsList.value = props.options || []
       }
 
     })
 
     // --------------------------
-    // 🌍 TRANSLATIONS
+    // 🌍 UI
     // --------------------------
 
     const translatedLabel = computed(()=>{
@@ -249,30 +210,18 @@ export default defineComponent({
       return attrs.placeholder ? tdc(attrs.placeholder) : undefined
     })
 
-    const translatedHint = computed(()=>{
-      return attrs.hint ? tdc(attrs.hint) : undefined
-    })
-
-    const translatedError = computed(()=>{
-      return attrs["error-message"] ? tdc(attrs["error-message"]) : undefined
-    })
-
     const selectAttrs = computed(()=>{
 
       const {
         label,
         placeholder,
-        hint,
-        "error-message": errorMessage,
         ...rest
       } = attrs
 
       return rest
-
     })
 
     return{
-
       attrs,
       layout,
 
@@ -283,20 +232,14 @@ export default defineComponent({
 
       translatedLabel,
       translatedPlaceholder,
-      translatedHint,
-      translatedError,
 
       selectAttrs,
 
-      onFilter
-
+      onFilter,
+      onScroll
     }
 
   }
 
 })
 </script>
-
-<style scoped>
-
-</style>

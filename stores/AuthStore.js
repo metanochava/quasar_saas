@@ -235,7 +235,7 @@ export const UserStore = defineStore("user", {
       })
     },
     setSettings(){
-      console.log('mestura')
+      console.log(this.LayoutSettings)
 
       /* =========================
         🌙 DARK MODE
@@ -268,7 +268,7 @@ export const UserStore = defineStore("user", {
       if (this.LayoutSettings.border_radius) {
         radius = this.LayoutSettings.border_radius
       }
-       
+
       if (this.LayoutSettings.rounded) {
         radius = "16px"
       }
