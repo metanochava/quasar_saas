@@ -163,7 +163,7 @@ async function save() {
         <q-spinner />
       </q-card-section>
 
-      <q-card-section v-else class="row">
+      <q-card-section v-else class="row q-col-gutter-sm">
         
         <div v-for="f in generalFields" :key="f.name" class="col-6">
               <component

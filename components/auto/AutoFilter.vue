@@ -97,7 +97,7 @@ function apply() {
         <q-spinner />
       </q-card-section>
 
-      <q-card-section v-else class="row">
+      <q-card-section v-else class="row q-col-gutter-sm">
 
         <div v-for="f in basicFields" :key="f.name" class="col-4">
               <component

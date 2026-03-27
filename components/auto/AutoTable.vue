@@ -364,11 +364,6 @@ async function executeAction() {
                 <q-item-section>Editar</q-item-section>
               </q-item>
 
-
-
-
-
-
               <!-- DELETE -->
               <q-item v-if="canDo('delete_'+model.toLowerCase()) && !isDeleted(props.row)" clickable @click="confirmAction('delete', props.row)">
                 <q-item-section avatar>
@@ -467,16 +462,19 @@ async function executeAction() {
   </q-table>
 </template>
 
-<style scoped>
+<style>
 
-  .row-even {
-    /* background-color: #fafafa; */
-    background-color: var(--q-primary);
-    opacity: 0.2,
-  }
+.row-even1 {
+  background-color: var(--q-primary);
+  opacity: 0.2;
+}
 
-  .row-odd {
-    background-color: #ffffff;
-  }
- 
+.row-even {
+  background-color: color-mix(in srgb, var(--q-primary) 10%, white);
+}
+
+.row-odd {
+  background-color: #ddfffd;
+}
+
 </style>
