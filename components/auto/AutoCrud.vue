@@ -57,7 +57,8 @@ const props = defineProps({
   module: { type: String, required: true },
   model: { type: String, required: true },
   can: { type: Function, default: null },
-  schemaPath: { type: String, default: 'fields' }
+  schemaPath: { type: String, default: 'fields' },
+  ignoreFields: { type: Array, default: ['id', 'created_at','updated_at', 'created_by', 'updated_by'] } 
 })
 
 // --- state ---
@@ -108,6 +109,7 @@ async function init() {
     module: props.module,
     model: props.model,
     schemaPath: props.schemaPath,
+    ignoreFields: props.schemaPath,
   })
 
   try {

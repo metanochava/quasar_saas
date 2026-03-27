@@ -230,7 +230,7 @@ async function executeAction() {
       <div class="row col-12 items-center justify-between q-mb-md">
 
         <!-- LEFT -->
-        <div class="text-h5">{{ model }}</div>
+        <div class="text-h5 text-primary">{{ model }}</div>
 
         <!-- RIGHT -->
         <div class="row q-gutter-sm">
@@ -268,9 +268,9 @@ async function executeAction() {
             label="Colunas"
           />
 
-          <s-btn v-if="show_filter" flat icon="filter_list" @click="emit('filter')" />
-          <s-btn v-if="show_filter" flat icon="refresh" @click="emit('refresh')" />
-          <s-btn v-if="show_filter" flat icon="download" @click="exportCSV" />
+          <s-btn v-if="show_filter" dense flat icon="filter_list" @click="emit('filter')" />
+          <s-btn v-if="show_filter" dense flat icon="refresh" @click="emit('refresh')" />
+          <s-btn v-if="show_filter" dense flat icon="download" @click="exportCSV" />
 
           <s-btn  flat :icon="show_filter? 'arrow_forward' : 'arrow_back'"  @click=" show_filter = !show_filter" >
             <q-tooltip>{{tdc('Mostar Filtros')}} </q-tooltip>
@@ -279,8 +279,6 @@ async function executeAction() {
           <s-input
             icon="search"
             v-model="search"
-            dense
-            outlined
             style="min-width:200px"
             :label="tdc('Search')"
             @keyup.enter="emit('search', search)"
@@ -295,33 +293,6 @@ async function executeAction() {
       </div>
     </template>
 
-    <!-- 🔥 INLINE EDIT -->
-    <template #body-cell="props">
-      <q-td :props="props">
-
-        <template v-if="props.col.name !== '__actions' && isEditable(props.col.name)">
-          <q-popup-edit
-            :model-value="props.value"
-            auto-save
-            v-slot="scope"
-            @save="val => emit('inline-patch', {
-              id: props.row.id,
-              field: props.col.field,
-              value: val
-            })"
-          >
-            <s-input v-model="scope.value" dense autofocus />
-          </q-popup-edit>
-
-          <span class="cursor-pointer">{{ props.value }}</span>
-        </template>
-
-        <template v-else>
-          {{ props.value }}
-        </template>
-
-      </q-td>
-    </template>
 
     <!-- 🔥 ACTIONS -->
     <template #body-cell-__actions="props">
@@ -408,6 +379,34 @@ async function executeAction() {
 
           </q-menu>
         </s-btn>
+
+      </q-td>
+    </template>
+
+    <!-- 🔥 INLINE EDIT -->
+    <template #body-cell="props">
+      <q-td :props="props">
+
+        <template v-if="props.col.name !== '__actions' && isEditable(props.col.name)">
+          <q-popup-edit
+            :model-value="props.value"
+            auto-save
+            v-slot="scope"
+            @save="val => emit('inline-patch', {
+              id: props.row.id,
+              field: props.col.field,
+              value: val
+            })"
+          >
+            <s-input v-model="scope.value" dense autofocus />
+          </q-popup-edit>
+
+          <span class="cursor-pointer">{{ props.value }}</span>
+        </template>
+
+        <template v-else>
+          {{ props.value }}
+        </template>
 
       </q-td>
     </template>

@@ -82,7 +82,7 @@
 
     <!-- -------------------- RIGHT DRAWER -------------------- -->
     <s-drawer v-model="User.RightTop" side="right" bordered :width="300">
-      <q-scroll-area class="fit">
+      <q-scroll-area class="fit" :thumb-style="thumbStyle" :bar-style="barStyle">
         <RightMenu />
       </q-scroll-area>
     </s-drawer>

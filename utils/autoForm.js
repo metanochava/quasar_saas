@@ -117,16 +117,12 @@ export async function buildFormFromSchema({
   moneyMask = '#.##0,00',       // se usares mask monetária custom
 } = {}) {
 
-  console.log(module +' '+ model)
-  // if (!module || !model) throw new Error('module/model required')
+  if (!module || !model) throw new Error('module/model required')
 
   const { data } = await HTTPAuth.get(url({type:'u', url:`api/django_resaas/modulos/${module}/${model}/schema/`, params:{}}))
 
   // ✅ resolve schemaPath
-  const fields =
-    schemaPath === 'data.fields'
-      ? (data?.data?.fields || [])
-      : (data?.fields || [])
+  const fields = schemaPath === 'data.fields' ? (data?.data?.fields || []) : (data?.fields || [])
 
   const out = []
 

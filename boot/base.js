@@ -215,7 +215,7 @@ function matchCase(original, transformed) {
 
 export function guessLabelKey(obj) {
   // tenta achar um campo “humano” pra label
-  const candidates = ['nome', 'name', 'titulo', 'title', 'descricao', 'description', 'username', 'email']
+  const candidates = ['label','nome', 'name', 'titulo', 'title', 'descricao', 'description', 'username', 'email']
   for (const k of candidates) if (obj && obj[k]) return k
   return 'id'
 }
