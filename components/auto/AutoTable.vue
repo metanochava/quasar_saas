@@ -306,6 +306,7 @@ async function executeAction() {
             :options="['dense','normal']"
             dense
             outlined
+            :label=density
             style="width:120px"
           />
 
@@ -480,8 +481,6 @@ async function executeAction() {
 
         <template v-else>
           {{ props.value }}
-
-          {{ props }}
         </template>
 
       </q-td>
