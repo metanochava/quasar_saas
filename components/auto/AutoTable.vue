@@ -69,7 +69,7 @@ const singularActions = computed(() =>
 const geralActions = computed(() =>
   (props.actions || []).filter(c => c.details === false || c.details === 'false')
 )
-const density = ref('normal')
+const density = ref('')
 const objects = ref('Activos')
 const objectsOptions = [
   { label: 'Activos', value: 'alive' },
@@ -268,7 +268,7 @@ async function executeAction() {
     :loading="loading"
     :pagination="localPagination"
     :visible-columns="effectiveColumns"
-    :dense="density === 'dense'"
+    :dense="density === 'normal'"
     row-key="id"
     @request="onRequest"
 
@@ -452,7 +452,8 @@ async function executeAction() {
         <template v-else-if="props.col.name === 'estado'">
           <s-btn
             dense
-            :color="props.row.estado == 1 ? 'primary' : 'secondary'"
+            size="xs"
+            :color="props.row.estado == 1 ? 'positive' : 'negative'"
             :label="props.row.estado == 1 ? 'Activo' : 'Inactivo'"
             @click="() => toggleEstado(props.row)"
           >
@@ -479,6 +480,8 @@ async function executeAction() {
 
         <template v-else>
           {{ props.value }}
+
+          {{ props }}
         </template>
 
       </q-td>
