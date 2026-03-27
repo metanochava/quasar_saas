@@ -279,7 +279,7 @@ async function executeAction() {
           <s-btn v-if="show_filter" dense flat icon="refresh" @click="emit('refresh')" />
           <s-btn v-if="show_filter" dense flat icon="download" @click="exportCSV" />
 
-          <s-btn  flat :icon="show_filter? 'arrow_forward' : 'arrow_back'"  @click=" show_filter = !show_filter" >
+          <s-btn  flat dense :icon="show_filter? 'arrow_forward' : 'arrow_back'"  @click=" show_filter = !show_filter" >
             <q-tooltip>{{tdc('Mostar Filtros')}} </q-tooltip>
           </s-btn>
 
@@ -291,6 +291,7 @@ async function executeAction() {
             @keyup.enter="emit('search', search)"
           />
           <s-btn
+            dense
             icon="add"
             color="primary"
             @click="emit('create')"
