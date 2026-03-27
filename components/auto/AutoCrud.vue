@@ -97,16 +97,8 @@ const columns = computed(() => {
 
   base.push({ name: '__actions', label: 'Ações', field: '__actions', sortable: false })
 
-  const columns = [
-
-    {
-      name: '__actions',
-      label: 'Ações',
-      field: '__actions',
-      sortable: false
-    },
-    ...base
-  ]
+  const columns = [ {  name: '__actions',label: 'Ações', field: '__actions', sortable: false  }, ...base ]
+    
   return columns
 })
 
