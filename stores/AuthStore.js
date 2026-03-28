@@ -733,7 +733,7 @@ export const useUserStore = defineStore("user", {
       return lay
     },
 
-    async setTipoEntidadeLayoutSettings () {
+    async TipoEntidadeLayoutSettings () {
       const useTipoEntidadeStore = useTipoEntidadeStore()
       if (getStorage('l', 'userTipoEntidade') !== null) {
 
