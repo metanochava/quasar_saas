@@ -453,7 +453,7 @@ async function executeAction() {
         <template v-else-if="props.col.name === 'estado'">
           <s-btn
             dense
-            size="xs"
+            size="sm"
             :color="props.row.estado == 1 ? 'positive' : 'negative'"
             :label="props.row.estado == 1 ? 'Activo' : 'Inactivo'"
             @click="() => toggleEstado(props.row)"
