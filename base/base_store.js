@@ -2,6 +2,63 @@ import { defineStore } from 'pinia'
 import { buildFormFromSchema } from './../utils/autoForm'
 import { HTTPAuth, url, HTTPAuthBlob } from '../services/api'
 
+// Mesma normalização de FormComponent.vue's normalizeValue() - uma
+// relação já resolvida no form como {id, ...}/{value, ...} tem de
+// virar só o id/value antes de seguir para a API.
+function normalizeFieldValue(v) {
+  if (v instanceof File) return v
+
+  if (Array.isArray(v)) {
+    return v.map(x => {
+      if (x && typeof x === 'object') {
+        if ('value' in x) return x.value
+        if ('id' in x) return x.id
+      }
+      return x
+    })
+  }
+
+  if (v && typeof v === 'object') {
+    if ('value' in v) return v.value
+    if ('id' in v) return v.id
+  }
+
+  return v
+}
+
+// Um form pode conter um File (ex.: s-upload/s-image-capture) mesmo
+// quando a página não passa por FormComponent.vue's próprio
+// buildPayload() - por exemplo, PacienteSEPage monta Person.form
+// directamente a partir de personFormRef.value.form antes de chamar
+// Person.save(). Sem isto, um File dentro de `form` seguiria como
+// JSON (perdendo o ficheiro em silêncio) em vez de multipart.
+function hasFileValue(form) {
+  return Object.values(form || {}).some(v => v instanceof File)
+}
+
+function toFormData(form) {
+  const fd = new FormData()
+
+  Object.entries(form || {}).forEach(([key, value]) => {
+    if (value === null || value === undefined) return
+
+    const normalized = normalizeFieldValue(value)
+
+    if (Array.isArray(normalized)) {
+      normalized.forEach(item => fd.append(key, item))
+      return
+    }
+
+    fd.append(key, normalized)
+  })
+
+  return fd
+}
+
+function buildRequestPayload(form) {
+  return hasFileValue(form) ? toFormData(form) : form
+}
+
 export function createBaseStore(name, config, extend = {}) {
 
   // 🔥 IMMUTABLE CONFIG (NEVER CHANGES)
@@ -344,7 +401,7 @@ export function createBaseStore(name, config, extend = {}) {
         try {
           const { data } = await HTTPAuth.post(
             url({ type: 'u', url: this.safeUrl+'/' }),
-            this.form
+            buildRequestPayload(this.form)
           )
 
           this.row = data
@@ -388,7 +445,7 @@ export function createBaseStore(name, config, extend = {}) {
 
           const { data } = await HTTPAuth[httpMethod](
             url({ type: 'u', url: `${this.safeUrl}/${id}/` }),
-            this.form
+            buildRequestPayload(this.form)
           )
 
           this.row = data

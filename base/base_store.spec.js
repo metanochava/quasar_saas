@@ -153,6 +153,84 @@ describe('createBaseStore - create()/remove() refresh the list from the server',
   })
 })
 
+describe('createBaseStore - a File in form is sent as multipart, not lost as JSON', () => {
+  // Pages that build `this.form` by hand (e.g. PacienteSEPage assigning
+  // Person.form = personFormRef.value.form before Person.save()) never go
+  // through FormComponent.vue's own buildPayload() - without this, a File
+  // picked/captured via s-upload/s-image-capture would silently vanish
+  // instead of failing loudly, since axios has no generic way to
+  // serialize a File as JSON.
+  it('create() sends the plain form object as-is when it has no File field', async () => {
+    httpPost.mockResolvedValue({ data: { id: 'new-1', name: 'New' } })
+    httpGet.mockResolvedValue({ data: { results: [], count: 0 } })
+
+    const useProductStore = createBaseStore('product-create-no-file', {
+      app: 'demo', model: 'Product',
+    })
+    const store = useProductStore()
+    store.form = { name: 'New' }
+
+    await store.create()
+
+    const sentPayload = httpPost.mock.calls[0][1]
+    expect(sentPayload instanceof FormData).toBe(false)
+    expect(sentPayload).toEqual({ name: 'New' })
+  })
+
+  it('create() switches to FormData when a field is a File', async () => {
+    httpPost.mockResolvedValue({ data: { id: 'new-1' } })
+    httpGet.mockResolvedValue({ data: { results: [], count: 0 } })
+
+    const usePersonStore = createBaseStore('person-create-with-file', {
+      app: 'django_resaas', model: 'Person',
+    })
+    const store = usePersonStore()
+    const photo = new File(['x'], 'photo.jpg', { type: 'image/jpeg' })
+    store.form = { name: 'Joao', photo }
+
+    await store.create()
+
+    const sentPayload = httpPost.mock.calls[0][1]
+    expect(sentPayload instanceof FormData).toBe(true)
+    expect(sentPayload.get('name')).toBe('Joao')
+    expect(sentPayload.get('photo').name).toBe(photo.name)
+  })
+
+  it('update() also switches to FormData when a field is a File', async () => {
+    httpPatch.mockResolvedValue({ data: { id: 'p1' } })
+
+    const usePersonStore = createBaseStore('person-update-with-file', {
+      app: 'django_resaas', model: 'Person',
+    })
+    const store = usePersonStore()
+    const photo = new File(['x'], 'photo.jpg', { type: 'image/jpeg' })
+    store.form = { id: 'p1', name: 'Joao', photo }
+
+    await store.update()
+
+    const sentPayload = httpPatch.mock.calls[0][1]
+    expect(sentPayload instanceof FormData).toBe(true)
+    expect(sentPayload.get('photo').name).toBe(photo.name)
+  })
+
+  it('a relation already resolved as {id, ...} is reduced to its id inside the FormData', async () => {
+    httpPost.mockResolvedValue({ data: { id: 'new-1' } })
+    httpGet.mockResolvedValue({ data: { results: [], count: 0 } })
+
+    const usePacienteStore = createBaseStore('paciente-create-with-file', {
+      app: 'saude', model: 'Paciente',
+    })
+    const store = usePacienteStore()
+    const photo = new File(['x'], 'photo.jpg', { type: 'image/jpeg' })
+    store.form = { person: { id: 'person-1', name: 'Joao' }, photo }
+
+    await store.create()
+
+    const sentPayload = httpPost.mock.calls[0][1]
+    expect(sentPayload.get('person')).toBe('person-1')
+  })
+})
+
 describe('createBaseStore - update() defaults to PATCH', () => {
   it('update() uses PATCH by default', async () => {
     httpPatch.mockResolvedValue({ data: { id: '1', name: 'Patched' } })
