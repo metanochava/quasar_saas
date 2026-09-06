@@ -1,49 +1,49 @@
 <template>
-
-  <!-- 🔥 MODAL -->
-  <q-dialog v-model="permissionsModal">
-
+  <q-dialog v-model="permissionsModal" @hide="Permission.resetChanges">
     <q-card class="modal-card">
-
-      <!-- FIXED HEADER -->
       <div class="modal-header">
-        <q-bar :class="$q.dark.isActive ? 'bg-dark text-white' : ' bg-primary text-white'">
+        <q-bar
+          :class="
+            $q.dark.isActive
+              ? 'bg-dark text-white'
+              : 'bg-primary text-white'
+          "
+        >
           <div class="text-subtitle2">
-            Permissions - {{ Group?.row?.name }}
+            Permissions - {{ Group.row?.name }}
           </div>
+
           <q-space />
-          <s-btn dense flat icon="close" v-close-popup />
+          <s-btn v-close-popup dense flat icon="close" />
         </q-bar>
+
         <q-separator />
       </div>
 
-      <!-- BODY -->
       <q-card-section class="modal-body">
-        <!-- LOADING -->
         <div v-if="!ready" class="flex flex-center q-pa-lg">
           <q-spinner size="40px" color="primary" />
         </div>
 
-        <!-- CONTENT -->
-        
         <PermissionManager
           v-else
           :AllPermissions="permissions"
           :GroupPermissionsRe="Group.row?.permissions || []"
           :Group="Group.row"
+          @saved="onPermissionsSaved"
         />
-
       </q-card-section>
-
     </q-card>
-
   </q-dialog>
 
-  <!-- 🔥 MAIN CARD -->
   <s-card class="column full-height group-manager-card">
-
-    <!-- HEADER -->
-    <q-bar :class="$q.dark.isActive ? 'bg-dark text-white' : ' bg-primary text-white'">
+    <q-bar
+      :class="
+        $q.dark.isActive
+          ? 'bg-dark text-white'
+          : 'bg-primary text-white'
+      "
+    >
       <q-icon name="groups" size="22px" />
 
       <div class="text-subtitle1 text-weight-bold q-ml-sm">
@@ -56,14 +56,13 @@
         {{ Entity.selectedGroups.length }} active
       </q-badge>
 
-      <s-btn dense flat icon="close" v-close-popup>
+      <s-btn v-close-popup dense flat icon="close">
         <q-tooltip>Close</q-tooltip>
       </s-btn>
     </q-bar>
 
     <q-separator />
 
-    <!-- CREATE -->
     <q-card-section class="q-pa-md">
       <div class="row q-col-gutter-sm items-center">
         <div class="col">
@@ -97,7 +96,6 @@
 
     <q-separator />
 
-    <!-- FILTER -->
     <q-card-section class="q-pa-md">
       <q-input
         v-model="Entity.groupSearch"
@@ -112,45 +110,50 @@
       </q-input>
     </q-card-section>
 
-    <q-separator /> 
+    <q-separator />
 
-    <!-- LIST -->
     <q-card-section class="col scroll q-pa-none">
-
-      <div v-if="Entity.loadingGroups" class="flex flex-center q-pa-xl">
+      <div
+        v-if="Entity.loadingGroups"
+        class="flex flex-center q-pa-xl"
+      >
         <q-spinner color="primary" size="42px" />
       </div>
 
       <q-list v-else separator>
-
         <q-item
-          v-for="group in (Entity.filteredGroups || [])"
+          v-for="group in Entity.filteredGroups || []"
           :key="group?.id"
-          clickable
           v-ripple
+          clickable
           class="group-item"
-          :class="{ 'group-item--active': Entity.hasGroup(group.id) }"
+          :class="{
+            'group-item--active': Entity.hasGroup(group.id)
+          }"
           @click="Entity.toggleGroup(group)"
         >
-
           <q-item-section avatar>
             <q-avatar
-              :color="Entity.hasGroup(group.id) ? 'primary' : 'grey-4'"
-              :text-color="Entity.hasGroup(group.id) ? 'white' : 'dark'"
+              :color="
+                Entity.hasGroup(group.id)
+                  ? 'primary'
+                  : 'grey-4'
+              "
+              :text-color="
+                Entity.hasGroup(group.id)
+                  ? 'white'
+                  : 'dark'
+              "
               icon="group"
             />
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>
-              {{ group.name }}
-            </q-item-label>
+            <q-item-label>{{ group.name }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>
             <div class="row items-center q-gutter-sm">
-
-              <!-- 🔥 MODAL BUTTON -->
               <s-btn
                 icon="security"
                 size="sm"
@@ -162,74 +165,86 @@
               <q-chip
                 dense
                 size="sm"
-                :color="Entity.hasGroup(group.id) ? 'primary' : 'grey-5'"
+                :color="
+                  Entity.hasGroup(group.id)
+                    ? 'primary'
+                    : 'grey-5'
+                "
                 text-color="white"
               >
-                {{ Entity.hasGroup(group.id) ? 'Active' : 'Inactive' }}
+                {{
+                  Entity.hasGroup(group.id)
+                    ? 'Active'
+                    : 'Inactive'
+                }}
               </q-chip>
 
               <q-checkbox
                 :model-value="Entity.hasGroup(group.id)"
                 color="primary"
                 @click.stop
-                @update:model-value="() => Entity.toggleGroup(group)"
+                @update:model-value="Entity.toggleGroup(group)"
               />
-
             </div>
           </q-item-section>
-
         </q-item>
-
       </q-list>
-
     </q-card-section>
-
   </s-card>
-
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useEntityStore } from '../../stores/EntityStore'
+import { computed, onMounted, ref } from 'vue'
 
+import { useEntityStore } from '../../stores/EntityStore'
 import { useEntityTypeStore } from '../../stores/EntityTypeStore'
 import { useGroupStore } from '../../stores/GroupStore'
-import PermissionManager from '../permission/PermissionManager.vue'
+import { usePermissionStore } from '../../stores/PermissionStore'
 import { HTTPAuth, url } from '../../services/api'
+
+import PermissionManager from '../permission/PermissionManager.vue'
 
 const props = defineProps({
   entityId: [String, Number]
 })
 
-
 const Entity = useEntityStore()
-const EntityType = useEntityTypeStore() 
-
+const EntityType = useEntityTypeStore()
 const Group = useGroupStore()
+const Permission = usePermissionStore()
 
 const newGroup = ref('')
 const permissionsModal = ref(false)
 const permissions = ref([])
 const ready = ref(false)
 
-// 🔥 OPEN MODAL
+const canAdd = computed(() => Boolean(newGroup.value?.trim()))
+
 async function openPermissions(group) {
   permissionsModal.value = true
   ready.value = false
 
-  await Group.init()
-  await Group.getById(group.id)
- console.log(Entity)
-  const { data } = await HTTPAuth.get(
-    url({ type: 'u', url: 'django_resaas/entitytypes/'+ Entity.form.entity_type.id + '/permissions' })
-  )
+  try {
+    await Group.init()
+    await Group.getById(group.id)
 
-  permissions.value = data || []
+    const { data } = await HTTPAuth.get(
+      url({
+        type: 'u',
+        url: `django_resaas/entitytypes/${Entity.form.entity_type.id}/permissions`
+      })
+    )
 
-  ready.value = true
+    permissions.value = data || []
+  } finally {
+    ready.value = true
+  }
 }
 
-// 🔥 ADD GROUP
+function onPermissionsSaved(list) {
+  if (Group.row) Group.row.permissions = [...list]
+}
+
 async function addGroup() {
   const name = newGroup.value?.trim()
   if (!name) return
@@ -238,9 +253,6 @@ async function addGroup() {
   newGroup.value = ''
 }
 
-const canAdd = computed(() => newGroup.value?.trim().length > 0)
-
-// INIT
 onMounted(() => {
   Entity.loadGroups(props.entityId)
   EntityType.loadGroups(Entity.row.entity_type.id)
@@ -253,8 +265,8 @@ onMounted(() => {
 }
 
 .group-item {
-  transition: all 0.2s ease;
   border-left: 4px solid transparent;
+  transition: all 0.2s ease;
 }
 
 .group-item--active {
@@ -263,11 +275,11 @@ onMounted(() => {
 }
 
 .modal-card {
+  display: flex;
+  flex-direction: column;
   min-width: 70%;
   max-width: 90vw;
   height: 80vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .modal-header {

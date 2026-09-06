@@ -3,145 +3,190 @@ import { HTTPClient, url } from '../services/api'
 
 export const usePermissionStore = createBaseStore(
   'permission',
-  {
-    app: 'auth',
-    model: 'Permission'
-  },
+  { app: 'auth', model: 'Permission' },
   {
     state: () => ({
       allPermissions: [],
       groupPermissions: [],
+      originalGroupPermissions: [],
       group: null,
-
       apps: {},
       search: '',
-      loadingPermission: false
+      loadingPermission: false,
+      dirty: false
     }),
 
     actions: {
-
-      // INIT
       initPermissions(all, groupPerms, group) {
-        this.allPermissions = all || []
-        this.groupPermissions = groupPerms || []
+        this.allPermissions = [...(all || [])]
+        this.groupPermissions = [...(groupPerms || [])]
+        this.originalGroupPermissions = [...(groupPerms || [])]
         this.group = group || null
-
+        this.loadingPermission = false
+        this.dirty = false
         this.buildApps()
       },
 
-      // 🔥 FIXED BUILD (USES content_type.label)
       buildApps() {
         const search = (this.search || '').toLowerCase()
 
-        const list = this.allPermissions.filter(p => {
-          const label = (p.content_type?.label || '').toLowerCase()
-          const codename = (p.codename || '').toLowerCase()
+        const grouped = this.allPermissions
+          .filter((permission) => {
+            if (!search) return true
 
-          if (!search) return true
+            const label = (
+              permission.content_type?.label || ''
+            ).toLowerCase()
 
-          return label.includes(search) || codename.includes(search)
-        })
+            const codename = (
+              permission.codename || ''
+            ).toLowerCase()
 
-        const grouped = list.reduce((acc, item) => {
+            return label.includes(search) || codename.includes(search)
+          })
+          .reduce((apps, permission) => {
+            const [app = 'No App', model = 'No Model'] = (
+              permission.content_type?.label || 'No App | No Model'
+            )
+              .split('|')
+              .map((value) => value.trim())
 
-          // 🔥 EXTRACT APP AND MODEL FROM LABEL
-          const label = item.content_type?.label || 'No App | No Model'
-          const [app, model] = label.split('|').map(s => s.trim())
+            apps[app] ||= {}
+            apps[app][model] ||= []
+            apps[app][model].push(permission)
 
-          const appName = app || 'No App'
-          const modelName = model || 'No Model'
+            return apps
+          }, {})
 
-          if (!acc[appName]) acc[appName] = {}
-          if (!acc[appName][modelName]) acc[appName][modelName] = []
-
-          acc[appName][modelName].push(item)
-
-          return acc
-        }, {})
-
-        // 🔥 sort apps and models
         this.apps = Object.fromEntries(
           Object.entries(grouped)
             .sort(([a], [b]) => a.localeCompare(b))
             .map(([app, models]) => [
               app,
               Object.fromEntries(
-                Object.entries(models).sort(([a], [b]) => a.localeCompare(b))
+                Object.entries(models).sort(([a], [b]) =>
+                  a.localeCompare(b)
+                )
               )
             ])
         )
       },
 
       hasPermission(id) {
-        return this.groupPermissions.some(p => p.id === id)
+        return this.groupPermissions.some(
+          (permission) => String(permission.id) === String(id)
+        )
+      },
+
+      permissionState(permissions) {
+        const total = permissions.length
+        const checked = permissions.filter((permission) =>
+          this.hasPermission(permission.id)
+        ).length
+
+        return {
+          checked: total > 0 && checked === total,
+          indeterminate: checked > 0 && checked < total
+        }
       },
 
       appState(models) {
-        const all = Object.values(models).flat()
-        const total = all.length
-        const checked = all.filter(p => this.hasPermission(p.id)).length
-
-        return {
-          checked: checked === total && total > 0,
-          indeterminate: checked > 0 && checked < total
-        }
+        return this.permissionState(Object.values(models).flat())
       },
 
-      modelState(perms) {
-        const total = perms.length
-        const checked = perms.filter(p => this.hasPermission(p.id)).length
+      modelState(permissions) {
+        return this.permissionState(permissions)
+      },
 
-        return {
-          checked: checked === total && total > 0,
-          indeterminate: checked > 0 && checked < total
-        }
+      toggle(permission) {
+        if (!permission) return
+
+        this.groupPermissions = this.hasPermission(permission.id)
+          ? this.groupPermissions.filter(
+              (item) => String(item.id) !== String(permission.id)
+            )
+          : [...this.groupPermissions, permission]
+
+        this.updateDirtyState()
+      },
+
+      toggleModel(permissions, state) {
+        this.toggleMany(permissions, state)
       },
 
       toggleApp(models, state) {
-        Object.values(models).forEach(perms => {
-          perms.forEach(p => {
-            const has = this.hasPermission(p.id)
-
-            if (state && !has) this.toggle(p)
-            if (!state && has) this.toggle(p)
-          })
-        })
+        this.toggleMany(Object.values(models).flat(), state)
       },
 
-      async toggle(permission) {
-        if (!this.group) return
+      toggleMany(permissions, state) {
+        const selected = new Map(
+          this.groupPermissions.map((permission) => [
+            String(permission.id),
+            permission
+          ])
+        )
 
-        const exists = this.hasPermission(permission.id)
-        this.loadingPermission = true
-
-        const backup = [...this.groupPermissions]
-
-        try {
-          if (!exists) {
-            await HTTPClient.post(
-              url({ type: 'u', url: `auth/permissions/${permission.id}/addToGroup/` }),
-              { id: this.group.id }
-            )
-
-            this.groupPermissions = [...this.groupPermissions, permission]
-
-          } else {
-            await HTTPClient.post(
-              url({ type: 'u', url: `auth/permissions/${permission.id}/removeFromGroup/` }),
-              { id: this.group.id }
-            )
-
-            this.groupPermissions = this.groupPermissions.filter(
-              p => p.id !== permission.id
-            )
-          }
-
-        } catch (e) {
-          console.error(e)
-          this.groupPermissions = backup
+        for (const permission of permissions || []) {
+          const id = String(permission.id)
+          state ? selected.set(id, permission) : selected.delete(id)
         }
 
-        this.loadingPermission = false
+        this.groupPermissions = [...selected.values()]
+        this.updateDirtyState()
+      },
+
+      updateDirtyState() {
+        const ids = (permissions) =>
+          permissions.map(({ id }) => String(id)).sort()
+
+        const current = ids(this.groupPermissions)
+        const original = ids(this.originalGroupPermissions)
+
+        this.dirty =
+          current.length !== original.length ||
+          current.some((id, index) => id !== original[index])
+      },
+
+      resetChanges() {
+        this.groupPermissions = [...this.originalGroupPermissions]
+        this.dirty = false
+      },
+
+      async saveGroupPermissions() {
+        if (!this.group?.id) return false
+        if (!this.dirty) return true
+
+        this.loadingPermission = true
+
+        try {
+          const permissions = [
+            ...new Set(
+              this.groupPermissions.map((permission) => permission.id)
+            )
+          ]
+
+          await HTTPClient.post(
+            url({
+              type: 'u',
+              url: 'auth/permissions/setGroupPermissions/'
+            }),
+            {
+              group: this.group.id,
+              permissions
+            }
+          )
+
+          this.originalGroupPermissions = [...this.groupPermissions]
+          this.group.permissions = [...this.groupPermissions]
+          this.dirty = false
+
+          return true
+        } catch (error) {
+          console.error('Error saving group permissions:', error)
+          throw error
+        } finally {
+          this.loadingPermission = false
+        }
       }
     }
   }

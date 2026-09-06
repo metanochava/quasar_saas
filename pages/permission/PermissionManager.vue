@@ -1,117 +1,142 @@
 <template>
   <q-page class="column full-height">
-
-    <!-- HEADER -->
     <div class="q-pa-sm">
-      <q-input
-        dense outlined
-        v-model="Permission.search"
-        label="Search"
-        @update:model-value="Permission.buildApps"
-      >
-        <template #append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+      <div class="row q-col-gutter-sm items-center">
+        <div class="col">
+          <q-input
+            v-model="Permission.search"
+            dense
+            outlined
+            label="Search"
+            @update:model-value="Permission.buildApps"
+          >
+            <template #append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
+
+        <div class="col-auto">
+          <q-badge color="primary" outline class="q-pa-sm">
+            {{ Permission.groupPermissions.length }} permissions
+          </q-badge>
+        </div>
+      </div>
     </div>
 
     <q-separator />
 
-    <!-- BODY -->
     <div class="col scroll q-pa-sm">
-
       <q-card
         v-for="(models, appName) in Permission.apps"
         :key="appName"
         class="q-mb-sm"
-        flat bordered
+        flat
+        bordered
       >
         <q-expansion-item expand-separator>
-
-          <!-- APP -->
           <template #header>
             <q-item-section avatar>
               <q-checkbox
                 :model-value="Permission.appState(models).checked"
                 :indeterminate="Permission.appState(models).indeterminate"
-                @update:model-value="val => Permission.toggleApp(models, val)"
+                :disable="Permission.loadingPermission"
+                @update:model-value="Permission.toggleApp(models, $event)"
               />
             </q-item-section>
 
             <q-item-section>
-              <div class="text-bold text-primary">
-                {{ appName }}
-              </div>
+              <div class="text-bold text-primary">{{ appName }}</div>
               <div class="text-caption text-grey">
                 {{ Object.keys(models).length }} models
               </div>
             </q-item-section>
           </template>
 
-          <!-- MODELS -->
           <div
             v-for="(perms, modelName) in models"
             :key="modelName"
             class="q-pa-sm"
           >
             <div class="row items-center">
-
-              <!-- MODEL -->
               <div class="col-12 text-center">
                 <q-checkbox
                   :model-value="Permission.modelState(perms).checked"
                   :indeterminate="Permission.modelState(perms).indeterminate"
-                  @update:model-value="val => toggleModel(perms, val)"
+                  :disable="Permission.loadingPermission"
+                  @update:model-value="Permission.toggleModel(perms, $event)"
                 >
-                  <div>
-                    <div class="text-bold">{{ modelName }}
-                      <label class="text-grey">
-                        {{ perms.length }} permissions
-                      </label>
-                    </div>
+                  <div class="text-bold">
+                    {{ modelName }}
+                    <span class="text-grey">
+                      {{ perms.length }} permissions
+                    </span>
                   </div>
                 </q-checkbox>
               </div>
 
-              <!-- PERMISSIONS -->
               <div class="col-12 row q-gutter-sm">
                 <q-checkbox
                   v-for="perm in orderPermissions(perms)"
                   :key="perm.id"
                   :model-value="Permission.hasPermission(perm.id)"
-                  @update:model-value="() => Permission.toggle(perm)"
-                  :label="label(perm.codename, modelName )"
-                  dense
+                  :label="label(perm.codename, modelName)"
                   :disable="Permission.loadingPermission"
+                  dense
+                  @update:model-value="Permission.toggle(perm)"
                 />
               </div>
-
             </div>
 
             <q-separator class="q-my-sm" />
           </div>
-
         </q-expansion-item>
       </q-card>
-
     </div>
 
     <q-separator />
-     <!-- HEADER -->
-    <div class="q-pa-sm">
-      <q-input
-        dense outlined
-        v-model="Permission.search"
-        label="Search"
-        @update:model-value="Permission.buildApps"
-      >
-        <template #append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-    </div>
 
-    
+    <div class="q-pa-sm row items-center q-gutter-sm">
+      <div class="col">
+        <div
+          v-if="Permission.dirty"
+          class="text-caption text-orange text-weight-medium"
+        >
+          <q-icon name="edit" class="q-mr-xs" />
+          Unsaved permission changes
+        </div>
+
+        <div v-else class="text-caption text-positive">
+          <q-icon name="check_circle" class="q-mr-xs" />
+          Permissions saved
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <q-btn
+          flat
+          no-caps
+          icon="undo"
+          label="Cancel changes"
+          color="grey-7"
+          :disable="!Permission.dirty || Permission.loadingPermission"
+          @click="Permission.resetChanges"
+        />
+      </div>
+
+      <div class="col-auto">
+        <q-btn
+          unelevated
+          no-caps
+          color="primary"
+          icon="save"
+          label="Save permissions"
+          :loading="Permission.loadingPermission"
+          :disable="!Permission.dirty || Permission.loadingPermission"
+          @click="save"
+        />
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -120,53 +145,74 @@ import { watch } from 'vue'
 import { usePermissionStore } from '../../stores/PermissionStore'
 
 const props = defineProps({
-  AllPermissions: Array,
-  GroupPermissionsRe: Array,
-  Group: Object
+  AllPermissions: {
+    type: Array,
+    default: () => []
+  },
+  GroupPermissionsRe: {
+    type: Array,
+    default: () => []
+  },
+  Group: {
+    type: Object,
+    default: null
+  }
 })
 
+const emit = defineEmits(['saved'])
 const Permission = usePermissionStore()
 
-// 🔥 REACTIVE (fixes empty-data issue)
 watch(
-  () => [props.AllPermissions, props.GroupPermissionsRe, props.Group],
-  () => {
+  () => [
+    props.AllPermissions,
+    props.GroupPermissionsRe,
+    props.Group
+  ],
+  ([allPermissions, groupPermissions, group]) => {
     Permission.initPermissions(
-      props.AllPermissions,
-      props.GroupPermissionsRe,
-      props.Group
+      allPermissions,
+      groupPermissions,
+      group
     )
   },
   { immediate: true }
 )
 
-function toggleModel(perms, state) {
-  perms.forEach(p => {
-    const has = Permission.hasPermission(p.id)
-
-    if (state && !has) Permission.toggle(p)
-    if (!state && has) Permission.toggle(p)
-  })
+async function save() {
+  if (await Permission.saveGroupPermissions()) {
+    emit('saved', [...Permission.groupPermissions])
+  }
 }
 
-function orderPermissions(arr) {
-  const order = ['add', 'view', 'change', 'delete', 'list', 'pdf']
-  return [...arr].sort((a, b) => {
-    const ra = order.findIndex(o => a.codename.includes(o))
-    const rb = order.findIndex(o => b.codename.includes(o))
-    return ra - rb
-  })
+const permissionOrder = [
+  'add',
+  'view',
+  'change',
+  'delete',
+  'list',
+  'pdf'
+]
+
+function orderPermissions(permissions) {
+  return [...permissions].sort(
+    (a, b) =>
+      permissionOrder.findIndex((item) =>
+        a.codename.includes(item)
+      ) -
+      permissionOrder.findIndex((item) =>
+        b.codename.includes(item)
+      )
+  )
 }
 
-function label(c, m) {
-  const model = (m || '')
+function label(codename, modelName) {
+  const model = (modelName || '')
     .replaceAll(' ', '')
     .toLowerCase()
 
-  let code = (c || '').toLowerCase()
-
-  code = code.replace(model, '')   // first occurrence only
-
-  return code.replace(/_$/, '')
+  return (codename || '')
+    .toLowerCase()
+    .replace(model, '')
+    .replace(/_$/, '')
 }
 </script>
