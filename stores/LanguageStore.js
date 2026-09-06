@@ -1,5 +1,6 @@
 import { createBaseStore } from './../base/base_store'
 import { HTTPAuth, HTTPClient, url } from '../services/api'
+import { useUserStore } from './UserStore'
 
 export const useLanguageStore = createBaseStore(
   "lang", 
@@ -16,7 +17,9 @@ export const useLanguageStore = createBaseStore(
 
   actions: {
     change(lang) {
+      User = useUserStore()
       this.current = lang
+      User.Language=rsp.data.language
       this.setTraducao(this.current)
     },
     async setTraducao(language) {

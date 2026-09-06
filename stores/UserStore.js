@@ -316,7 +316,6 @@ export const useUserStore = createBaseStore(
       this.data = rsp.data
       const Language = useLanguageStore()
       setStorage('l', 'user', JSON.stringify(rsp.data),  365)
-      console.log(rsp.data.language)
       if (rsp.data.language) Language.change(rsp.data.language)
       return rsp
     },
