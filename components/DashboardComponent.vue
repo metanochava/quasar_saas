@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md">
+    <h1>Metano</h1>
 
     <!-- ===================================================== -->
     <!-- DASHBOARDS DISPONÍVEIS -->
