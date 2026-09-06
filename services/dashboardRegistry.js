@@ -4,11 +4,33 @@ import {
 
 
 // ============================================================
-// REGISTRY
+// GLOBAL REGISTRY KEY
+// ============================================================
+//
+// Symbol.for garante que diferentes instâncias/bundles da
+// quasar_resaas usam exactamente o mesmo registry.
+//
 // ============================================================
 
+const REGISTRY_KEY =
+  Symbol.for(
+    "quasar_resaas.dashboardRegistry"
+  )
+
+
+// ============================================================
+// GLOBAL REGISTRY
+// ============================================================
+
+if (!globalThis[REGISTRY_KEY]) {
+
+  globalThis[REGISTRY_KEY] =
+    shallowReactive([])
+
+}
+
 const dashboards =
-  shallowReactive([])
+  globalThis[REGISTRY_KEY]
 
 
 // ============================================================
@@ -42,7 +64,7 @@ export function registerDashboard(
 
 
   // ----------------------------------------------------------
-  // VALIDATE
+  // VALIDATION
   // ----------------------------------------------------------
 
   if (!dashboard.name) {
@@ -69,12 +91,19 @@ export function registerDashboard(
 
 
   if (exists) {
+
+    console.debug(
+      "[RESAAS Dashboard] Já registado:",
+      dashboard.module,
+      dashboard.name
+    )
+
     return
   }
 
 
   // ----------------------------------------------------------
-  // ADD
+  // REGISTER
   // ----------------------------------------------------------
 
   dashboards.push(
@@ -90,6 +119,14 @@ export function registerDashboard(
     (a, b) =>
       (a.order ?? 999) -
       (b.order ?? 999)
+  )
+
+
+  console.debug(
+    "[RESAAS Dashboard] Registado:",
+    dashboard.module,
+    dashboard.name,
+    dashboards
   )
 
 }
@@ -149,5 +186,21 @@ export function clearDashboards() {
     0,
     dashboards.length
   )
+
+}
+
+
+// ============================================================
+// DEBUG
+// ============================================================
+
+export function debugDashboards() {
+
+  console.log(
+    "[RESAAS Dashboard Registry]",
+    dashboards
+  )
+
+  return dashboards
 
 }
