@@ -41,7 +41,7 @@ import { useRoute } from 'vue-router'
 import { useEmployeeStore } from '../../../stores/EmployeeStore.js'
 import FormTwo from '../../../components/auto/FormTwo.vue'
 // import { useEntityStore } from '../../stores/EntityStore'
-import GroupManager from '../../hr/group/GroupManagerUser.vue'
+import GroupManager from '../../group/GroupManagerUser.vue'
 
 
 

@@ -37,10 +37,10 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { useGroupStore } from '../../../stores/GroupStore.js'
+import { useGroupStore } from '../../stores/GroupStore.js'
 import PermissionManager from '../permission/PermissionManager.vue'
 import FormTwo from '../../components/auto/FormTwo.vue'
-import { HTTPAuth, url } from '../../../services/api.js'
+import { HTTPAuth, url } from '../../services/api.js'
 
 const Group = useGroupStore()
 const route = useRoute()
