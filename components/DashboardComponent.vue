@@ -1,20 +1,22 @@
 <template>
+
   <q-page class="q-pa-md">
-    <h1>Metano</h1>
 
     <!-- ===================================================== -->
-    <!-- DASHBOARDS DISPONÍVEIS -->
+    <!-- DASHBOARDS -->
     <!-- ===================================================== -->
 
     <div
       v-if="visibleDashboards.length"
       class="row q-col-gutter-md"
     >
+
       <div
         v-for="dashboard in visibleDashboards"
         :key="dashboard.key"
         :class="dashboard.col"
       >
+
         <q-card
           flat
           bordered
@@ -22,10 +24,12 @@
         >
 
           <!-- HEADER -->
+
           <q-card-section
             v-if="dashboard.label || dashboard.icon"
             class="row items-center q-gutter-sm"
           >
+
             <q-icon
               v-if="dashboard.icon"
               :name="dashboard.icon"
@@ -49,37 +53,47 @@
               icon="open_in_new"
               :to="dashboard.route"
             />
+
           </q-card-section>
+
 
           <q-separator
             v-if="dashboard.label || dashboard.icon"
           />
 
-          <!-- COMPONENTE DO MÓDULO -->
+
+          <!-- COMPONENT -->
+
           <q-card-section>
+
             <component
               :is="dashboard.component"
               :dashboard="dashboard"
             />
+
           </q-card-section>
 
         </q-card>
+
       </div>
+
     </div>
 
 
     <!-- ===================================================== -->
-    <!-- SEM DASHBOARDS -->
+    <!-- EMPTY -->
     <!-- ===================================================== -->
 
     <slot
       v-else
       name="empty"
     >
+
       <div
         class="flex flex-center column"
         style="min-height: 70vh"
       >
+
         <img
           v-if="User?.Entity?.logo?.url"
           :alt="`${User?.Entity?.nome || ''} logo`"
@@ -97,10 +111,13 @@
         >
           {{ User.Entity.nome }}
         </div>
+
       </div>
+
     </slot>
 
   </q-page>
+
 </template>
 
 
@@ -112,8 +129,13 @@ import {
   markRaw
 } from "vue"
 
-import { useUserStore } from "../stores/UserStore"
-import { tdc } from "../services/translation"
+import {
+  useUserStore
+} from "../stores/UserStore"
+
+import {
+  tdc
+} from "../services/translation"
 
 import {
   getDashboards
@@ -124,129 +146,149 @@ const User = useUserStore()
 
 
 // ============================================================
-// DASHBOARDS REGISTADOS
+// REGISTRY
 // ============================================================
 
-const dashboards = getDashboards()
+const dashboards =
+  getDashboards()
 
 
 // ============================================================
-// PERMISSÕES
+// PERMISSION
 // ============================================================
 
-const hasPermission = (dashboard) => {
+const hasPermission = dashboard => {
 
-  const permissions = dashboard.permission
+  const permissions =
+    dashboard.permission
 
-  // Sem restrição de permissão
   if (!permissions) {
     return true
   }
 
-  // Uma única permissão
-  if (typeof permissions === "string") {
-    return User.can(permissions)
+
+  // ----------------------------------------------------------
+  // STRING
+  // ----------------------------------------------------------
+
+  if (
+    typeof permissions === "string"
+  ) {
+
+    return User.can(
+      permissions
+    )
+
   }
 
-  // Várias permissões
-  if (Array.isArray(permissions)) {
+
+  // ----------------------------------------------------------
+  // ARRAY
+  // ----------------------------------------------------------
+
+  if (
+    Array.isArray(permissions)
+  ) {
 
     if (!permissions.length) {
       return true
     }
 
-    // Necessita de todas
-    if (dashboard.permissionMode === "all") {
+    if (
+      dashboard.permissionMode === "all"
+    ) {
+
       return permissions.every(
-        permission => User.can(permission)
+        permission =>
+          User.can(permission)
       )
+
     }
 
-    // Default: basta ter uma
     return permissions.some(
-      permission => User.can(permission)
+      permission =>
+        User.can(permission)
     )
+
   }
+
 
   return true
 }
 
 
 // ============================================================
-// NORMALIZAR COMPONENTE
+// COMPONENT
 // ============================================================
 
-const normalizeComponent = (component) => {
+const normalizeComponent = component => {
 
   if (!component) {
     return null
   }
 
-  /*
-   * dashboard.js:
-   *
-   * component: () => import("./Dashboard.vue")
-   */
+  if (
+    typeof component === "function"
+  ) {
 
-  if (typeof component === "function") {
     return markRaw(
-      defineAsyncComponent(component)
+      defineAsyncComponent(
+        component
+      )
     )
+
   }
 
-  /*
-   * Também permite componente já importado:
-   *
-   * component: MeuDashboard
-   */
+  return markRaw(
+    component
+  )
 
-  return markRaw(component)
 }
 
 
 // ============================================================
-// DASHBOARDS VISÍVEIS
+// VISIBLE
 // ============================================================
 
-const visibleDashboards = computed(() => {
+const visibleDashboards =
+  computed(() => {
 
-  return dashboards
+    return dashboards
 
-    .filter(
-      dashboard =>
-        dashboard &&
-        dashboard.visible !== false
-    )
+      .filter(
+        dashboard =>
+          dashboard &&
+          dashboard.visible !== false
+      )
 
-    .filter(
-      dashboard =>
-        hasPermission(dashboard)
-    )
-
-    .sort(
-      (a, b) =>
-        (a.order ?? 999) -
-        (b.order ?? 999)
-    )
-
-    .map(
-      (dashboard, index) => ({
-        ...dashboard,
-
-        key:
-          dashboard.name ||
-          `${dashboard.module || "dashboard"}-${index}`,
-
-        col:
-          dashboard.col ||
-          "col-12 col-md-6",
-
-        component:
-          normalizeComponent(
-            dashboard.component
+      .filter(
+        dashboard =>
+          hasPermission(
+            dashboard
           )
-      })
-    )
+      )
 
-})
+      .map(
+        (dashboard, index) => ({
+
+          ...dashboard,
+
+          key:
+            dashboard.name ||
+            `${dashboard.module || "dashboard"}-${index}`,
+
+          col:
+            dashboard.col ||
+            "col-12 col-md-6",
+
+          component:
+            normalizeComponent(
+              dashboard.component
+            )
+
+        })
+      )
+
+  })
+
 </script>

@@ -1,5 +1,18 @@
-const dashboards = []
+import {
+  shallowReactive
+} from "vue"
 
+
+// ============================================================
+// REGISTRY
+// ============================================================
+
+const dashboards = shallowReactive([])
+
+
+// ============================================================
+// REGISTER DASHBOARD
+// ============================================================
 
 export function registerDashboard(dashboard) {
 
@@ -8,7 +21,21 @@ export function registerDashboard(dashboard) {
   }
 
   if (Array.isArray(dashboard)) {
-    dashboard.forEach(registerDashboard)
+
+    dashboard.forEach(
+      item => registerDashboard(item)
+    )
+
+    return
+  }
+
+  if (!dashboard.name) {
+
+    console.warn(
+      "[RESAAS Dashboard] Dashboard sem name:",
+      dashboard
+    )
+
     return
   }
 
@@ -29,29 +56,54 @@ export function registerDashboard(dashboard) {
       (a.order ?? 999) -
       (b.order ?? 999)
   )
+
 }
 
 
-export function registerDashboards(dashboards) {
+// ============================================================
+// REGISTER DASHBOARDS
+// ============================================================
 
-  if (!dashboards) {
+export function registerDashboards(items) {
+
+  if (!items) {
     return
   }
 
-  if (Array.isArray(dashboards)) {
-    dashboards.forEach(registerDashboard)
+  if (Array.isArray(items)) {
+
+    items.forEach(
+      item => registerDashboard(item)
+    )
+
     return
   }
 
-  registerDashboard(dashboards)
+  registerDashboard(items)
+
 }
 
+
+// ============================================================
+// GET
+// ============================================================
 
 export function getDashboards() {
+
   return dashboards
+
 }
 
 
+// ============================================================
+// CLEAR
+// ============================================================
+
 export function clearDashboards() {
-  dashboards.splice(0)
+
+  dashboards.splice(
+    0,
+    dashboards.length
+  )
+
 }
