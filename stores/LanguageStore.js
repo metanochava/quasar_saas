@@ -19,7 +19,7 @@ export const useLanguageStore = createBaseStore(
     change(lang) {
       const User = useUserStore()
       this.current = lang
-      User.Language=rsp.data.language
+      User.Language = lang
       this.setTraducao(this.current)
     },
     async setTraducao(language) {
