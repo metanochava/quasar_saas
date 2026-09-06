@@ -104,6 +104,14 @@ export * from './boot/alerts.js'
 
 export { default as Components } from './boot/components.js'
 
+
+export {
+  registerDashboard,
+  registerDashboards,
+  getDashboards,
+  clearDashboards
+} from "./services/dashboardRegistry"
+
 export {
   default as MainLayout
 } from './layouts/MainLayout.vue'
@@ -119,3 +127,12 @@ export {
 export {
   default as CrudPage
 } from './pages/CrudPage.vue'
+
+
+
+export {
+  registerDashboard,
+  registerDashboards,
+  getDashboards,
+  clearDashboards
+} from "./services/dashboardRegistry"
