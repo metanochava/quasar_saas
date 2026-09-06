@@ -83,19 +83,118 @@ export let restRoutes = [
       requiredRole: 'add_app'
     } 
   },
-  { 
-    path: '/view_hr_dashboard', 
-    name: 'view_hr_dashboard', 
-    component: () => import('../pages/hr/DashBoard.vue'), 
-    meta: { 
+  {
+    path: '/view_hr_dashboard',
+    name: 'view_hr_dashboard',
+    component: () => import('../pages/hr/DashBoard.vue'),
+    meta: {
       title: tdc('View') + ' ' + tdc('Dashboard'),
-      requiresAuth: true, 
+      requiresAuth: true,
       icon: 'inventory_2',
       requiredRole: 'view_hr_dashboard'
-    } 
+    }
   },
-  { 
-    path: '/view_django_resaas_dashboard', 
+  {
+    path: '/view_dashboard_hr_organizacao',
+    name: 'view_dashboard_hr_organizacao',
+    component: () => import('../pages/hr/dashboards/OrganizacaoDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Organização'),
+      requiresAuth: true,
+      icon: 'corporate_fare',
+      requiredRole: 'view_dashboard_hr_organizacao'
+    }
+  },
+  {
+    path: '/view_dashboard_hr_tempo_presenca',
+    name: 'view_dashboard_hr_tempo_presenca',
+    component: () => import('../pages/hr/dashboards/TempoPresencaDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Tempo & Presença'),
+      requiresAuth: true,
+      icon: 'schedule',
+      requiredRole: 'view_dashboard_hr_tempo_presenca'
+    }
+  },
+  {
+    path: '/view_dashboard_hr_salario_folha',
+    name: 'view_dashboard_hr_salario_folha',
+    component: () => import('../pages/hr/dashboards/SalarioFolhaDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Salário & Folha de Pagamento'),
+      requiresAuth: true,
+      icon: 'payments',
+      requiredRole: 'view_dashboard_hr_salario_folha'
+    }
+  },
+  {
+    path: '/view_dashboard_hr_ausencias',
+    name: 'view_dashboard_hr_ausencias',
+    component: () => import('../pages/hr/dashboards/AusenciasDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Ausências'),
+      requiresAuth: true,
+      icon: 'beach_access',
+      requiredRole: 'view_dashboard_hr_ausencias'
+    }
+  },
+  {
+    path: '/view_dashboard_hr_recrutamento',
+    name: 'view_dashboard_hr_recrutamento',
+    component: () => import('../pages/hr/dashboards/RecrutamentoDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Recrutamento'),
+      requiresAuth: true,
+      icon: 'work',
+      requiredRole: 'view_dashboard_hr_recrutamento'
+    }
+  },
+  {
+    path: '/view_dashboard_hr_onboarding',
+    name: 'view_dashboard_hr_onboarding',
+    component: () => import('../pages/hr/dashboards/OnboardingDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Onboarding'),
+      requiresAuth: true,
+      icon: 'checklist',
+      requiredRole: 'view_dashboard_hr_onboarding'
+    }
+  },
+  {
+    path: '/view_dashboard_hr_desempenho',
+    name: 'view_dashboard_hr_desempenho',
+    component: () => import('../pages/hr/dashboards/DesempenhoDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Desempenho'),
+      requiresAuth: true,
+      icon: 'trending_up',
+      requiredRole: 'view_dashboard_hr_desempenho'
+    }
+  },
+  {
+    path: '/view_dashboard_hr_formacao',
+    name: 'view_dashboard_hr_formacao',
+    component: () => import('../pages/hr/dashboards/FormacaoDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Formação'),
+      requiresAuth: true,
+      icon: 'school',
+      requiredRole: 'view_dashboard_hr_formacao'
+    }
+  },
+  {
+    path: '/view_dashboard_hr_ciclo_vida',
+    name: 'view_dashboard_hr_ciclo_vida',
+    component: () => import('../pages/hr/dashboards/CicloVidaDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Ciclo de Vida do Colaborador'),
+      requiresAuth: true,
+      icon: 'compare_arrows',
+      requiredRole: 'view_dashboard_hr_ciclo_vida'
+    }
+  },
+  {
+    path: '/view_django_resaas_dashboard',
     name: 'view_django_resaas_dashboard', 
     component: () => import('../pages/django_resaas/DashBoard.vue'), 
     meta: { 

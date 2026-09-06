@@ -17,7 +17,7 @@ export const useLanguageStore = createBaseStore(
 
   actions: {
     change(lang) {
-      User = useUserStore()
+      const User = useUserStore()
       this.current = lang
       User.Language=rsp.data.language
       this.setTraducao(this.current)
