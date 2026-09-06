@@ -129,10 +129,3 @@ export {
 } from './pages/CrudPage.vue'
 
 
-
-export {
-  registerDashboard,
-  registerDashboards,
-  getDashboards,
-  clearDashboards
-} from "./services/dashboardRegistry"
