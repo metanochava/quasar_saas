@@ -200,9 +200,20 @@ export let restRoutes = [
     }
   },
   {
+    path: '/view_notifications_dashboard',
+    name: 'view_notifications_dashboard',
+    component: () => import('../pages/notifications/dashboard/NotificationsDashboardPage.vue'),
+    meta: {
+      title: tdc('Dashboard') + ' ' + tdc('Notifications'),
+      requiresAuth: true,
+      icon: 'notifications',
+      requiredRole: 'view_notifications_dashboard'
+    }
+  },
+  {
     path: '/view_django_resaas_dashboard',
-    name: 'view_django_resaas_dashboard', 
-    component: () => import('../pages/django_resaas/DashBoard.vue'), 
+    name: 'view_django_resaas_dashboard',
+    component: () => import('../pages/django_resaas/DashBoard.vue'),
     meta: { 
       title: tdc('View') + ' ' + tdc('Dashboard'),
       requiresAuth: true, 
