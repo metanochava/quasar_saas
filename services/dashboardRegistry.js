@@ -7,27 +7,43 @@ import {
 // REGISTRY
 // ============================================================
 
-const dashboards = shallowReactive([])
+const dashboards =
+  shallowReactive([])
 
 
 // ============================================================
 // REGISTER DASHBOARD
 // ============================================================
 
-export function registerDashboard(dashboard) {
+export function registerDashboard(
+  dashboard
+) {
 
   if (!dashboard) {
     return
   }
 
-  if (Array.isArray(dashboard)) {
+
+  // ----------------------------------------------------------
+  // ARRAY
+  // ----------------------------------------------------------
+
+  if (
+    Array.isArray(dashboard)
+  ) {
 
     dashboard.forEach(
-      item => registerDashboard(item)
+      item =>
+        registerDashboard(item)
     )
 
     return
   }
+
+
+  // ----------------------------------------------------------
+  // VALIDATE
+  // ----------------------------------------------------------
 
   if (!dashboard.name) {
 
@@ -39,17 +55,36 @@ export function registerDashboard(dashboard) {
     return
   }
 
-  const exists = dashboards.some(
-    item =>
-      item.name === dashboard.name &&
-      item.module === dashboard.module
-  )
+
+  // ----------------------------------------------------------
+  // DUPLICATE
+  // ----------------------------------------------------------
+
+  const exists =
+    dashboards.some(
+      item =>
+        item.name === dashboard.name &&
+        item.module === dashboard.module
+    )
+
 
   if (exists) {
     return
   }
 
-  dashboards.push(dashboard)
+
+  // ----------------------------------------------------------
+  // ADD
+  // ----------------------------------------------------------
+
+  dashboards.push(
+    dashboard
+  )
+
+
+  // ----------------------------------------------------------
+  // SORT
+  // ----------------------------------------------------------
 
   dashboards.sort(
     (a, b) =>
@@ -64,28 +99,37 @@ export function registerDashboard(dashboard) {
 // REGISTER DASHBOARDS
 // ============================================================
 
-export function registerDashboards(items) {
+export function registerDashboards(
+  items
+) {
 
   if (!items) {
     return
   }
 
-  if (Array.isArray(items)) {
+
+  if (
+    Array.isArray(items)
+  ) {
 
     items.forEach(
-      item => registerDashboard(item)
+      item =>
+        registerDashboard(item)
     )
 
     return
   }
 
-  registerDashboard(items)
+
+  registerDashboard(
+    items
+  )
 
 }
 
 
 // ============================================================
-// GET
+// GET DASHBOARDS
 // ============================================================
 
 export function getDashboards() {
