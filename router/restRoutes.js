@@ -47,6 +47,12 @@ import { disciplinary_caseRoutes } from '../pages/hr/disciplinary_case/disciplin
 import { resignationRoutes } from '../pages/hr/resignation/resignationRoute'
 import { terminationRoutes } from '../pages/hr/termination/terminationRoute'
 import { employee_offboardingRoutes } from '../pages/hr/employee_offboarding/employee_offboardingRoute'
+import { ruleRoutes } from '../pages/notifications/rule/ruleRoute'
+import { templateRoutes } from '../pages/notifications/template/templateRoute'
+import { preferenceRoutes } from '../pages/notifications/preference/preferenceRoute'
+import { settingsRoutes } from '../pages/notifications/settings/settingsRoute'
+import { outboxRoutes } from '../pages/notifications/outbox/outboxRoute'
+import { delivery_attemptRoutes } from '../pages/notifications/delivery_attempt/delivery_attemptRoute'
 import { tdc } from '../services/translation'
 
 
@@ -270,5 +276,11 @@ export let restRoutes = [
   ...resignationRoutes,
   ...terminationRoutes,
   ...employee_offboardingRoutes,
+  ...ruleRoutes,
+  ...templateRoutes,
+  ...preferenceRoutes,
+  ...settingsRoutes,
+  ...outboxRoutes,
+  ...delivery_attemptRoutes,
 ]
 
