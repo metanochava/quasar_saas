@@ -142,6 +142,4 @@ export function setSettings(Theme, LayoutSettings, Typography, AnimationSettings
       : "0.35s"
 
   root.style.setProperty("--anim-speed", speed)
-
-  console.log("✅ Theme applied (GLOBAL ENGINE)")
 }
