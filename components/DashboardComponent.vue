@@ -1,6 +1,6 @@
 <template>
 
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-sm">
 
     <!-- ===================================================== -->
     <!-- DASHBOARDS -->
@@ -8,76 +8,19 @@
 
     <div
       v-if="visibleDashboards.length"
-      class="row q-col-gutter-md"
+      class="row q-col-gutter-sm"
     >
-
       <div
         v-for="dashboard in visibleDashboards"
         :key="dashboard.key"
         :class="dashboard.col"
       >
-
-        <q-card
-          flat
-          bordered
-          class="full-height"
-        >
-
-          <!-- HEADER -->
-
-          <q-card-section
-            v-if="dashboard.label || dashboard.icon"
-            class="row items-center q-gutter-sm"
-          >
-
-            <q-icon
-              v-if="dashboard.icon"
-              :name="dashboard.icon"
-              size="24px"
-            />
-
-            <div
-              v-if="dashboard.label"
-              class="text-h6"
-            >
-              {{ tdc(dashboard.label) }}
-            </div>
-
-            <q-space />
-
-            <q-btn
-              v-if="dashboard.route"
-              flat
-              round
-              dense
-              icon="open_in_new"
-              :to="dashboard.route"
-            />
-
-          </q-card-section>
-
-
-          <q-separator
-            v-if="dashboard.label || dashboard.icon"
-          />
-
-
-          <!-- COMPONENTE -->
-
-          <q-card-section>
-
-            <component
-              v-if="dashboard.component"
-              :is="dashboard.component"
-              :dashboard="dashboard"
-            />
-
-          </q-card-section>
-
-        </q-card>
-
+        <component
+          v-if="dashboard.component"
+          :is="dashboard.component"
+          :dashboard="dashboard"
+        />
       </div>
-
     </div>
 
 
@@ -85,12 +28,9 @@
     <!-- SEM DASHBOARDS -->
     <!-- ===================================================== -->
 
-    <slot
-      v-else
-      name="empty"
-    >
 
       <div
+        v-else
         class="flex flex-center column"
         style="min-height: 70vh"
       >
@@ -115,7 +55,7 @@
 
       </div>
 
-    </slot>
+
 
   </q-page>
 
