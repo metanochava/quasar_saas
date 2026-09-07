@@ -196,11 +196,6 @@ export function clearDashboards() {
 
 export function debugDashboards() {
 
-  console.log(
-    "[RESAAS Dashboard Registry]",
-    dashboards
-  )
-
   return dashboards
 
 }

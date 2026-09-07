@@ -230,16 +230,13 @@ const normalizeComponent = component => {
       asyncComponent
     )
 
-
     return asyncComponent
   }
-
 
   return markRaw(
     component
   )
 }
-
 
 // ============================================================
 // REFRESH DASHBOARDS
@@ -292,18 +289,6 @@ const refreshDashboards = () => {
 
         })
       )
-
-
-  console.log(
-    "[RESAAS] Permissions:",
-    [...(User.Permissions || [])]
-  )
-
-
-  console.log(
-    "[RESAAS] Visible dashboards:",
-    visibleDashboards.value
-  )
 }
 
 
