@@ -7,7 +7,7 @@
     <!-- ===================================================== -->
 
     <div
-      v-if="visibleDashboards.length"
+      v-if="visibleDashboards.length > 0"
       class="row q-col-gutter-md"
     >
 
@@ -23,10 +23,11 @@
           class="full-height"
         >
 
+          <!-- ================================================= -->
           <!-- HEADER -->
+          <!-- ================================================= -->
 
           <q-card-section
-            v-if="dashboard.label || dashboard.icon"
             class="row items-center q-gutter-sm"
           >
 
@@ -37,10 +38,9 @@
             />
 
             <div
-              v-if="dashboard.label"
               class="text-h6"
             >
-              {{ tdc(dashboard.label) }}
+              {{ tdc(dashboard.label || dashboard.name) }}
             </div>
 
             <q-space />
@@ -57,12 +57,12 @@
           </q-card-section>
 
 
-          <q-separator
-            v-if="dashboard.label || dashboard.icon"
-          />
+          <q-separator />
 
 
+          <!-- ================================================= -->
           <!-- COMPONENTE -->
+          <!-- ================================================= -->
 
           <q-card-section>
 
@@ -71,6 +71,13 @@
               :is="dashboard.component"
               :dashboard="dashboard"
             />
+
+            <div
+              v-else
+              class="text-grey"
+            >
+              Dashboard sem componente.
+            </div>
 
           </q-card-section>
 
@@ -82,7 +89,7 @@
 
 
     <!-- ===================================================== -->
-    <!-- SEM DASHBOARDS -->
+    <!-- EMPTY -->
     <!-- ===================================================== -->
 
     <slot
@@ -97,8 +104,8 @@
 
         <img
           v-if="User?.Entity?.logo?.url"
-          :alt="`${User?.Entity?.nome || ''} logo`"
           :src="User.Entity.logo.url"
+          :alt="`${User?.Entity?.nome || ''} logo`"
           style="
             width: 200px;
             height: 200px;
@@ -160,18 +167,10 @@ const componentCache =
 
 
 // ============================================================
-// PERMISSION
+// CAN
 // ============================================================
 
-const hasPermission = dashboard => {
-
-  const permission =
-    dashboard.permission
-
-
-  // ----------------------------------------------------------
-  // SEM PERMISSÃO
-  // ----------------------------------------------------------
+const can = permission => {
 
   if (
     permission === null ||
@@ -182,39 +181,79 @@ const hasPermission = dashboard => {
   }
 
 
-  // ----------------------------------------------------------
+  const value =
+    String(permission)
+      .trim()
+      .toLowerCase()
+
+
+  if (!value) {
+    return true
+  }
+
+
+  return User.Permissions?.has(
+    value
+  ) === true
+}
+
+
+// ============================================================
+// HAS PERMISSION
+// ============================================================
+
+const hasPermission = dashboard => {
+
+  const permission =
+    dashboard?.permission
+
+
+  // ==========================================================
+  // SEM PERMISSÃO
+  // ==========================================================
+
+  if (
+    permission === null ||
+    permission === undefined ||
+    permission === ""
+  ) {
+    return true
+  }
+
+
+  // ==========================================================
   // STRING
-  // ----------------------------------------------------------
+  // ==========================================================
 
   if (
     typeof permission === "string"
   ) {
 
-    return User.can(
+    return can(
       permission
     )
 
   }
 
 
-  // ----------------------------------------------------------
+  // ==========================================================
   // ARRAY
-  // ----------------------------------------------------------
+  // ==========================================================
 
   if (
     Array.isArray(permission)
   ) {
 
-    if (!permission.length) {
+    if (
+      permission.length === 0
+    ) {
       return true
     }
 
 
-    // --------------------------------------------------------
+    // ========================================================
     // ALL
-    //
-    // Todas as permissões são obrigatórias
-    // --------------------------------------------------------
+    // ========================================================
 
     if (
       dashboard.permissionMode === "all"
@@ -222,21 +261,19 @@ const hasPermission = dashboard => {
 
       return permission.every(
         item =>
-          User.can(item)
+          can(item)
       )
 
     }
 
 
-    // --------------------------------------------------------
+    // ========================================================
     // ANY - DEFAULT
-    //
-    // Basta possuir uma das permissões
-    // --------------------------------------------------------
+    // ========================================================
 
     return permission.some(
       item =>
-        User.can(item)
+        can(item)
     )
 
   }
@@ -257,18 +294,18 @@ const normalizeComponent = component => {
   }
 
 
-  // ----------------------------------------------------------
-  // LAZY IMPORT
-  //
-  // component: () => import("./Dashboard.vue")
-  // ----------------------------------------------------------
+  // ==========================================================
+  // LAZY COMPONENT
+  // ==========================================================
 
   if (
     typeof component === "function"
   ) {
 
     if (
-      componentCache.has(component)
+      componentCache.has(
+        component
+      )
     ) {
 
       return componentCache.get(
@@ -297,9 +334,9 @@ const normalizeComponent = component => {
   }
 
 
-  // ----------------------------------------------------------
-  // COMPONENTE JÁ IMPORTADO
-  // ----------------------------------------------------------
+  // ==========================================================
+  // COMPONENTE NORMAL
+  // ==========================================================
 
   return markRaw(
     component
@@ -309,72 +346,129 @@ const normalizeComponent = component => {
 
 
 // ============================================================
-// DASHBOARDS VISÍVEIS
+// VISIBLE DASHBOARDS
 // ============================================================
 
 const visibleDashboards =
   computed(() => {
 
-    return getDashboards()
+    // ========================================================
+    // IMPORTANTE
+    //
+    // Faz o computed depender explicitamente das permissões.
+    // ========================================================
 
-      // ------------------------------------------------------
-      // VÁLIDO / VISÍVEL
-      // ------------------------------------------------------
-
-      .filter(
-        dashboard =>
-          dashboard &&
-          dashboard.visible !== false
-      )
+    const permissions =
+      User.Permissions
 
 
-      // ------------------------------------------------------
-      // PERMISSÕES
-      // ------------------------------------------------------
-
-      .filter(
-        dashboard =>
-          hasPermission(
-            dashboard
-          )
-      )
+    const dashboards =
+      getDashboards()
 
 
-      // ------------------------------------------------------
-      // ORDER
-      // ------------------------------------------------------
-
-      .sort(
-        (a, b) =>
-          (a.order ?? 999) -
-          (b.order ?? 999)
-      )
+    console.log(
+      "[RESAAS] REGISTRY:",
+      dashboards
+    )
 
 
-      // ------------------------------------------------------
-      // NORMALIZE
-      // ------------------------------------------------------
+    console.log(
+      "[RESAAS] USER PERMISSIONS:",
+      permissions
+    )
 
-      .map(
-        (dashboard, index) => ({
 
-          ...dashboard,
+    const result =
+      dashboards
 
-          key:
-            dashboard.name ||
-            `${dashboard.module || "dashboard"}-${index}`,
+        // ====================================================
+        // VALID
+        // ====================================================
 
-          col:
-            dashboard.col ||
-            "col-12 col-md-6",
+        .filter(
+          dashboard =>
+            dashboard &&
+            dashboard.visible !== false
+        )
 
-          component:
-            normalizeComponent(
-              dashboard.component
+
+        // ====================================================
+        // PERMISSION
+        // ====================================================
+
+        .filter(
+          dashboard => {
+
+            const allowed =
+              hasPermission(
+                dashboard
+              )
+
+
+            console.log(
+              `[RESAAS] ${dashboard.module}/${dashboard.name}:`,
+              {
+                permission:
+                  dashboard.permission,
+
+                permissionMode:
+                  dashboard.permissionMode ||
+                  "any",
+
+                allowed
+              }
             )
 
-        })
-      )
+
+            return allowed
+
+          }
+        )
+
+
+        // ====================================================
+        // SORT
+        // ====================================================
+
+        .sort(
+          (a, b) =>
+            (a.order ?? 999) -
+            (b.order ?? 999)
+        )
+
+
+        // ====================================================
+        // NORMALIZE
+        // ====================================================
+
+        .map(
+          (dashboard, index) => ({
+
+            ...dashboard,
+
+            key:
+              `${dashboard.module || "dashboard"}::${dashboard.name || index}`,
+
+            col:
+              dashboard.col ||
+              "col-12 col-md-6",
+
+            component:
+              normalizeComponent(
+                dashboard.component
+              )
+
+          })
+        )
+
+
+    console.log(
+      "[RESAAS] VISIBLE DASHBOARDS:",
+      result
+    )
+
+
+    return result
 
   })
 
