@@ -62,7 +62,7 @@
           />
 
 
-          <!-- DASHBOARD COMPONENT -->
+          <!-- COMPONENTE DO DASHBOARD -->
 
           <q-card-section>
 
@@ -71,6 +71,13 @@
               :is="dashboard.component"
               :dashboard="dashboard"
             />
+
+            <div
+              v-else
+              class="text-grey"
+            >
+              Componente não definido.
+            </div>
 
           </q-card-section>
 
@@ -82,7 +89,7 @@
 
 
     <!-- ===================================================== -->
-    <!-- EMPTY -->
+    <!-- SEM DASHBOARDS -->
     <!-- ===================================================== -->
 
     <slot
@@ -171,7 +178,9 @@ const normalizeComponent = component => {
 
 
   // ----------------------------------------------------------
-  // LAZY COMPONENT
+  // LAZY IMPORT
+  //
+  // component: () => import("./Dashboard.vue")
   // ----------------------------------------------------------
 
   if (
@@ -209,7 +218,7 @@ const normalizeComponent = component => {
 
 
   // ----------------------------------------------------------
-  // NORMAL COMPONENT
+  // COMPONENTE NORMAL
   // ----------------------------------------------------------
 
   return markRaw(
@@ -220,7 +229,83 @@ const normalizeComponent = component => {
 
 
 // ============================================================
-// DASHBOARDS
+// DEBUG PERMISSIONS
+// ============================================================
+
+const debugPermissions = dashboard => {
+
+  const permissions =
+    dashboard.permission
+
+
+  // ----------------------------------------------------------
+  // SEM PERMISSÃO
+  // ----------------------------------------------------------
+
+  if (
+    permissions === null ||
+    permissions === undefined ||
+    permissions === ""
+  ) {
+
+    console.log(
+      `[RESAAS] ${dashboard.name} sem restrição de permissão`
+    )
+
+    return
+
+  }
+
+
+  // ----------------------------------------------------------
+  // STRING
+  // ----------------------------------------------------------
+
+  if (
+    typeof permissions === "string"
+  ) {
+
+    console.log(
+      `[RESAAS] CAN ${permissions}:`,
+      User.can(permissions)
+    )
+
+    return
+
+  }
+
+
+  // ----------------------------------------------------------
+  // ARRAY
+  // ----------------------------------------------------------
+
+  if (
+    Array.isArray(permissions)
+  ) {
+
+    console.log(
+      `[RESAAS] PERMISSIONS ${dashboard.name}:`,
+      permissions
+    )
+
+
+    console.log(
+      `[RESAAS] CAN ${dashboard.name}:`,
+      permissions.map(
+        permission => ({
+          permission,
+          can: User.can(permission)
+        })
+      )
+    )
+
+  }
+
+}
+
+
+// ============================================================
+// DASHBOARDS VISÍVEIS
 // ============================================================
 
 const visibleDashboards =
@@ -245,6 +330,22 @@ const visibleDashboards =
             dashboard
           )
 
+
+          // --------------------------------------------------
+          // DEBUG DAS PERMISSÕES
+          //
+          // IMPORTANTE:
+          // ainda NÃO estamos a filtrar por permissão.
+          // --------------------------------------------------
+
+          debugPermissions(
+            dashboard
+          )
+
+
+          // --------------------------------------------------
+          // NORMALIZE
+          // --------------------------------------------------
 
           return {
 
