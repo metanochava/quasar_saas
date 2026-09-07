@@ -10,17 +10,21 @@
       v-if="visibleDashboards.length"
       class="row q-col-gutter-sm"
     >
+
       <div
         v-for="dashboard in visibleDashboards"
         :key="dashboard.key"
         :class="dashboard.col"
       >
+
         <component
           v-if="dashboard.component"
           :is="dashboard.component"
           :dashboard="dashboard"
         />
+
       </div>
+
     </div>
 
 
@@ -28,34 +32,31 @@
     <!-- SEM DASHBOARDS -->
     <!-- ===================================================== -->
 
+    <div
+      v-else
+      class="flex flex-center column"
+      style="min-height: 70vh"
+    >
+
+      <img
+        v-if="User?.Entity?.logo?.url"
+        :alt="`${User?.Entity?.nome || ''} logo`"
+        :src="User.Entity.logo.url"
+        style="
+          width: 200px;
+          height: 200px;
+          object-fit: contain;
+        "
+      />
 
       <div
-        v-else
-        class="flex flex-center column"
-        style="min-height: 70vh"
+        v-if="User?.Entity?.nome"
+        class="text-h5 q-mt-md"
       >
-
-        <img
-          v-if="User?.Entity?.logo?.url"
-          :alt="`${User?.Entity?.nome || ''} logo`"
-          :src="User.Entity.logo.url"
-          style="
-            width: 200px;
-            height: 200px;
-            object-fit: contain;
-          "
-        />
-
-        <div
-          v-if="User?.Entity?.nome"
-          class="text-h5 q-mt-md"
-        >
-          {{ User.Entity.nome }}
-        </div>
-
+        {{ User.Entity.nome }}
       </div>
 
-
+    </div>
 
   </q-page>
 
@@ -65,7 +66,9 @@
 <script setup>
 
 import {
-  computed,
+  ref,
+  watch,
+  onMounted,
   defineAsyncComponent,
   markRaw
 } from "vue"
@@ -73,10 +76,6 @@ import {
 import {
   useUserStore
 } from "../stores/UserStore"
-
-import {
-  tdc
-} from "../services/translation"
 
 import {
   getDashboards
@@ -89,6 +88,14 @@ import {
 
 const User =
   useUserStore()
+
+
+// ============================================================
+// DASHBOARDS VISÍVEIS
+// ============================================================
+
+const visibleDashboards =
+  ref([])
 
 
 // ============================================================
@@ -152,8 +159,6 @@ const hasPermission = dashboard => {
 
     // --------------------------------------------------------
     // ALL
-    //
-    // Todas as permissões são obrigatórias
     // --------------------------------------------------------
 
     if (
@@ -170,8 +175,6 @@ const hasPermission = dashboard => {
 
     // --------------------------------------------------------
     // ANY - DEFAULT
-    //
-    // Basta possuir uma das permissões
     // --------------------------------------------------------
 
     return permission.some(
@@ -197,18 +200,14 @@ const normalizeComponent = component => {
   }
 
 
-  // ----------------------------------------------------------
-  // LAZY IMPORT
-  //
-  // component: () => import("./Dashboard.vue")
-  // ----------------------------------------------------------
-
   if (
     typeof component === "function"
   ) {
 
     if (
-      componentCache.has(component)
+      componentCache.has(
+        component
+      )
     ) {
 
       return componentCache.get(
@@ -233,44 +232,33 @@ const normalizeComponent = component => {
 
 
     return asyncComponent
-
   }
 
-
-  // ----------------------------------------------------------
-  // COMPONENTE JÁ IMPORTADO
-  // ----------------------------------------------------------
 
   return markRaw(
     component
   )
-
 }
 
 
 // ============================================================
-// DASHBOARDS VISÍVEIS
+// REFRESH DASHBOARDS
 // ============================================================
 
-const visibleDashboards =
-  computed(() => {
+const refreshDashboards = () => {
 
-    return getDashboards()
+  const dashboards =
+    getDashboards()
 
-      // ------------------------------------------------------
-      // VÁLIDO / VISÍVEL
-      // ------------------------------------------------------
+
+  visibleDashboards.value =
+    dashboards
 
       .filter(
         dashboard =>
           dashboard &&
           dashboard.visible !== false
       )
-
-
-      // ------------------------------------------------------
-      // PERMISSÕES
-      // ------------------------------------------------------
 
       .filter(
         dashboard =>
@@ -279,21 +267,11 @@ const visibleDashboards =
           )
       )
 
-
-      // ------------------------------------------------------
-      // ORDER
-      // ------------------------------------------------------
-
       .sort(
         (a, b) =>
           (a.order ?? 999) -
           (b.order ?? 999)
       )
-
-
-      // ------------------------------------------------------
-      // NORMALIZE
-      // ------------------------------------------------------
 
       .map(
         (dashboard, index) => ({
@@ -301,8 +279,7 @@ const visibleDashboards =
           ...dashboard,
 
           key:
-            dashboard.name ||
-            `${dashboard.module || "dashboard"}-${index}`,
+            `${dashboard.module || "dashboard"}-${dashboard.name || index}`,
 
           col:
             dashboard.col ||
@@ -316,6 +293,110 @@ const visibleDashboards =
         })
       )
 
-  })
+
+  console.log(
+    "[RESAAS] Permissions:",
+    [...(User.Permissions || [])]
+  )
+
+
+  console.log(
+    "[RESAAS] Visible dashboards:",
+    visibleDashboards.value
+  )
+}
+
+
+// ============================================================
+// WATCH PERMISSIONS
+// ============================================================
+
+watch(
+  () => [
+    ...(User.Permissions || [])
+  ],
+  () => {
+
+    refreshDashboards()
+
+  },
+  {
+    immediate: true
+  }
+)
+
+
+// ============================================================
+// WATCH GROUP
+// ============================================================
+
+watch(
+  () =>
+    User.Group?.id,
+  () => {
+
+    refreshDashboards()
+
+  }
+)
+
+
+// ============================================================
+// WATCH ENTITY
+// ============================================================
+
+watch(
+  () =>
+    User.Entity?.id,
+  () => {
+
+    refreshDashboards()
+
+  }
+)
+
+
+// ============================================================
+// WATCH BRANCH
+// ============================================================
+
+watch(
+  () =>
+    User.Branch?.id,
+  () => {
+
+    refreshDashboards()
+
+  }
+)
+
+
+// ============================================================
+// PINIA STORE SUBSCRIPTION
+// ============================================================
+
+User.$subscribe(
+  () => {
+
+    refreshDashboards()
+
+  },
+  {
+    detached: true
+  }
+)
+
+
+// ============================================================
+// MOUNT
+// ============================================================
+
+onMounted(
+  () => {
+
+    refreshDashboards()
+
+  }
+)
 
 </script>
