@@ -62,7 +62,7 @@
           />
 
 
-          <!-- COMPONENTE DO DASHBOARD -->
+          <!-- COMPONENTE -->
 
           <q-card-section>
 
@@ -71,13 +71,6 @@
               :is="dashboard.component"
               :dashboard="dashboard"
             />
-
-            <div
-              v-else
-              class="text-grey"
-            >
-              Componente não definido.
-            </div>
 
           </q-card-section>
 
@@ -167,6 +160,93 @@ const componentCache =
 
 
 // ============================================================
+// PERMISSION
+// ============================================================
+
+const hasPermission = dashboard => {
+
+  const permission =
+    dashboard.permission
+
+
+  // ----------------------------------------------------------
+  // SEM PERMISSÃO
+  // ----------------------------------------------------------
+
+  if (
+    permission === null ||
+    permission === undefined ||
+    permission === ""
+  ) {
+    return true
+  }
+
+
+  // ----------------------------------------------------------
+  // STRING
+  // ----------------------------------------------------------
+
+  if (
+    typeof permission === "string"
+  ) {
+
+    return User.can(
+      permission
+    )
+
+  }
+
+
+  // ----------------------------------------------------------
+  // ARRAY
+  // ----------------------------------------------------------
+
+  if (
+    Array.isArray(permission)
+  ) {
+
+    if (!permission.length) {
+      return true
+    }
+
+
+    // --------------------------------------------------------
+    // ALL
+    //
+    // Todas as permissões são obrigatórias
+    // --------------------------------------------------------
+
+    if (
+      dashboard.permissionMode === "all"
+    ) {
+
+      return permission.every(
+        item =>
+          User.can(item)
+      )
+
+    }
+
+
+    // --------------------------------------------------------
+    // ANY - DEFAULT
+    //
+    // Basta possuir uma das permissões
+    // --------------------------------------------------------
+
+    return permission.some(
+      item =>
+        User.can(item)
+    )
+
+  }
+
+
+  return true
+}
+
+
+// ============================================================
 // NORMALIZE COMPONENT
 // ============================================================
 
@@ -218,88 +298,12 @@ const normalizeComponent = component => {
 
 
   // ----------------------------------------------------------
-  // COMPONENTE NORMAL
+  // COMPONENTE JÁ IMPORTADO
   // ----------------------------------------------------------
 
   return markRaw(
     component
   )
-
-}
-
-
-// ============================================================
-// DEBUG PERMISSIONS
-// ============================================================
-
-const debugPermissions = dashboard => {
-
-  const permissions =
-    dashboard.permission
-
-
-  // ----------------------------------------------------------
-  // SEM PERMISSÃO
-  // ----------------------------------------------------------
-
-  if (
-    permissions === null ||
-    permissions === undefined ||
-    permissions === ""
-  ) {
-
-    console.log(
-      `[RESAAS] ${dashboard.name} sem restrição de permissão`
-    )
-
-    return
-
-  }
-
-
-  // ----------------------------------------------------------
-  // STRING
-  // ----------------------------------------------------------
-
-  if (
-    typeof permissions === "string"
-  ) {
-
-    console.log(
-      `[RESAAS] CAN ${permissions}:`,
-      User.can(permissions)
-    )
-
-    return
-
-  }
-
-
-  // ----------------------------------------------------------
-  // ARRAY
-  // ----------------------------------------------------------
-
-  if (
-    Array.isArray(permissions)
-  ) {
-
-    console.log(
-      `[RESAAS] PERMISSIONS ${dashboard.name}:`,
-      permissions
-    )
-
-
-    console.log(
-      `[RESAAS] CAN ${dashboard.name}:`,
-      permissions.map(
-        permission => ({
-          permission,
-          can: User.can(permission)
-        })
-      )
-    )
-
-  }
 
 }
 
@@ -311,72 +315,66 @@ const debugPermissions = dashboard => {
 const visibleDashboards =
   computed(() => {
 
-    const dashboards =
-      getDashboards()
+    return getDashboards()
 
+      // ------------------------------------------------------
+      // VÁLIDO / VISÍVEL
+      // ------------------------------------------------------
 
-    console.log(
-      "[RESAAS] REGISTRY:",
-      dashboards
-    )
-
-
-    const result =
-      dashboards.map(
-        (dashboard, index) => {
-
-          console.log(
-            "[RESAAS] DASHBOARD:",
-            dashboard
-          )
-
-
-          // --------------------------------------------------
-          // DEBUG DAS PERMISSÕES
-          //
-          // IMPORTANTE:
-          // ainda NÃO estamos a filtrar por permissão.
-          // --------------------------------------------------
-
-          debugPermissions(
-            dashboard
-          )
-
-
-          // --------------------------------------------------
-          // NORMALIZE
-          // --------------------------------------------------
-
-          return {
-
-            ...dashboard,
-
-            key:
-              dashboard.name ||
-              `${dashboard.module || "dashboard"}-${index}`,
-
-            col:
-              dashboard.col ||
-              "col-12 col-md-6",
-
-            component:
-              normalizeComponent(
-                dashboard.component
-              )
-
-          }
-
-        }
+      .filter(
+        dashboard =>
+          dashboard &&
+          dashboard.visible !== false
       )
 
 
-    console.log(
-      "[RESAAS] RESULT:",
-      result
-    )
+      // ------------------------------------------------------
+      // PERMISSÕES
+      // ------------------------------------------------------
+
+      .filter(
+        dashboard =>
+          hasPermission(
+            dashboard
+          )
+      )
 
 
-    return result
+      // ------------------------------------------------------
+      // ORDER
+      // ------------------------------------------------------
+
+      .sort(
+        (a, b) =>
+          (a.order ?? 999) -
+          (b.order ?? 999)
+      )
+
+
+      // ------------------------------------------------------
+      // NORMALIZE
+      // ------------------------------------------------------
+
+      .map(
+        (dashboard, index) => ({
+
+          ...dashboard,
+
+          key:
+            dashboard.name ||
+            `${dashboard.module || "dashboard"}-${index}`,
+
+          col:
+            dashboard.col ||
+            "col-12 col-md-6",
+
+          component:
+            normalizeComponent(
+              dashboard.component
+            )
+
+        })
+      )
 
   })
 
