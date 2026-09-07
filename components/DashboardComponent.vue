@@ -7,7 +7,7 @@
     <!-- ===================================================== -->
 
     <div
-      v-if="visibleDashboards.length > 0"
+      v-if="visibleDashboards.length"
       class="row q-col-gutter-md"
     >
 
@@ -23,11 +23,10 @@
           class="full-height"
         >
 
-          <!-- ================================================= -->
           <!-- HEADER -->
-          <!-- ================================================= -->
 
           <q-card-section
+            v-if="dashboard.label || dashboard.icon"
             class="row items-center q-gutter-sm"
           >
 
@@ -38,9 +37,10 @@
             />
 
             <div
+              v-if="dashboard.label"
               class="text-h6"
             >
-              {{ tdc(dashboard.label || dashboard.name) }}
+              {{ tdc(dashboard.label) }}
             </div>
 
             <q-space />
@@ -57,12 +57,12 @@
           </q-card-section>
 
 
-          <q-separator />
+          <q-separator
+            v-if="dashboard.label || dashboard.icon"
+          />
 
 
-          <!-- ================================================= -->
           <!-- COMPONENTE -->
-          <!-- ================================================= -->
 
           <q-card-section>
 
@@ -71,13 +71,6 @@
               :is="dashboard.component"
               :dashboard="dashboard"
             />
-
-            <div
-              v-else
-              class="text-grey"
-            >
-              Dashboard sem componente.
-            </div>
 
           </q-card-section>
 
@@ -89,7 +82,7 @@
 
 
     <!-- ===================================================== -->
-    <!-- EMPTY -->
+    <!-- SEM DASHBOARDS -->
     <!-- ===================================================== -->
 
     <slot
@@ -104,8 +97,8 @@
 
         <img
           v-if="User?.Entity?.logo?.url"
-          :src="User.Entity.logo.url"
           :alt="`${User?.Entity?.nome || ''} logo`"
+          :src="User.Entity.logo.url"
           style="
             width: 200px;
             height: 200px;
@@ -167,50 +160,18 @@ const componentCache =
 
 
 // ============================================================
-// CAN
-// ============================================================
-
-const can = permission => {
-
-  if (
-    permission === null ||
-    permission === undefined ||
-    permission === ""
-  ) {
-    return true
-  }
-
-
-  const value =
-    String(permission)
-      .trim()
-      .toLowerCase()
-
-
-  if (!value) {
-    return true
-  }
-
-
-  return User.Permissions?.has(
-    value
-  ) === true
-}
-
-
-// ============================================================
-// HAS PERMISSION
+// PERMISSION
 // ============================================================
 
 const hasPermission = dashboard => {
 
   const permission =
-    dashboard?.permission
+    dashboard.permission
 
 
-  // ==========================================================
+  // ----------------------------------------------------------
   // SEM PERMISSÃO
-  // ==========================================================
+  // ----------------------------------------------------------
 
   if (
     permission === null ||
@@ -221,39 +182,39 @@ const hasPermission = dashboard => {
   }
 
 
-  // ==========================================================
+  // ----------------------------------------------------------
   // STRING
-  // ==========================================================
+  // ----------------------------------------------------------
 
   if (
     typeof permission === "string"
   ) {
 
-    return can(
+    return User.can(
       permission
     )
 
   }
 
 
-  // ==========================================================
+  // ----------------------------------------------------------
   // ARRAY
-  // ==========================================================
+  // ----------------------------------------------------------
 
   if (
     Array.isArray(permission)
   ) {
 
-    if (
-      permission.length === 0
-    ) {
+    if (!permission.length) {
       return true
     }
 
 
-    // ========================================================
+    // --------------------------------------------------------
     // ALL
-    // ========================================================
+    //
+    // Todas as permissões são obrigatórias
+    // --------------------------------------------------------
 
     if (
       dashboard.permissionMode === "all"
@@ -261,19 +222,21 @@ const hasPermission = dashboard => {
 
       return permission.every(
         item =>
-          can(item)
+          User.can(item)
       )
 
     }
 
 
-    // ========================================================
+    // --------------------------------------------------------
     // ANY - DEFAULT
-    // ========================================================
+    //
+    // Basta possuir uma das permissões
+    // --------------------------------------------------------
 
     return permission.some(
       item =>
-        can(item)
+        User.can(item)
     )
 
   }
@@ -294,18 +257,18 @@ const normalizeComponent = component => {
   }
 
 
-  // ==========================================================
-  // LAZY COMPONENT
-  // ==========================================================
+  // ----------------------------------------------------------
+  // LAZY IMPORT
+  //
+  // component: () => import("./Dashboard.vue")
+  // ----------------------------------------------------------
 
   if (
     typeof component === "function"
   ) {
 
     if (
-      componentCache.has(
-        component
-      )
+      componentCache.has(component)
     ) {
 
       return componentCache.get(
@@ -334,9 +297,9 @@ const normalizeComponent = component => {
   }
 
 
-  // ==========================================================
-  // COMPONENTE NORMAL
-  // ==========================================================
+  // ----------------------------------------------------------
+  // COMPONENTE JÁ IMPORTADO
+  // ----------------------------------------------------------
 
   return markRaw(
     component
@@ -346,129 +309,72 @@ const normalizeComponent = component => {
 
 
 // ============================================================
-// VISIBLE DASHBOARDS
+// DASHBOARDS VISÍVEIS
 // ============================================================
 
 const visibleDashboards =
   computed(() => {
 
-    // ========================================================
-    // IMPORTANTE
-    //
-    // Faz o computed depender explicitamente das permissões.
-    // ========================================================
+    return getDashboards()
 
-    const permissions =
-      User.Permissions
+      // ------------------------------------------------------
+      // VÁLIDO / VISÍVEL
+      // ------------------------------------------------------
 
-
-    const dashboards =
-      getDashboards()
-
-
-    console.log(
-      "[RESAAS] REGISTRY:",
-      dashboards
-    )
+      .filter(
+        dashboard =>
+          dashboard &&
+          dashboard.visible !== false
+      )
 
 
-    console.log(
-      "[RESAAS] USER PERMISSIONS:",
-      permissions
-    )
+      // ------------------------------------------------------
+      // PERMISSÕES
+      // ------------------------------------------------------
+
+      .filter(
+        dashboard =>
+          hasPermission(
+            dashboard
+          )
+      )
 
 
-    const result =
-      dashboards
+      // ------------------------------------------------------
+      // ORDER
+      // ------------------------------------------------------
 
-        // ====================================================
-        // VALID
-        // ====================================================
-
-        .filter(
-          dashboard =>
-            dashboard &&
-            dashboard.visible !== false
-        )
+      .sort(
+        (a, b) =>
+          (a.order ?? 999) -
+          (b.order ?? 999)
+      )
 
 
-        // ====================================================
-        // PERMISSION
-        // ====================================================
+      // ------------------------------------------------------
+      // NORMALIZE
+      // ------------------------------------------------------
 
-        .filter(
-          dashboard => {
+      .map(
+        (dashboard, index) => ({
 
-            const allowed =
-              hasPermission(
-                dashboard
-              )
+          ...dashboard,
 
+          key:
+            dashboard.name ||
+            `${dashboard.module || "dashboard"}-${index}`,
 
-            console.log(
-              `[RESAAS] ${dashboard.module}/${dashboard.name}:`,
-              {
-                permission:
-                  dashboard.permission,
+          col:
+            dashboard.col ||
+            "col-12 col-md-6",
 
-                permissionMode:
-                  dashboard.permissionMode ||
-                  "any",
-
-                allowed
-              }
+          component:
+            normalizeComponent(
+              dashboard.component
             )
 
-
-            return allowed
-
-          }
-        )
-
-
-        // ====================================================
-        // SORT
-        // ====================================================
-
-        .sort(
-          (a, b) =>
-            (a.order ?? 999) -
-            (b.order ?? 999)
-        )
-
-
-        // ====================================================
-        // NORMALIZE
-        // ====================================================
-
-        .map(
-          (dashboard, index) => ({
-
-            ...dashboard,
-
-            key:
-              `${dashboard.module || "dashboard"}::${dashboard.name || index}`,
-
-            col:
-              dashboard.col ||
-              "col-12 col-md-6",
-
-            component:
-              normalizeComponent(
-                dashboard.component
-              )
-
-          })
-        )
-
-
-    console.log(
-      "[RESAAS] VISIBLE DASHBOARDS:",
-      result
-    )
-
-
-    return result
+        })
+      )
 
   })
 
